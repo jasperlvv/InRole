@@ -1,0 +1,442 @@
+[
+  {
+    "id": "qin",
+    "name": "秦始皇",
+    "file": "/people/qin.webp",
+    "title": "File:Qin Shi Huang.jpg",
+    "sourcePage": "https://commons.wikimedia.org/wiki/File:Qin_Shi_Huang.jpg",
+    "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/9/9e/Qin_Shi_Huang.jpg",
+    "author": "Unknown author Unknown author",
+    "license": "Public domain",
+    "licenseUrl": "https://creativecommons.org/publicdomain/mark/1.0/",
+    "attribution": "The British Library",
+    "changes": "Square crop, resized to 320 × 320 and converted to WebP.",
+    "crop": {
+      "left": 67,
+      "top": 140,
+      "width": 349,
+      "height": 349
+    },
+    "retrievedAt": "2026-11-23"
+  },
+  {
+    "id": "libai",
+    "name": "李白",
+    "file": "/people/libai.webp",
+    "title": "File:Libai touxiang.jpg",
+    "sourcePage": "https://commons.wikimedia.org/wiki/File:Libai_touxiang.jpg",
+    "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/d/dc/Libai_touxiang.jpg",
+    "author": "Unknown author Unknown author",
+    "license": "Public domain",
+    "licenseUrl": "https://creativecommons.org/publicdomain/mark/1.0/",
+    "attribution": "http://www.dgzx.org/zgx/030124libai1.jpg",
+    "changes": "Square crop, resized to 320 × 320 and converted to WebP.",
+    "crop": {
+      "left": 0,
+      "top": 14,
+      "width": 480,
+      "height": 480
+    },
+    "retrievedAt": "2026-11-23"
+  },
+  {
+    "id": "wukong",
+    "name": "孙悟空",
+    "file": "/people/wukong.webp",
+    "title": "File:Sun Wukong.jpg",
+    "sourcePage": "https://commons.wikimedia.org/wiki/File:Sun_Wukong.jpg",
+    "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/5/52/Sun_Wukong.jpg",
+    "author": "Katsushika Hokusai",
+    "license": "Public domain",
+    "licenseUrl": "https://creativecommons.org/publicdomain/mark/1.0/",
+    "attribution": "http://www.printsofjapan.com/Index_Glossary_Ro_thru_Seigle.htm",
+    "changes": "Square crop, resized to 320 × 320 and converted to WebP.",
+    "crop": {
+      "left": 87,
+      "top": 29,
+      "width": 228,
+      "height": 228
+    },
+    "retrievedAt": "2026-11-23"
+  },
+  {
+    "id": "zeus",
+    "name": "宙斯",
+    "file": "/people/zeus.webp",
+    "title": "File:Zeus Otricoli Pio-Clementino Inv257.jpg",
+    "sourcePage": "https://commons.wikimedia.org/wiki/File:Zeus_Otricoli_Pio-Clementino_Inv257.jpg",
+    "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/2/20/Zeus_Otricoli_Pio-Clementino_Inv257.jpg",
+    "author": "Unknown artist Unknown artist",
+    "license": "Public domain",
+    "licenseUrl": "https://creativecommons.org/publicdomain/mark/1.0/",
+    "attribution": "Jastrow (2006)",
+    "changes": "Square crop, resized to 320 × 320 and converted to WebP.",
+    "crop": {
+      "left": 46,
+      "top": 14,
+      "width": 368,
+      "height": 368
+    },
+    "retrievedAt": "2026-11-23"
+  },
+  {
+    "id": "athena",
+    "name": "雅典娜",
+    "file": "/people/athena.webp",
+    "title": "File:Giustiniani Athena bust (NAMA 3004).jpg",
+    "sourcePage": "https://commons.wikimedia.org/wiki/File:Giustiniani_Athena_bust_(NAMA_3004).jpg",
+    "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/f/f2/Giustiniani_Athena_bust_%28NAMA_3004%29.jpg",
+    "author": "Yair-haklai",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "attribution": "Own work",
+    "changes": "Square crop, resized to 320 × 320 and converted to WebP.",
+    "crop": {
+      "left": 0,
+      "top": 0,
+      "width": 500,
+      "height": 500
+    },
+    "retrievedAt": "2026-11-23"
+  },
+  {
+    "id": "socrates",
+    "name": "苏格拉底",
+    "file": "/people/socrates.webp",
+    "title": "File:Socrates Louvre.jpg",
+    "sourcePage": "https://commons.wikimedia.org/wiki/File:Socrates_Louvre.jpg",
+    "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/a/a4/Socrates_Louvre.jpg",
+    "author": "Copy of Lysippos (?)",
+    "license": "Public domain",
+    "licenseUrl": "https://creativecommons.org/publicdomain/mark/1.0/",
+    "attribution": "Eric Gaba ( User:Sting ), July 2005.",
+    "changes": "Square crop, resized to 320 × 320 and converted to WebP.",
+    "crop": {
+      "left": 40,
+      "top": 33,
+      "width": 420,
+      "height": 420
+    },
+    "retrievedAt": "2026-11-23"
+  },
+  {
+    "id": "newton",
+    "name": "牛顿",
+    "file": "/people/newton.webp",
+    "title": "File:Portrait of Sir Isaac Newton, 1689.jpg",
+    "sourcePage": "https://commons.wikimedia.org/wiki/File:Portrait_of_Sir_Isaac_Newton,_1689.jpg",
+    "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/3/3b/Portrait_of_Sir_Isaac_Newton%2C_1689.jpg",
+    "author": "Godfrey Kneller",
+    "license": "Public domain",
+    "licenseUrl": "https://creativecommons.org/publicdomain/mark/1.0/",
+    "attribution": "https://exhibitions.lib.cam.ac.uk/linesofthought/artifacts/newton-by-kneller/",
+    "changes": "Square crop, resized to 320 × 320 and converted to WebP.",
+    "crop": {
+      "left": 75,
+      "top": 48,
+      "width": 360,
+      "height": 360
+    },
+    "retrievedAt": "2026-11-23"
+  },
+  {
+    "id": "confucius",
+    "name": "孔子",
+    "file": "/people/confucius.webp",
+    "title": "File:Confucius the scholar.jpg",
+    "sourcePage": "https://commons.wikimedia.org/wiki/File:Confucius_the_scholar.jpg",
+    "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/9/9a/Confucius_the_scholar.jpg",
+    "author": "Unknown author",
+    "license": "Public domain",
+    "licenseUrl": "https://creativecommons.org/publicdomain/mark/1.0/",
+    "attribution": "",
+    "changes": "Square crop, resized to 320 × 320 and converted to WebP.",
+    "crop": {
+      "left": 38,
+      "top": 126,
+      "width": 404,
+      "height": 404
+    },
+    "retrievedAt": "2026-11-23"
+  },
+  {
+    "id": "dufu",
+    "name": "杜甫",
+    "file": "/people/dufu.webp",
+    "title": "File:Du Fu.jpg",
+    "sourcePage": "https://commons.wikimedia.org/wiki/File:Du_Fu.jpg",
+    "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/e/eb/Du_Fu.jpg",
+    "author": "Unknown author",
+    "license": "Public domain",
+    "licenseUrl": "https://creativecommons.org/publicdomain/mark/1.0/",
+    "attribution": "",
+    "changes": "Square crop, resized to 320 × 320 and converted to WebP.",
+    "crop": {
+      "left": 39,
+      "top": 84,
+      "width": 280,
+      "height": 280
+    },
+    "retrievedAt": "2026-11-23"
+  },
+  {
+    "id": "cleopatra",
+    "name": "克娄巴特拉",
+    "file": "/people/cleopatra.webp",
+    "title": "File:Bust of Cleopatra VII - Altes Museum - Berlin - Germany 2017.jpg",
+    "sourcePage": "https://commons.wikimedia.org/wiki/File:Bust_of_Cleopatra_VII_-_Altes_Museum_-_Berlin_-_Germany_2017.jpg",
+    "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/b/bb/Bust_of_Cleopatra_VII_-_Altes_Museum_-_Berlin_-_Germany_2017.jpg",
+    "author": "José Luiz",
+    "license": "Public domain",
+    "licenseUrl": "https://creativecommons.org/publicdomain/mark/1.0/",
+    "attribution": "Own work",
+    "changes": "Square crop, resized to 320 × 320 and converted to WebP.",
+    "crop": {
+      "left": 0,
+      "top": 84,
+      "width": 467,
+      "height": 467
+    },
+    "retrievedAt": "2026-11-23"
+  },
+  {
+    "id": "einstein",
+    "name": "爱因斯坦",
+    "file": "/people/einstein.webp",
+    "title": "File:Albert Einstein Head cleaned.jpg",
+    "sourcePage": "https://commons.wikimedia.org/wiki/File:Albert_Einstein_Head_cleaned.jpg",
+    "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/2/28/Albert_Einstein_Head_cleaned.jpg",
+    "author": "Oren Jack Turner",
+    "license": "Public domain",
+    "licenseUrl": "https://creativecommons.org/publicdomain/mark/1.0/",
+    "attribution": "This image is available from the United States Library of Congress 's Prints and Photographs division under the digital ID cph.3b46036 . This tag does not indicate the copyright status of the attached work. A normal copyright tag is still required. See Commons:Licensing .",
+    "changes": "Square crop, resized to 320 × 320 and converted to WebP.",
+    "crop": {
+      "left": 25,
+      "top": 19,
+      "width": 450,
+      "height": 450
+    },
+    "retrievedAt": "2026-11-23"
+  },
+  {
+    "id": "nezha",
+    "name": "哪吒",
+    "file": "/people/nezha.webp",
+    "title": "File:龍水港太子爺.JPG",
+    "sourcePage": "https://commons.wikimedia.org/wiki/File:%E9%BE%8D%E6%B0%B4%E6%B8%AF%E5%A4%AA%E5%AD%90%E7%88%BA.JPG",
+    "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/9/9c/%E9%BE%8D%E6%B0%B4%E6%B8%AF%E5%A4%AA%E5%AD%90%E7%88%BA.JPG",
+    "author": "Suzuki1314 at Chinese Wikipedia",
+    "license": "Public domain",
+    "licenseUrl": "https://creativecommons.org/publicdomain/mark/1.0/",
+    "attribution": "Own work",
+    "changes": "Square crop, resized to 320 × 320 and converted to WebP.",
+    "crop": {
+      "left": 51,
+      "top": 60,
+      "width": 203,
+      "height": 203
+    },
+    "retrievedAt": "2026-11-23"
+  },
+  {
+    "id": "sushi",
+    "name": "苏轼",
+    "file": "/people/sushi.webp",
+    "title": "File:Su shi wearing Dongpo jin.jpg",
+    "sourcePage": "https://commons.wikimedia.org/wiki/File:Su_shi_wearing_Dongpo_jin.jpg",
+    "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/e/eb/Su_shi_wearing_Dongpo_jin.jpg",
+    "author": "Zhao Mengfu 趙孟頫 (1254–1322)",
+    "license": "Public domain",
+    "licenseUrl": "https://creativecommons.org/publicdomain/mark/1.0/",
+    "attribution": "",
+    "changes": "Square crop, resized to 320 × 320 and converted to WebP.",
+    "crop": {
+      "left": 20,
+      "top": 78,
+      "width": 356,
+      "height": 356
+    },
+    "retrievedAt": "2026-11-23"
+  },
+  {
+    "id": "caocao",
+    "name": "曹操",
+    "file": "/people/caocao.webp",
+    "title": "File:Cao Cao Portrait ROTK.jpg",
+    "sourcePage": "https://commons.wikimedia.org/wiki/File:Cao_Cao_Portrait_ROTK.jpg",
+    "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/a/a7/Cao_Cao_Portrait_ROTK.jpg",
+    "author": "Unknown author Unknown author",
+    "license": "Public domain",
+    "licenseUrl": "https://creativecommons.org/publicdomain/mark/1.0/",
+    "attribution": "en:Image:Cao Cao Portrait ROTK.jpg",
+    "changes": "Square crop, resized to 320 × 320 and converted to WebP.",
+    "crop": {
+      "left": 39,
+      "top": 0,
+      "width": 293,
+      "height": 293
+    },
+    "retrievedAt": "2026-11-23"
+  },
+  {
+    "id": "zhugeliang",
+    "name": "诸葛亮",
+    "file": "/people/zhugeliang.webp",
+    "title": "File:Zhuge liang.jpg",
+    "sourcePage": "https://commons.wikimedia.org/wiki/File:Zhuge_liang.jpg",
+    "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/e/eb/Zhuge_liang.jpg",
+    "author": "Unknown author",
+    "license": "Public domain",
+    "licenseUrl": "https://creativecommons.org/publicdomain/mark/1.0/",
+    "attribution": "",
+    "changes": "Square crop, resized to 320 × 320 and converted to WebP.",
+    "crop": {
+      "left": 0,
+      "top": 6,
+      "width": 225,
+      "height": 225
+    },
+    "retrievedAt": "2026-11-23"
+  },
+  {
+    "id": "wuzetian",
+    "name": "武则天",
+    "file": "/people/wuzetian.webp",
+    "title": "File:武曌像.jpg",
+    "sourcePage": "https://commons.wikimedia.org/wiki/File:%E6%AD%A6%E6%9B%8C%E5%83%8F.jpg",
+    "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/8/87/%E6%AD%A6%E6%9B%8C%E5%83%8F.jpg",
+    "author": "Unknown author Unknown author",
+    "license": "Public domain",
+    "licenseUrl": "https://creativecommons.org/publicdomain/mark/1.0/",
+    "attribution": "https://dingyue.ws.126.net/2023/0312/85a77287j00rrdl65002uc000hs00m0g.jpg",
+    "changes": "Square crop, resized to 320 × 320 and converted to WebP.",
+    "crop": {
+      "left": 25,
+      "top": 50,
+      "width": 450,
+      "height": 450
+    },
+    "retrievedAt": "2026-11-23"
+  },
+  {
+    "id": "liqingzhao",
+    "name": "李清照",
+    "file": "/people/liqingzhao.webp",
+    "title": "File:Song dynasty poet Li Qingzhao.jpg",
+    "sourcePage": "https://commons.wikimedia.org/wiki/File:Song_dynasty_poet_Li_Qingzhao.jpg",
+    "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/0/0d/Song_dynasty_poet_Li_Qingzhao.jpg",
+    "author": "Jiang Xun",
+    "license": "Public domain",
+    "licenseUrl": "https://creativecommons.org/publicdomain/mark/1.0/",
+    "attribution": "http://www.xiexingcun.com/minghua/02/357L.htm",
+    "changes": "Square crop, resized to 320 × 320 and converted to WebP.",
+    "crop": {
+      "left": 0,
+      "top": 497,
+      "width": 171,
+      "height": 171
+    },
+    "retrievedAt": "2026-11-23"
+  },
+  {
+    "id": "davinci",
+    "name": "达·芬奇",
+    "file": "/people/davinci.webp",
+    "title": "File:Leonardo da Vinci - presumed self-portrait - WGA12798.jpg",
+    "sourcePage": "https://commons.wikimedia.org/wiki/File:Leonardo_da_Vinci_-_presumed_self-portrait_-_WGA12798.jpg",
+    "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/3/38/Leonardo_da_Vinci_-_presumed_self-portrait_-_WGA12798.jpg",
+    "author": "Leonardo da Vinci",
+    "license": "Public domain",
+    "licenseUrl": "https://creativecommons.org/publicdomain/mark/1.0/",
+    "attribution": "https://www.latitudinex.com/europa/leonardo-valle-della-loira-rinascimento.html Web Gallery of Art : Image Info about artwork wga QS:P11807,\"l/leonardo/08heads/12selfpo\"",
+    "changes": "Square crop, resized to 320 × 320 and converted to WebP.",
+    "crop": {
+      "left": 0,
+      "top": 70,
+      "width": 449,
+      "height": 449
+    },
+    "retrievedAt": "2026-11-23"
+  },
+  {
+    "id": "shakespeare",
+    "name": "莎士比亚",
+    "file": "/people/shakespeare.webp",
+    "title": "File:William Shakespeare by John Taylor, edited.jpg",
+    "sourcePage": "https://commons.wikimedia.org/wiki/File:William_Shakespeare_by_John_Taylor,_edited.jpg",
+    "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/2/21/William_Shakespeare_by_John_Taylor%2C_edited.jpg",
+    "author": "Attributed to John Taylor",
+    "license": "Public domain",
+    "licenseUrl": "https://creativecommons.org/publicdomain/mark/1.0/",
+    "attribution": "one or more third parties have made copyright claims against Wikimedia Commons in relation to the work from which this is sourced or a purely mechanical reproduction thereof . This may be due to recognition of the \" sweat of the brow \" doctrine, allowing works to be eligible for protection through skill and labour, and not purely by originality as is the case in the United States (where this website is hosted). These claims may or may not be valid in all jurisdictions. As such, use of this image in the jurisdiction of the claimant or other countries may be regarded as copyright infringement . Please see Commons:When to use the PD-Art tag for more information.",
+    "changes": "Square crop, resized to 320 × 320 and converted to WebP.",
+    "crop": {
+      "left": 60,
+      "top": 32,
+      "width": 390,
+      "height": 390
+    },
+    "retrievedAt": "2026-11-23"
+  },
+  {
+    "id": "beethoven",
+    "name": "贝多芬",
+    "file": "/people/beethoven.webp",
+    "title": "File:Beethoven.jpg",
+    "sourcePage": "https://commons.wikimedia.org/wiki/File:Beethoven.jpg",
+    "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/6/6f/Beethoven.jpg",
+    "author": "Joseph Karl Stieler",
+    "license": "Public domain",
+    "licenseUrl": "https://creativecommons.org/publicdomain/mark/1.0/",
+    "attribution": "web.archive.org/web/20160623080009",
+    "changes": "Square crop, resized to 320 × 320 and converted to WebP.",
+    "crop": {
+      "left": 60,
+      "top": 12,
+      "width": 390,
+      "height": 390
+    },
+    "retrievedAt": "2026-11-23"
+  },
+  {
+    "id": "darwin",
+    "name": "达尔文",
+    "file": "/people/darwin.webp",
+    "title": "File:Charles Darwin seated crop.jpg",
+    "sourcePage": "https://commons.wikimedia.org/wiki/File:Charles_Darwin_seated_crop.jpg",
+    "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/2/2e/Charles_Darwin_seated_crop.jpg",
+    "author": "Charles_Darwin_seated.jpg : Henry Maull (1829–1914) and John Fox (1832–1907) (Maull & Fox) [ 3 ] derivative work: Bea o",
+    "license": "Public domain",
+    "licenseUrl": "https://creativecommons.org/publicdomain/mark/1.0/",
+    "attribution": "Charles_Darwin_seated.jpg",
+    "changes": "Square crop, resized to 320 × 320 and converted to WebP.",
+    "crop": {
+      "left": 50,
+      "top": 0,
+      "width": 400,
+      "height": 400
+    },
+    "retrievedAt": "2026-11-23"
+  },
+  {
+    "id": "curie",
+    "name": "居里夫人",
+    "file": "/people/curie.webp",
+    "title": "File:Marie Curie c. 1920s.jpg",
+    "sourcePage": "https://commons.wikimedia.org/wiki/File:Marie_Curie_c._1920s.jpg",
+    "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/c/c8/Marie_Curie_c._1920s.jpg",
+    "author": "Henri Manuel",
+    "license": "Public domain",
+    "licenseUrl": "https://creativecommons.org/publicdomain/mark/1.0/",
+    "attribution": "cdn-images-1.medium.com",
+    "changes": "Square crop, resized to 320 × 320 and converted to WebP.",
+    "crop": {
+      "left": 30,
+      "top": 20,
+      "width": 440,
+      "height": 440
+    },
+    "retrievedAt": "2026-11-23"
+  }
+]

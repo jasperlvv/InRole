@@ -1,0 +1,60 @@
+{
+  "stage": "S07A",
+  "date": "2026-11-24",
+  "packages": {
+    "next": {
+      "version": "16.4.6",
+      "integrity": "sha512-QZJiYhaZLJMo2KpkQGQIwvmd79WVsAWeYIU554a8d7zArS3si/IRy3lBNV/rtYhE70oLwdLYhPAXLPx8HwcwtA=="
+    },
+    "react": {
+      "version": "19.3.1",
+      "integrity": "sha512-QNhWdt7nrgVWWQG58QuGsAR3jv3Hbe4mb4vz7w2csnHavciZJgda1CPNaldF6eVxv90ud3jUXpKlHL69gO38yw=="
+    },
+    "typescript": {
+      "version": "5.9.3",
+      "integrity": "sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw=="
+    },
+    "iron-session": {
+      "version": "9.1.1",
+      "integrity": "sha512-3lp4fCD9hJlcN65n0C4hYFF3ZPcRnQlOI4foKachDiu6fnYhNG8qWUF7UXMKV6X8N8bCprBh+FnX/0ZoSOdgMg=="
+    },
+    "@node-rs/argon2": {
+      "version": "2.2.2",
+      "integrity": "sha512-NtdlPPWtR5U4BxX5EGJYza+UklNaoWORmkaKCMqf/nyKeXWKVwNt8KfQoRpNT7OB1DcEwmePafO4wZyW+sbfCQ=="
+    },
+    "prisma": {
+      "version": "7.10.1",
+      "integrity": "sha512-GoVeErHGGtsSjsflQ1r2BA3RKTXtxNraQJz8OLkLhoLr7OgCscdx4qw4WMM4HnERYc+a1cq2VnMNbep+vOjNcQ=="
+    },
+    "@prisma/client": {
+      "version": "7.10.1",
+      "integrity": "sha512-5tgAbFGh//zVOC6WPNVgziOErJHYkUE+wmqCwbIyq6IrTXUYtv9y2iBFGh/Owo99Mx0+cr0j1FOrxkYBMuyhaQ=="
+    },
+    "@prisma/adapter-pg": {
+      "version": "7.10.1",
+      "integrity": "sha512-EP9ruPYHjKP80WZlb5qVaEXKgZjJieBFjAxcBtQnDAHD6+16UN4keVmBh6L/RUpuDQT2FQRbvKNgq5d4Ix+IkQ=="
+    },
+    "pg": {
+      "version": "8.23.1",
+      "integrity": "sha512-aL96AHANtWjPLDOLqnhx+ngp9+UK7ETEU8VJrDCGvsSSi/mGLcWYsS6Herg7lmaBJe4uwrfqsa7gTEFaSizDoQ=="
+    },
+    "@types/pg": {
+      "version": "8.23.1",
+      "integrity": "sha512-fKVHpikPdg4GKks3JuLEhvwSyvwzF23hnabPy6DD8ljVbC7+6J5dQzdv4arV6jqq57djnMgs1HKBxX4P8aBI3A=="
+    }
+  },
+  "overrides": {
+    "@prisma/config": {
+      "effect": "3.22.5"
+    }
+  },
+  "nodeTarget": "24.x",
+  "testedNodeVersions": [
+    "24.22.1",
+    "26.13.1"
+  ],
+  "databaseProvider": "postgresql",
+  "databaseSchema": "inrole",
+  "databaseConnected": false,
+  "cloudDeployed": false
+}

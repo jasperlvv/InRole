@@ -1,0 +1,26 @@
+{
+  "node": "v26.13.1",
+  "platform": "win32",
+  "versions": {
+    "next": "16.4.6",
+    "iron-session": "9.1.1",
+    "@node-rs/argon2": "2.2.2",
+    "prisma": "7.10.1",
+    "@prisma/client": "7.10.1",
+    "@prisma/adapter-pg": "7.10.1",
+    "pg": "8.23.1"
+  },
+  "schemaSqlPreviewTables": 31,
+  "fixtureProductionBuild": "passed",
+  "appRouterCookieRoundTrip": "passed",
+  "credentials": [
+    "handle",
+    "password"
+  ],
+  "argon2Native": "passed",
+  "generatedPrismaWithPgAdapterLoaded": "passed",
+  "crossOriginRejected": true,
+  "oldCookieReplayRejectedByMemoryRecord": true,
+  "databaseConnected": false,
+  "deployed": false
+}

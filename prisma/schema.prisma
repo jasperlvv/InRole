@@ -1,0 +1,629 @@
+generator client {
+  provider     = "prisma-client"
+  output       = "../src/generated/prisma"
+  moduleFormat = "esm"
+}
+
+datasource db {
+  provider = "postgresql"
+  schemas  = ["inrole"]
+}
+
+enum UserRole {
+  USER
+  ADMIN
+
+  @@schema("inrole")
+}
+
+enum UserStatus {
+  ACTIVE
+  BANNED
+  CLOSED
+
+  @@schema("inrole")
+}
+
+enum Visibility {
+  VISIBLE
+  HIDDEN
+  DELETED
+
+  @@schema("inrole")
+}
+
+enum MediaPurpose {
+  POST_IMAGE
+  POST_VIDEO
+  PERSON_AVATAR
+
+  @@schema("inrole")
+}
+
+enum MediaStatus {
+  PENDING
+  UPLOADED
+  READY
+  HIDDEN
+  DELETED
+
+  @@schema("inrole")
+}
+
+enum CharacterRequestStatus {
+  PENDING
+  APPROVED
+  REJECTED
+
+  @@schema("inrole")
+}
+
+enum ReportStatus {
+  OPEN
+  RESOLVED
+  DISMISSED
+
+  @@schema("inrole")
+}
+
+enum CoinOperationKind {
+  DAILY_GRANT
+  PERSON_TIP
+  POST_GIFT
+
+  @@schema("inrole")
+}
+
+enum WriteRequestStatus {
+  IN_PROGRESS
+  COMPLETED
+
+  @@schema("inrole")
+}
+
+model User {
+  id                    String              @id @default(uuid()) @db.Uuid
+  handle                String              @unique @db.VarChar(20)
+  displayName           String              @db.VarChar(80)
+  bio                   String              @default("") @db.Text
+  role                  UserRole            @default(USER)
+  status                UserStatus          @default(ACTIVE)
+  authVersion           Int                 @default(1)
+  onboardingCompletedAt DateTime?           @db.Timestamptz(3)
+  createdAt             DateTime            @default(now()) @db.Timestamptz(3)
+  updatedAt             DateTime            @updatedAt @db.Timestamptz(3)
+  credential            PasswordCredential?
+  sessions              AuthSession[]
+  recoveryCodes         RecoveryCode[]
+  interests             UserInterest[]
+  recentPeople          UserRecentPerson[]
+  posts                 Post[]
+  comments              Comment[]
+  likes                 PostLike[]
+  reviews               PersonReview[]
+  uploads               MediaAsset[]
+  pollVotes             PollVote[]
+  characterRequests     CharacterRequest[]  @relation("RequestAuthor")
+  reviewedRequests      CharacterRequest[]  @relation("RequestReviewer")
+  reports               ContentReport[]
+  auditActions          ModerationAction[]
+  writeRequests         WriteRequest[]
+  wallet                Wallet?
+  coinOperations        CoinOperation[]     @relation("CoinActor")
+  receivedOperations    CoinOperation[]     @relation("CoinRecipient")
+  feedEvents            FeedEvent[]
+
+  @@map("app_users")
+  @@schema("inrole")
+}
+
+model PasswordCredential {
+  userId       String   @id @db.Uuid
+  passwordHash String   @db.VarChar(512)
+  changedAt    DateTime @default(now()) @db.Timestamptz(3)
+  user         User     @relation(fields: [userId], references: [id], onDelete: Restrict)
+
+  @@map("password_credentials")
+  @@schema("inrole")
+}
+
+model AuthSession {
+  id          String    @id @default(uuid()) @db.Uuid
+  userId      String    @db.Uuid
+  tokenHash   String    @unique @db.Char(64)
+  authVersion Int
+  createdAt   DateTime  @default(now()) @db.Timestamptz(3)
+  expiresAt   DateTime  @db.Timestamptz(3)
+  revokedAt   DateTime? @db.Timestamptz(3)
+  lastSeenAt  DateTime  @default(now()) @db.Timestamptz(3)
+  user        User      @relation(fields: [userId], references: [id], onDelete: Restrict)
+
+  @@index([userId, revokedAt, expiresAt])
+  @@index([expiresAt])
+  @@map("auth_sessions")
+  @@schema("inrole")
+}
+
+model RecoveryCode {
+  id        String    @id @default(uuid()) @db.Uuid
+  userId    String    @db.Uuid
+  codeHash  String    @unique @db.Char(64)
+  createdAt DateTime  @default(now()) @db.Timestamptz(3)
+  usedAt    DateTime? @db.Timestamptz(3)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Restrict)
+
+  @@index([userId, usedAt])
+  @@map("recovery_codes")
+  @@schema("inrole")
+}
+
+model RateLimitBucket {
+  scope       String   @db.VarChar(64)
+  keyHash     String   @db.Char(64)
+  windowStart DateTime @db.Timestamptz(3)
+  count       Int      @default(0)
+  expiresAt   DateTime @db.Timestamptz(3)
+
+  @@id([scope, keyHash, windowStart])
+  @@index([expiresAt])
+  @@map("rate_limit_buckets")
+  @@schema("inrole")
+}
+
+model InterestTag {
+  id            String           @id @db.VarChar(64)
+  name          String           @db.VarChar(60)
+  active        Boolean          @default(true)
+  users         UserInterest[]
+  people        PersonInterest[]
+  topics        TopicInterest[]
+  primaryPeople Person[]         @relation("PersonPrimaryInterest")
+
+  @@map("interest_tags")
+  @@schema("inrole")
+}
+
+model UserInterest {
+  userId     String      @db.Uuid
+  interestId String      @db.VarChar(64)
+  user       User        @relation(fields: [userId], references: [id], onDelete: Restrict)
+  interest   InterestTag @relation(fields: [interestId], references: [id], onDelete: Restrict)
+
+  @@id([userId, interestId])
+  @@index([interestId])
+  @@map("user_interests")
+  @@schema("inrole")
+}
+
+model Person {
+  id                String             @id @db.VarChar(64)
+  name              String             @db.VarChar(60)
+  aliases           String[]           @default([])
+  bio               String             @db.Text
+  primaryInterestId String             @db.VarChar(64)
+  active            Boolean            @default(true)
+  legacyAvatarPath  String?            @db.VarChar(255)
+  avatarMediaId     String?            @db.Uuid
+  createdAt         DateTime           @default(now()) @db.Timestamptz(3)
+  updatedAt         DateTime           @updatedAt @db.Timestamptz(3)
+  avatarMedia       MediaAsset?        @relation("PersonAvatar", fields: [avatarMediaId], references: [id], onDelete: Restrict)
+  primaryInterest   InterestTag        @relation("PersonPrimaryInterest", fields: [primaryInterestId], references: [id], onDelete: Restrict)
+  sources           PersonSource[]
+  interests         PersonInterest[]
+  recentUsers       UserRecentPerson[]
+  posts             Post[]
+  comments          Comment[]
+  reviews           PersonReview[]
+  coinOperations    CoinOperation[]
+  approvedRequests  CharacterRequest[]
+
+  @@index([active, name, id])
+  @@index([primaryInterestId, active])
+  @@map("people")
+  @@schema("inrole")
+}
+
+model PersonSource {
+  id            String  @id @default(uuid()) @db.Uuid
+  personId      String  @db.VarChar(64)
+  title         String  @db.Text
+  sourceUrl     String  @db.Text
+  author        String? @db.Text
+  license       String? @db.Text
+  licenseUrl    String? @db.Text
+  modifications String? @db.Text
+  person        Person  @relation(fields: [personId], references: [id], onDelete: Restrict)
+
+  @@index([personId])
+  @@map("person_sources")
+  @@schema("inrole")
+}
+
+model PersonInterest {
+  personId   String      @db.VarChar(64)
+  interestId String      @db.VarChar(64)
+  person     Person      @relation(fields: [personId], references: [id], onDelete: Restrict)
+  interest   InterestTag @relation(fields: [interestId], references: [id], onDelete: Restrict)
+
+  @@id([personId, interestId])
+  @@index([interestId])
+  @@map("person_interests")
+  @@schema("inrole")
+}
+
+model UserRecentPerson {
+  userId     String   @db.Uuid
+  personId   String   @db.VarChar(64)
+  lastUsedAt DateTime @default(now()) @db.Timestamptz(3)
+  user       User     @relation(fields: [userId], references: [id], onDelete: Restrict)
+  person     Person   @relation(fields: [personId], references: [id], onDelete: Restrict)
+
+  @@id([userId, personId])
+  @@index([userId, lastUsedAt])
+  @@map("user_recent_people")
+  @@schema("inrole")
+}
+
+model Topic {
+  id          String          @id @db.VarChar(64)
+  name        String          @unique @db.VarChar(60)
+  description String          @db.Text
+  active      Boolean         @default(true)
+  createdAt   DateTime        @default(now()) @db.Timestamptz(3)
+  posts       PostTopic[]
+  interests   TopicInterest[]
+
+  @@map("topics")
+  @@schema("inrole")
+}
+
+model TopicInterest {
+  topicId    String      @db.VarChar(64)
+  interestId String      @db.VarChar(64)
+  topic      Topic       @relation(fields: [topicId], references: [id], onDelete: Restrict)
+  interest   InterestTag @relation(fields: [interestId], references: [id], onDelete: Restrict)
+
+  @@id([topicId, interestId])
+  @@index([interestId])
+  @@map("topic_interests")
+  @@schema("inrole")
+}
+
+model Post {
+  id          String          @id @default(uuid()) @db.Uuid
+  authorId    String          @db.Uuid
+  personId    String          @db.VarChar(64)
+  body        String          @default("") @db.Text
+  quotePostId String?         @db.Uuid
+  visibility  Visibility      @default(VISIBLE)
+  createdAt   DateTime        @default(now()) @db.Timestamptz(3)
+  updatedAt   DateTime        @updatedAt @db.Timestamptz(3)
+  author      User            @relation(fields: [authorId], references: [id], onDelete: Restrict)
+  person      Person          @relation(fields: [personId], references: [id], onDelete: Restrict)
+  quotePost   Post?           @relation("PostQuote", fields: [quotePostId], references: [id], onDelete: Restrict)
+  quotedBy    Post[]          @relation("PostQuote")
+  topics      PostTopic[]
+  comments    Comment[]
+  likes       PostLike[]
+  media       PostMedia[]
+  poll        Poll?
+  reports     ContentReport[]
+  gifts       CoinOperation[]
+  feedEvents  FeedEvent[]
+
+  @@index([visibility, createdAt, id])
+  @@index([authorId, visibility, createdAt, id])
+  @@index([personId, visibility, createdAt, id])
+  @@index([quotePostId])
+  @@map("posts")
+  @@schema("inrole")
+}
+
+model PostTopic {
+  postId  String @db.Uuid
+  topicId String @db.VarChar(64)
+  post    Post   @relation(fields: [postId], references: [id], onDelete: Restrict)
+  topic   Topic  @relation(fields: [topicId], references: [id], onDelete: Restrict)
+
+  @@id([postId, topicId])
+  @@index([topicId, postId])
+  @@map("post_topics")
+  @@schema("inrole")
+}
+
+model Comment {
+  id         String          @id @default(uuid()) @db.Uuid
+  postId     String          @db.Uuid
+  authorId   String          @db.Uuid
+  personId   String          @db.VarChar(64)
+  body       String          @db.Text
+  visibility Visibility      @default(VISIBLE)
+  createdAt  DateTime        @default(now()) @db.Timestamptz(3)
+  updatedAt  DateTime        @updatedAt @db.Timestamptz(3)
+  post       Post            @relation(fields: [postId], references: [id], onDelete: Restrict)
+  author     User            @relation(fields: [authorId], references: [id], onDelete: Restrict)
+  person     Person          @relation(fields: [personId], references: [id], onDelete: Restrict)
+  reports    ContentReport[]
+
+  @@index([postId, visibility, createdAt, id])
+  @@index([authorId, createdAt, id])
+  @@map("comments")
+  @@schema("inrole")
+}
+
+model PostLike {
+  userId    String   @db.Uuid
+  postId    String   @db.Uuid
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Restrict)
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Restrict)
+
+  @@id([userId, postId])
+  @@index([postId, createdAt])
+  @@map("post_likes")
+  @@schema("inrole")
+}
+
+model PersonReview {
+  id         String          @id @default(uuid()) @db.Uuid
+  userId     String          @db.Uuid
+  personId   String          @db.VarChar(64)
+  score      Int             @db.SmallInt
+  body       String          @default("") @db.Text
+  visibility Visibility      @default(VISIBLE)
+  createdAt  DateTime        @default(now()) @db.Timestamptz(3)
+  updatedAt  DateTime        @updatedAt @db.Timestamptz(3)
+  user       User            @relation(fields: [userId], references: [id], onDelete: Restrict)
+  person     Person          @relation(fields: [personId], references: [id], onDelete: Restrict)
+  reports    ContentReport[]
+
+  @@unique([userId, personId])
+  @@index([personId, visibility, updatedAt, id])
+  @@map("person_reviews")
+  @@schema("inrole")
+}
+
+model MediaAsset {
+  id            String       @id @default(uuid()) @db.Uuid
+  ownerId       String?      @db.Uuid
+  purpose       MediaPurpose
+  status        MediaStatus  @default(PENDING)
+  bucket        String       @db.VarChar(100)
+  storageKey    String       @unique @db.Text
+  originalName  String       @db.VarChar(255)
+  mime          String       @db.VarChar(100)
+  byteSize      BigInt
+  width         Int?
+  height        Int?
+  durationMs    Int?
+  sourceUrl     String?      @db.Text
+  sourceAuthor  String?      @db.Text
+  license       String?      @db.Text
+  licenseUrl    String?      @db.Text
+  attribution   String?      @db.Text
+  createdAt     DateTime     @default(now()) @db.Timestamptz(3)
+  updatedAt     DateTime     @updatedAt @db.Timestamptz(3)
+  owner         User?        @relation(fields: [ownerId], references: [id], onDelete: Restrict)
+  postMedia     PostMedia?
+  personAvatars Person[]     @relation("PersonAvatar")
+
+  @@index([ownerId, status, createdAt])
+  @@index([status, createdAt])
+  @@map("media_assets")
+  @@schema("inrole")
+}
+
+model PostMedia {
+  postId   String     @db.Uuid
+  mediaId  String     @unique @db.Uuid
+  position Int        @db.SmallInt
+  post     Post       @relation(fields: [postId], references: [id], onDelete: Restrict)
+  media    MediaAsset @relation(fields: [mediaId], references: [id], onDelete: Restrict)
+
+  @@id([postId, mediaId])
+  @@unique([postId, position])
+  @@map("post_media")
+  @@schema("inrole")
+}
+
+model Poll {
+  postId    String       @id @db.Uuid
+  question  String       @db.Text
+  endsAt    DateTime     @db.Timestamptz(3)
+  createdAt DateTime     @default(now()) @db.Timestamptz(3)
+  post      Post         @relation(fields: [postId], references: [id], onDelete: Restrict)
+  options   PollOption[]
+  votes     PollVote[]
+
+  @@index([endsAt])
+  @@map("polls")
+  @@schema("inrole")
+}
+
+model PollOption {
+  id             String     @id @default(uuid()) @db.Uuid
+  postId         String     @db.Uuid
+  position       Int        @db.SmallInt
+  text           String     @db.Text
+  normalizedText String     @db.Text
+  poll           Poll       @relation(fields: [postId], references: [postId], onDelete: Restrict)
+  votes          PollVote[]
+
+  @@unique([id, postId])
+  @@unique([postId, position])
+  @@unique([postId, normalizedText])
+  @@map("poll_options")
+  @@schema("inrole")
+}
+
+model PollVote {
+  userId    String     @db.Uuid
+  postId    String     @db.Uuid
+  optionId  String     @db.Uuid
+  createdAt DateTime   @default(now()) @db.Timestamptz(3)
+  user      User       @relation(fields: [userId], references: [id], onDelete: Restrict)
+  poll      Poll       @relation(fields: [postId], references: [postId], onDelete: Restrict)
+  option    PollOption @relation(fields: [optionId, postId], references: [id, postId], onDelete: Restrict)
+
+  @@id([userId, postId])
+  @@index([optionId, postId])
+  @@map("poll_votes")
+  @@schema("inrole")
+}
+
+model CharacterRequest {
+  id               String                 @id @default(uuid()) @db.Uuid
+  userId           String                 @db.Uuid
+  name             String                 @default("") @db.VarChar(60)
+  bio              String                 @default("") @db.Text
+  sourceUrl        String?                @db.Text
+  dedupeKey        String                 @db.Char(64)
+  status           CharacterRequestStatus @default(PENDING)
+  reviewerId       String?                @db.Uuid
+  approvedPersonId String?                @db.VarChar(64)
+  reviewNote       String?                @db.Text
+  createdAt        DateTime               @default(now()) @db.Timestamptz(3)
+  reviewedAt       DateTime?              @db.Timestamptz(3)
+  user             User                   @relation("RequestAuthor", fields: [userId], references: [id], onDelete: Restrict)
+  reviewer         User?                  @relation("RequestReviewer", fields: [reviewerId], references: [id], onDelete: Restrict)
+  approvedPerson   Person?                @relation(fields: [approvedPersonId], references: [id], onDelete: Restrict)
+
+  @@unique([userId, dedupeKey])
+  @@index([status, createdAt, id])
+  @@map("character_requests")
+  @@schema("inrole")
+}
+
+model ContentReport {
+  id         String        @id @default(uuid()) @db.Uuid
+  reporterId String        @db.Uuid
+  postId     String?       @db.Uuid
+  commentId  String?       @db.Uuid
+  reviewId   String?       @db.Uuid
+  reason     String        @db.Text
+  status     ReportStatus  @default(OPEN)
+  createdAt  DateTime      @default(now()) @db.Timestamptz(3)
+  resolvedAt DateTime?     @db.Timestamptz(3)
+  reporter   User          @relation(fields: [reporterId], references: [id], onDelete: Restrict)
+  post       Post?         @relation(fields: [postId], references: [id], onDelete: Restrict)
+  comment    Comment?      @relation(fields: [commentId], references: [id], onDelete: Restrict)
+  review     PersonReview? @relation(fields: [reviewId], references: [id], onDelete: Restrict)
+
+  @@unique([reporterId, postId])
+  @@unique([reporterId, commentId])
+  @@unique([reporterId, reviewId])
+  @@index([status, createdAt, id])
+  @@map("content_reports")
+  @@schema("inrole")
+}
+
+model ModerationAction {
+  id            String   @id @default(uuid()) @db.Uuid
+  actorId       String   @db.Uuid
+  action        String   @db.VarChar(64)
+  targetType    String   @db.VarChar(64)
+  targetId      String   @db.VarChar(100)
+  reason        String   @db.Text
+  previousState Json?
+  nextState     Json?
+  createdAt     DateTime @default(now()) @db.Timestamptz(3)
+  actor         User     @relation(fields: [actorId], references: [id], onDelete: Restrict)
+
+  @@index([targetType, targetId, createdAt])
+  @@index([actorId, createdAt])
+  @@map("moderation_actions")
+  @@schema("inrole")
+}
+
+model WriteRequest {
+  id            String             @id @default(uuid()) @db.Uuid
+  userId        String             @db.Uuid
+  scope         String             @db.VarChar(64)
+  key           String             @db.VarChar(100)
+  payloadHash   String             @db.Char(64)
+  status        WriteRequestStatus @default(IN_PROGRESS)
+  resultType    String?            @db.VarChar(64)
+  resultId      String?            @db.VarChar(100)
+  createdAt     DateTime           @default(now()) @db.Timestamptz(3)
+  completedAt   DateTime?          @db.Timestamptz(3)
+  expiresAt     DateTime?          @db.Timestamptz(3)
+  user          User               @relation(fields: [userId], references: [id], onDelete: Restrict)
+  coinOperation CoinOperation?
+
+  @@unique([userId, scope, key])
+  @@index([expiresAt])
+  @@map("write_requests")
+  @@schema("inrole")
+}
+
+model Wallet {
+  userId    String      @id @db.Uuid
+  balance   BigInt      @default(0)
+  updatedAt DateTime    @updatedAt @db.Timestamptz(3)
+  user      User        @relation(fields: [userId], references: [id], onDelete: Restrict)
+  entries   CoinEntry[]
+
+  @@map("wallets")
+  @@schema("inrole")
+}
+
+model CoinOperation {
+  id          String            @id @default(uuid()) @db.Uuid
+  kind        CoinOperationKind
+  actorId     String            @db.Uuid
+  recipientId String?           @db.Uuid
+  personId    String?           @db.VarChar(64)
+  postId      String?           @db.Uuid
+  amount      BigInt
+  grantDay    DateTime?         @db.Date
+  requestId   String?           @unique @db.Uuid
+  createdAt   DateTime          @default(now()) @db.Timestamptz(3)
+  actor       User              @relation("CoinActor", fields: [actorId], references: [id], onDelete: Restrict)
+  recipient   User?             @relation("CoinRecipient", fields: [recipientId], references: [id], onDelete: Restrict)
+  person      Person?           @relation(fields: [personId], references: [id], onDelete: Restrict)
+  post        Post?             @relation(fields: [postId], references: [id], onDelete: Restrict)
+  request     WriteRequest?     @relation(fields: [requestId], references: [id], onDelete: Restrict)
+  entries     CoinEntry[]
+
+  @@unique([actorId, grantDay])
+  @@index([personId, createdAt, id])
+  @@index([postId, createdAt, id])
+  @@index([actorId, createdAt, id])
+  @@index([recipientId, createdAt, id])
+  @@map("coin_operations")
+  @@schema("inrole")
+}
+
+model CoinEntry {
+  id          String        @id @default(uuid()) @db.Uuid
+  operationId String        @db.Uuid
+  userId      String        @db.Uuid
+  delta       BigInt
+  createdAt   DateTime      @default(now()) @db.Timestamptz(3)
+  operation   CoinOperation @relation(fields: [operationId], references: [id], onDelete: Restrict)
+  wallet      Wallet        @relation(fields: [userId], references: [userId], onDelete: Restrict)
+
+  @@unique([operationId, userId])
+  @@index([userId, createdAt, id])
+  @@map("coin_entries")
+  @@schema("inrole")
+}
+
+model FeedEvent {
+  id               String   @id @default(uuid()) @db.Uuid
+  userId           String?  @db.Uuid
+  postId           String   @db.Uuid
+  kind             String   @db.VarChar(32)
+  algorithmVersion String   @db.VarChar(64)
+  requestId        String   @db.Uuid
+  position         Int
+  createdAt        DateTime @default(now()) @db.Timestamptz(3)
+  user             User?    @relation(fields: [userId], references: [id], onDelete: Restrict)
+  post             Post     @relation(fields: [postId], references: [id], onDelete: Restrict)
+
+  @@unique([requestId, postId, kind])
+  @@index([userId, createdAt])
+  @@index([createdAt])
+  @@map("feed_events")
+  @@schema("inrole")
+}

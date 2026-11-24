@@ -1,0 +1,17 @@
+{
+  "date": "2026-11-24",
+  "postgres": "17.12",
+  "schema": "inrole",
+  "emptyDatabaseRebuilt": true,
+  "repeatedDeployPassed": true,
+  "catalog": {
+    "tables": 31,
+    "indexes": 87,
+    "checks": 32,
+    "triggers": 6,
+    "migrations": 2
+  },
+  "constraintsAndPrivilegesPassed": true,
+  "prismaSchemaDrift": false,
+  "browserDataImported": false
+}

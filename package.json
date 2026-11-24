@@ -11,11 +11,20 @@
     "build": "prisma generate && next build",
     "start": "next start --hostname 0.0.0.0",
     "lint": "eslint . --max-warnings 0",
-    "typecheck": "prisma generate && tsc --noEmit",
+    "typecheck": "prisma generate && next typegen && tsc --noEmit",
     "test": "node --experimental-strip-types --test tests/*.test.mjs",
     "check": "npm run lint && npm run typecheck && npm run test && npm run build",
     "db:validate": "prisma validate",
     "db:generate": "prisma generate",
+    "db:local:setup": "node --use-system-ca scripts/db/local.mjs setup",
+    "db:local:start": "node scripts/db/local.mjs start",
+    "db:local:stop": "node scripts/db/local.mjs stop",
+    "db:local:status": "node scripts/db/local.mjs status",
+    "db:migrate": "node scripts/db/prisma.mjs deploy",
+    "db:status": "node scripts/db/prisma.mjs status",
+    "db:seed:catalog": "node --experimental-strip-types scripts/db/seed-catalog.mjs",
+    "verify:s07b": "node scripts/db/verify.mjs",
+    "verify:s07c": "node --experimental-strip-types scripts/db/verify-api.mjs",
     "verify:s07a": "prisma validate && prisma generate && node --experimental-strip-types scripts/s07a/verify-next.mjs"
   },
   "dependencies": {
@@ -26,7 +35,8 @@
     "next": "16.4.6",
     "pg": "8.23.1",
     "react": "19.3.1",
-    "react-dom": "19.3.1"
+    "react-dom": "19.3.1",
+    "server-only": "0.0.1"
   },
   "overrides": {
     "@prisma/config": {

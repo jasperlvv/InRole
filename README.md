@@ -8,7 +8,9 @@ InRole is a fun and free online community where users can be anyone they want.
 
 已完成S01～S06：工程基础、手机/电脑响应式页面和四大模块可操作前端。已应用11月23日最新提供的古人看手机Logo，覆盖网页品牌、浏览器图标和Apple主屏图标。
 
-示例与本机创建的帖子、评论、点赞、评价、通宝共用一份演示数据；刷新后保留。尚未连接数据库、真实认证、线上接口或推荐算法，不能跨设备同步。
+原有社区页面的帖子、评论、点赞、评价、通宝继续使用浏览器演示数据，刷新后保留。S07A～S07C 已完成数据库与服务端基础：独立的[真实人物页](http://localhost:3000/live/people)通过 API 读取本机 PostgreSQL；真实注册、登录及帖子/钱包写入仍待后续接入。
+
+`/demo` 进入原有演示预览，`/live/people` 进入真实只读预览，两者不混用账号或数据。真实请求失败显示错误和重试，不回退演示数据。
 
 ## 如何体验
 
@@ -45,7 +47,18 @@ npm.cmd run dev
 
 浏览器访问 http://localhost:3000。终端按 Ctrl+C 停止；若3000被占用，Next.js会提示实际端口。
 
-首次已安装依赖后，之后启动只需运行dev。S01不需要环境变量。`.env.example`只有说明，后续服务配置放入Git忽略的`.env.local`，不要提交真实值。
+仅体验演示时不需要数据库。真实人物页需要先启动本地 PostgreSQL；`.env.example`只有说明，真实配置放在 Git 忽略的`.env.local`，不要提交真实值。
+
+首次本机数据库配置（Windows，建议使用 `.nvmrc` 的 Node 24 或已验证的本机 Node 26）：
+
+```powershell
+npm.cmd run db:local:setup
+npm.cmd run db:seed:catalog
+```
+
+setup 自动下载并校验官方 PostgreSQL 17.12、创建独立开发/测试库、执行版本化迁移和权限配置。catalog 只添加 3 位公共人物及兴趣/署名，不导入浏览器演示账号、帖子或钱包。重启电脑后先运行 `npm.cmd run db:local:start`，再运行 `npm.cmd run dev`。停止数据库用 `npm.cmd run db:local:stop`；数据保存在 `%LOCALAPPDATA%/InRole/postgresql-17/`。
+
+`npm.cmd run db:migrate` 应用新增迁移；`db:status` 检查状态；`verify:s07b` 在全新临时库验收重建和 14 项数据库测试。生产构建完成后执行 `verify:s07c`，验收 13 组 HTTP/真实库场景。它们只清理自己新建的临时验证库，不清空开发库。详见[数据库操作](docs/architecture/S07B-local-database.md)和[接口规则](docs/architecture/S07C-api-contract.md)。
 
 开发服务器监听0.0.0.0，同一局域网的手机可用终端显示的局域网地址访问；是否可连接取决于路由和防火墙。仅用作开发预览，正式部署在S17进行。
 
@@ -64,7 +77,11 @@ npm.cmd run start
 ## 结构
 
 ```text
-src/app/                 App Router页面、布局和样式
+src/app/(demo)/          原有演示页面与独立演示Provider，原网址保留
+src/app/live/            逐项接入的真实页面
+src/app/api/v1/          真实API入口
+src/server/              统一授权、业务查询、DTO及数据库连接，仅服务端
+src/data/                真实页面使用的网络适配器
 src/components/          首页、表单、导航及公共组件
 src/lib/                 示例数据、账号演示状态和输入规则
 tests/                   账号规则、内容身份、权限、热度、评分和通宝模型测试
@@ -79,10 +96,10 @@ AGENTS.md                后续开发约定
 
 ## 下一步
 
-S07A本地设计与兼容验证已完成：Prisma 7.10.1、iron-session 9.1.1、Argon2id方案及31表关系已保存，真实认证与数据库尚未接入页面。代码托管仓库为[GitHub · jasperlvv/InRole](https://github.com/jasperlvv/InRole)，后续继续本地开发，云部署和CI仍后置。下一步S07B准备本地PostgreSQL开发/测试库，再落实迁移与约束。详见[数据设计](docs/architecture/S07A-data-model.md)、[认证选型](docs/architecture/S07A-auth-and-runtime.md)及[验收记录](docs/verification/S07A.md)。
+S07A～S07C 本地数据库与授权读取基础已完成：31 张业务表、版本化迁移、唯一约束/索引、运行与迁移账号隔离、统一 API 响应与授权、独立真实人物页。代码托管仓库为[GitHub · jasperlvv/InRole](https://github.com/jasperlvv/InRole)，云部署和 CI 仍后置。下一步 S08 接通真实 ID+密码注册、登录、退出、改密和限流；本步测试会话不等于真实登录产品已完成。详见[数据设计](docs/architecture/S07A-data-model.md)、[S07B验收](docs/verification/S07B.md)及[S07C验收](docs/verification/S07C.md)。
 
 新增命令：`npm.cmd run db:validate`验证模型，`npm.cmd run db:generate`生成可重建客户端，`npm.cmd run verify:s07a`在本机临时目录运行独立生产构建/HTTP兼容验证。后者不会接入真实数据库或替换当前演示账号。当前测试总数44项，包含7项认证兼容验证。生成目录`src/generated/prisma/`不手工编辑、不上传Git；typecheck/build会先生成。
 
-基础验收见[S04～S06记录](docs/verification/S04-S06.md)，新增功能见[前端扩展](docs/verification/2026-11-23-frontend.md)、[主题及语言验收](docs/verification/2026-11-23-appearance.md)、[统一配色验收](docs/verification/2026-11-23-unified-palette.md)、[通宝赠送与红心验收](docs/verification/2026-11-23-tongbao.md)及[人物与内容扩充](docs/verification/2026-11-23-demo-expansion.md)。`npm.cmd run check`最新已通过，现包含44项自动化测试；浏览器既有前端验收保留，新增认证库与运行环境证据见S07A记录，尚未做真实数据库、真实手机或跨浏览器完整服务测试。
+基础验收见[S04～S06记录](docs/verification/S04-S06.md)，新增功能见[前端扩展](docs/verification/2026-11-23-frontend.md)、[主题及语言验收](docs/verification/2026-11-23-appearance.md)、[统一配色验收](docs/verification/2026-11-23-unified-palette.md)、[通宝赠送与红心验收](docs/verification/2026-11-23-tongbao.md)及[人物与内容扩充](docs/verification/2026-11-23-demo-expansion.md)。44 项既有自动化测试、14 项数据库测试、13 组接口集成验证及生产构建均通过；浏览器实测真实人物查询、断连失败及恢复重试，保存了电脑和手机宽度截图。真实手机、跨浏览器及完整业务写入仍待后续验收。
 
 遵守V0.2：游客只浏览；互动需登录；每次发言独立选公共人物；不用邮箱注册模板。

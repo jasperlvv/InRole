@@ -1,0 +1,12 @@
+{
+  "interests": [
+    { "id": "literature", "name": "文学诗词" },
+    { "id": "mythology", "name": "神话传说" },
+    { "id": "science", "name": "科学脑洞" }
+  ],
+  "people": [
+    { "id": "libai", "name": "李白", "aliases": ["李太白", "青莲居士"], "bio": "唐代诗人，以想象丰富、语言奔放的诗歌闻名。", "primaryInterestId": "literature", "legacyAvatarPath": "/people/libai.webp" },
+    { "id": "wukong", "name": "孙悟空", "aliases": ["齐天大圣", "美猴王"], "bio": "《西游记》中的人物，会七十二变，陪伴唐僧西行取经。", "primaryInterestId": "mythology", "legacyAvatarPath": "/people/wukong.webp" },
+    { "id": "newton", "name": "牛顿", "aliases": ["艾萨克·牛顿", "Isaac Newton"], "bio": "英国物理学家、数学家，经典力学的奠基者之一。", "primaryInterestId": "science", "legacyAvatarPath": "/people/newton.webp" }
+  ]
+}

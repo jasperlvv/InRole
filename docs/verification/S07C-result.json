@@ -1,0 +1,68 @@
+{
+  "date": "2026-11-24",
+  "runtime": "Next.js production / Node.js / PostgreSQL",
+  "scenarios": 13,
+  "results": [
+    {
+      "name": "empty database returns an empty list, without demo data",
+      "passed": true
+    },
+    {
+      "name": "public DTO and stable keyset pagination",
+      "passed": true
+    },
+    {
+      "name": "search, aliases and classification use bound database parameters",
+      "passed": true
+    },
+    {
+      "name": "invalid, duplicate and unsupported parameters return 400",
+      "passed": true
+    },
+    {
+      "name": "inactive and missing figures are not publicly readable",
+      "passed": true
+    },
+    {
+      "name": "read-only methods and HEAD/OPTIONS match the contract",
+      "passed": true
+    },
+    {
+      "name": "guest and simulated browser identity cannot access private endpoints",
+      "passed": true
+    },
+    {
+      "name": "real database sessions enforce ownership, bans and administrator access",
+      "passed": true
+    },
+    {
+      "name": "revoked, expired and old-version sessions are rejected",
+      "passed": true
+    },
+    {
+      "name": "database disconnection returns 503 without data, including authenticated reads",
+      "passed": true
+    },
+    {
+      "name": "a database role without schema privileges fails closed",
+      "passed": true
+    },
+    {
+      "name": "real and demo page entries remain separate",
+      "passed": true
+    },
+    {
+      "name": "client bundles contain no local database or session secrets",
+      "passed": true
+    }
+  ],
+  "developmentCounts": {
+    "app_users": 0,
+    "password_credentials": 0,
+    "wallets": 0,
+    "coin_operations": 0,
+    "coin_entries": 0
+  },
+  "browserDataImported": false,
+  "realRegistrationImplemented": false
+}

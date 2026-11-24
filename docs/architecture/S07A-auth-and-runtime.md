@@ -2,6 +2,8 @@
 
 日期：2026-11-24。用户决定先本地开发，Git/GitHub、CI及云托管配置后置。S07A不依赖这些准备任务完成。
 
+后续更新：GitHub 首版已按用户新指令同步；S07B 已安装并接通本机 PostgreSQL 17.12，S07C 已验证真实授权读取。下面保留 S07A 当时的选型与限制；当前状态见对应 S07B/S07C 验收记录。
+
 ## 决定
 
 采用Next.js Node.js Runtime、PostgreSQL、Prisma + pg adapter、iron-session和Argon2id。账号注册与校验由应用服务端实现；会话Cookie加密交给成熟库，撤销状态由数据库记录控制。

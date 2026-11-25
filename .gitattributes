@@ -1,3 +1,7 @@
 prisma/migrations/**/migration.sql text eol=lf
 prisma/migrations/migration_lock.toml text eol=lf
 prisma/permissions.sql text eol=lf
+*.sh text eol=lf
+*.sql text eol=lf
+*.yaml text eol=lf
+*.mjs text eol=lf

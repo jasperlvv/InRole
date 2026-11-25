@@ -1,5 +1,18 @@
 # 入戏 InRole
 
+网站发布候选`0.2.0-rc.1`已完成本轮代码与HTTP/数据库验收，根路径为真实社区，演示为`/demo`。新增屏蔽、注销、联系/政策与部署材料；本机候选[http://localhost:3110/](http://localhost:3110/)。见[本轮验收](docs/verification/R01-release-candidate.md)、[人工检查清单](docs/release/手机电脑人工检查清单.md)和[部署/备份/回滚](deploy/README.md)。真实设备、Linux容器及正式公网未验收，旧记录以下保留。
+
+当前路线：[网站直接上线三步方案](docs/InRole网站直接上线三步方案.md)（2026-11-25最新决定：取消内测，先上线国内外可访问的网站，移动端后置）。以下“先内测/暂不上线”的内容保留为历史。
+
+后续执行路线：[InRole收尾与网站、iOS、安卓发布指南](docs/InRole收尾与网站及移动端发布指南.md)（2026-11-25，22步；按用户选择先小范围内测，再决定首发地区）。这是后续计划，实际完成情况以进度和验收记录为准。
+
+最新进度（2026-11-25）：两个失败对话已与本地代码对齐，S01～S15本地已实现与验收；社区集成最新26组通过。S16最后浏览器回归中断，仍待收尾；S17/S18按用户选择暂缓。后续停用浏览器/电脑自动化链路，详见[统一接续记录](docs/verification/2026-11-25-conversation-handoff.md)和[当前进度](docs/进度清单.md)。下方早期阶段描述只作历史参考。
+
+2026-11-25补充：S12～S15已接回原版主要界面（侧栏/手机底栏、帖子与人物卡、热搜、钱包、个人中心），公共目录22位人物；24组社区集成与46项规则、lint/类型/构建通过。详见[本轮验收](docs/verification/S12-S15-stage.md)。真实入口http://localhost:3100/live ，原演示入口保持独立。
+
+
+2026-11-25本地接续：真实社区入口 [http://localhost:3100/live](http://localhost:3100/live)，运行 `npm run preview:local`（需先 `npm run db:local:start`、`npm run db:migrate`、`npm run build`）。S09～S15已接真实数据；本轮检查及限制见[验收记录](docs/verification/S09-S16.md)。用户选择暂不上线，S17/S18后置。以下旧记录保留为历史。
+
 换个身份，说你的话。面向手机、平板和电脑的角色扮演社区。
 
 InRole is a fun and free online community where users can be anyone they want.
@@ -8,7 +21,7 @@ InRole is a fun and free online community where users can be anyone they want.
 
 已完成S01～S06：工程基础、手机/电脑响应式页面和四大模块可操作前端。已应用11月23日最新提供的古人看手机Logo，覆盖网页品牌、浏览器图标和Apple主屏图标。
 
-原有社区页面的帖子、评论、点赞、评价、通宝继续使用浏览器演示数据，刷新后保留。S07A～S07C 已完成数据库与服务端基础：独立的[真实人物页](http://localhost:3000/live/people)通过 API 读取本机 PostgreSQL；真实注册、登录及帖子/钱包写入仍待后续接入。
+原有社区页面的帖子、评论、点赞、评价、通宝继续使用浏览器演示数据，刷新后保留。S07A～S07C 已完成数据库与服务端基础；S08A/S08B 已接通[真实注册](http://localhost:3000/live/register)、[真实登录](http://localhost:3000/live/login)、退出、改密和[本人账号设置](http://localhost:3000/live/me)。[真实人物页](http://localhost:3000/live/people)通过 API 读取本机 PostgreSQL；帖子和通宝真实业务仍待后续阶段。
 
 `/demo` 进入原有演示预览，`/live/people` 进入真实只读预览，两者不混用账号或数据。真实请求失败显示错误和重试，不回退演示数据。
 
@@ -32,7 +45,7 @@ InRole is a fun and free online community where users can be anyone they want.
 
 人物头像已支持统一图片与失败回退；当前可按[头像说明](public/people/README.md)配置素材。真实管理员上传界面仍在S15接入，普通用户不能自行替换公共人物头像。
 
-**这不是账号认证：不保存、不验证密码，演示ID只在本机浏览器内检查重复。请勿输入真实常用密码。** 演示资料、互动和草稿保存在localStorage；当前会话放sessionStorage。通宝无现实价值。后续真实认证会替换这套演示机制。
+**原有演示表单不保存、不验证密码，演示 ID 只在本机浏览器内检查重复，请勿填写常用密码。** 演示资料、互动和草稿保存在 localStorage，演示会话放 sessionStorage，通宝无现实价值。真实账号请使用 `/live/register` 和 `/live/login`，通过受控 Cookie 与数据库会话登录，密码仅存 Argon2id 哈希；不认领演示账号、帖子或余额。
 
 个人中心提供需确认的示例内容重置与上次备份恢复入口，重置会影响本机各演示账号共享的内容；账号资料独立保留。存储失败显示错误，不假报成功；损坏内容不会被静默覆盖。举报仅保存本机记录，不会发送给平台。
 
@@ -53,12 +66,15 @@ npm.cmd run dev
 
 ```powershell
 npm.cmd run db:local:setup
+npm.cmd run db:auth:setup
 npm.cmd run db:seed:catalog
 ```
 
 setup 自动下载并校验官方 PostgreSQL 17.12、创建独立开发/测试库、执行版本化迁移和权限配置。catalog 只添加 3 位公共人物及兴趣/署名，不导入浏览器演示账号、帖子或钱包。重启电脑后先运行 `npm.cmd run db:local:start`，再运行 `npm.cmd run dev`。停止数据库用 `npm.cmd run db:local:stop`；数据保存在 `%LOCALAPPDATA%/InRole/postgresql-17/`。
 
-`npm.cmd run db:migrate` 应用新增迁移；`db:status` 检查状态；`verify:s07b` 在全新临时库验收重建和 14 项数据库测试。生产构建完成后执行 `verify:s07c`，验收 13 组 HTTP/真实库场景。它们只清理自己新建的临时验证库，不清空开发库。详见[数据库操作](docs/architecture/S07B-local-database.md)和[接口规则](docs/architecture/S07C-api-contract.md)。
+`npm.cmd run db:migrate` 应用新增迁移；`db:status` 检查状态；`verify:s07b` 在全新临时库验收重建和 16 项数据库测试。生产构建完成后执行 `verify:s07c` 验收 13 组读取接口场景，`verify:s08` 验收 24 组真实认证场景，后者用两个独立进程验证共享限流、会话撤销和并发。它们只清理自己新建的验证库，不清空开发库。详见[数据库操作](docs/architecture/S07B-local-database.md)、[读取接口规则](docs/architecture/S07C-api-contract.md)和[认证配置](docs/architecture/S08-authentication.md)。
+
+已有数据库接入 S08 时运行 `db:migrate` 和 `db:auth:setup`。所有真实写入精确校验 `.env.local` 的 APP_ORIGIN；默认 `http://localhost:3000`。会话与限流密钥在本机生成，多个部署实例必须共用持久化的同一套配置，不能冷启动时随机重建。限流默认不相信客户端转发 IP 头。
 
 开发服务器监听0.0.0.0，同一局域网的手机可用终端显示的局域网地址访问；是否可连接取决于路由和防火墙。仅用作开发预览，正式部署在S17进行。
 
@@ -96,10 +112,10 @@ AGENTS.md                后续开发约定
 
 ## 下一步
 
-S07A～S07C 本地数据库与授权读取基础已完成：31 张业务表、版本化迁移、唯一约束/索引、运行与迁移账号隔离、统一 API 响应与授权、独立真实人物页。代码托管仓库为[GitHub · jasperlvv/InRole](https://github.com/jasperlvv/InRole)，云部署和 CI 仍后置。下一步 S08 接通真实 ID+密码注册、登录、退出、改密和限流；本步测试会话不等于真实登录产品已完成。详见[数据设计](docs/architecture/S07A-data-model.md)、[S07B验收](docs/verification/S07B.md)及[S07C验收](docs/verification/S07C.md)。
+S01～S08 已完成：31 张业务表、三份版本化迁移、真实人物查询与账号认证。注册仅 ID+密码；旧密码改密后全部会话撤销；封禁与解除封禁都不会使已撤销 Cookie 恢复。注册后的欢迎页保留引导入口，喜好尚未伪造完成。下一步 S09 接真实喜好持久化、引导状态和统一跳转。代码托管仓库为[GitHub · jasperlvv/InRole](https://github.com/jasperlvv/InRole)，云部署和 CI 仍后置。详见[S08验收](docs/verification/S08.md)。
 
-新增命令：`npm.cmd run db:validate`验证模型，`npm.cmd run db:generate`生成可重建客户端，`npm.cmd run verify:s07a`在本机临时目录运行独立生产构建/HTTP兼容验证。后者不会接入真实数据库或替换当前演示账号。当前测试总数44项，包含7项认证兼容验证。生成目录`src/generated/prisma/`不手工编辑、不上传Git；typecheck/build会先生成。
+新增命令：`npm.cmd run db:validate`验证模型，`npm.cmd run db:generate`生成可重建客户端，`npm.cmd run verify:s07a`在本机临时目录运行独立生产构建/HTTP兼容验证。后者不会接入真实数据库或替换当前演示账号。当前规则测试46项，包含7项既有认证库兼容测试；真实认证另外通过verify:s08验收。生成目录`src/generated/prisma/`不手工编辑、不上传Git；typecheck/build会先生成。
 
-基础验收见[S04～S06记录](docs/verification/S04-S06.md)，新增功能见[前端扩展](docs/verification/2026-11-23-frontend.md)、[主题及语言验收](docs/verification/2026-11-23-appearance.md)、[统一配色验收](docs/verification/2026-11-23-unified-palette.md)、[通宝赠送与红心验收](docs/verification/2026-11-23-tongbao.md)及[人物与内容扩充](docs/verification/2026-11-23-demo-expansion.md)。44 项既有自动化测试、14 项数据库测试、13 组接口集成验证及生产构建均通过；浏览器实测真实人物查询、断连失败及恢复重试，保存了电脑和手机宽度截图。真实手机、跨浏览器及完整业务写入仍待后续验收。
+基础验收见[S04～S06记录](docs/verification/S04-S06.md)，新增功能见[前端扩展](docs/verification/2026-11-23-frontend.md)、[主题及语言验收](docs/verification/2026-11-23-appearance.md)、[统一配色验收](docs/verification/2026-11-23-unified-palette.md)、[通宝赠送与红心验收](docs/verification/2026-11-23-tongbao.md)及[人物与内容扩充](docs/verification/2026-11-23-demo-expansion.md)。当前 46 项规则测试、16 项数据库测试、13 组读取接口验证、24 组认证集成验证及生产构建均通过。浏览器实测了本机真实注册、自动登录、资料持久化、错误密码、正确密码和退出；真实手机、正式 HTTPS、跨浏览器及完整业务写入仍待后续验收。
 
 遵守V0.2：游客只浏览；互动需登录；每次发言独立选公共人物；不用邮箱注册模板。

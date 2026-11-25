@@ -4,9 +4,9 @@ import { database } from "./database";
 import { peopleCursor, type PeopleQuery } from "./contracts";
 import { ApiProblem } from "./errors";
 
-const personSelect = { id: true, name: true, aliases: true, bio: true, legacyAvatarPath: true, primaryInterest: { select: { id: true, name: true } } } as const;
-function personDTO(person: { id: string; name: string; aliases: string[]; bio: string; legacyAvatarPath: string | null; primaryInterest: { id: string; name: string } }): PersonDTO {
-  return { id: person.id, name: person.name, aliases: person.aliases, bio: person.bio, interest: person.primaryInterest, avatarUrl: person.legacyAvatarPath && /^\/people\/[a-z0-9-]+\.(webp|png|jpg)$/.test(person.legacyAvatarPath) ? person.legacyAvatarPath : null };
+const personSelect = { id: true, name: true, aliases: true, bio: true, legacyAvatarPath: true, avatarMediaId: true, primaryInterest: { select: { id: true, name: true } } } as const;
+function personDTO(person: { id: string; name: string; aliases: string[]; bio: string; legacyAvatarPath: string | null; avatarMediaId: string | null; primaryInterest: { id: string; name: string } }): PersonDTO {
+  return { id: person.id, name: person.name, aliases: person.aliases, bio: person.bio, interest: person.primaryInterest, avatarUrl: person.avatarMediaId ? `/api/v1/community/media/${person.avatarMediaId}` : person.legacyAvatarPath && /^\/people\/[a-z0-9-]+\.(webp|png|jpg)$/.test(person.legacyAvatarPath) ? person.legacyAvatarPath : null };
 }
 export async function listPeople(query: PeopleQuery): Promise<{ data: PersonDTO[]; page: PageInfo }> {
   const rows = await database().person.findMany({
@@ -27,4 +27,9 @@ export async function readPerson(id: string): Promise<PersonDTO> {
   const person = await database().person.findFirst({ where: { id, active: true, primaryInterest: { active: true } }, select: personSelect });
   if (!person) throw new ApiProblem(404, "NOT_FOUND", "人物不存在或暂不可用。");
   return personDTO(person);
+}
+export async function personSources(id: string) {
+  await readPerson(id);
+  const person = await database().person.findUniqueOrThrow({ where: { id }, select: { sources: { select: { title: true, sourceUrl: true, author: true, license: true, licenseUrl: true, modifications: true } }, avatarMedia: { select: { sourceUrl: true, sourceAuthor: true, license: true } } } });
+  return { sources: person.sources, avatar: person.avatarMedia };
 }

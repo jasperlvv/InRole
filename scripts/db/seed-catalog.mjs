@@ -13,6 +13,10 @@ try {
   client = await connect(url.href);
   await client.query("BEGIN");
   for (const interest of catalog.interests) await client.query("INSERT INTO inrole.interest_tags (id,name) VALUES ($1,$2) ON CONFLICT (id) DO NOTHING", [interest.id, interest.name]);
+  for (const topic of catalog.topics || []) {
+    await client.query('INSERT INTO inrole.topics (id,name,description) VALUES ($1,$2,$3) ON CONFLICT (id) DO NOTHING', [topic.id, topic.name, topic.description]);
+    await client.query('INSERT INTO inrole.topic_interests ("topicId","interestId") VALUES ($1,$2) ON CONFLICT DO NOTHING', [topic.id, topic.interestId]);
+  }
   for (const person of catalog.people) {
     const result = await client.query('INSERT INTO inrole.people (id,name,aliases,bio,"primaryInterestId","legacyAvatarPath","updatedAt") VALUES ($1,$2,$3,$4,$5,$6,now()) ON CONFLICT (id) DO NOTHING RETURNING id', [person.id, person.name, person.aliases, person.bio, person.primaryInterestId, person.legacyAvatarPath]);
     if (!result.rowCount) continue;
@@ -22,6 +26,6 @@ try {
     await client.query('INSERT INTO inrole.person_interests ("personId","interestId") VALUES ($1,$2) ON CONFLICT DO NOTHING', [person.id, person.primaryInterestId]);
   }
   await client.query("COMMIT");
-  console.log("Public catalog prepared: at most 3 people, interests and attribution only. Existing records preserved; no accounts, posts or wallets imported.");
+  console.log("Public catalog prepared: people, 9 interests, topics and attribution only. Existing records preserved; no accounts, posts or wallets imported.");
 } catch (error) { if (client) await client.query("ROLLBACK"); fail(error); }
 finally { await client?.end(); }

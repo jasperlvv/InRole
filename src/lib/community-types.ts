@@ -1,0 +1,13 @@
+import type { PersonDTO } from "./api-types";
+export type CatalogDTO = { interests: { id: string; name: string }[]; topics: { id: string; name: string; description: string }[] };
+export type PreferencesDTO = { interestIds: string[]; onboardingComplete: boolean; recentPeople: string[] };
+export type AuthorDTO = { handle: string; displayName: string };
+export type FigureDTO = Pick<PersonDTO, "id" | "name" | "avatarUrl">;
+export type ImageDTO = { id: string; url: string; width: number | null; height: number | null; kind?: "image" | "video" };
+export type PollDTO = { question: string; endsAt: string; closed: boolean; options: { id: string; text: string; votes: number }[]; totalVotes: number; myOptionId: string | null };
+export type QuoteDTO = { id: string; unavailable: true } | { id: string; unavailable: false; body: string; author: AuthorDTO; person: FigureDTO };
+export type PostDTO = { id: string; body: string; createdAt: string; author: AuthorDTO; person: FigureDTO; topics: { id: string; name: string }[]; images: ImageDTO[]; poll: PollDTO | null; quote: QuoteDTO | null; likes: number; comments: number; liked: boolean; mine: boolean; receivedCoins: string };
+export type CommentDTO = { id: string; body: string; createdAt: string; author: AuthorDTO; person: FigureDTO; mine: boolean };
+export type ReviewDTO = { id: string; score: number; body: string; createdAt: string; author: AuthorDTO };
+export type ReviewsDTO = { average: number | null; count: number; reviews: ReviewDTO[]; mine: { score: number; body: string; visibility: string } | null; nextCursor: string | null };
+export type PostInput = { personId: string; body: string; topicIds: string[]; mediaIds: string[]; quotePostId: string | null; poll: { question: string; options: string[]; durationDays: number } | null };

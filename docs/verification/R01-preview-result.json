@@ -1,0 +1,54 @@
+{
+  "date": "2026-11-25",
+  "version": "0.2.0-rc.1",
+  "origin": "http://localhost:3110",
+  "results": [
+    {
+      "route": "/",
+      "status": 200
+    },
+    {
+      "route": "/demo",
+      "status": 200
+    },
+    {
+      "route": "/privacy",
+      "status": 200
+    },
+    {
+      "route": "/terms",
+      "status": 200
+    },
+    {
+      "route": "/contact",
+      "status": 200
+    },
+    {
+      "route": "/delete-account",
+      "status": 200
+    },
+    {
+      "route": "/live/account-controls",
+      "status": 200
+    },
+    {
+      "route": "/api/health",
+      "status": 200
+    },
+    {
+      "route": "/api/ready",
+      "status": 200
+    },
+    {
+      "route": "/api/v1/community/feed",
+      "status": 200
+    },
+    {
+      "route": "/api/v1/people?limit=1",
+      "status": 200
+    }
+  ],
+  "scope": "HTTP only; no browser or real-device automation",
+  "visualVerified": false,
+  "publicNetworkVerified": false
+}

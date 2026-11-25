@@ -128,3 +128,16 @@ test("concurrent registrations with the same normalized handle have one winner",
     assert.equal(outcomes.find(result => result.status === "rejected").reason.code, "23505");
   } finally { await Promise.all(clients.map(client => client.end())); }
 });
+test("password credentials reject plaintext and account identities are immutable", async () => {
+  await rejects('INSERT INTO inrole.password_credentials ("userId","passwordHash") VALUES ($1,$2)', [ids.a, "plaintext-is-not-an-encoded-hash"], "23514");
+  await rejects("UPDATE inrole.app_users SET handle='changed_identity' WHERE id=$1", [ids.a], "23514");
+});
+test("banning increments the authentication version and revokes sessions without revival on unban", async () => {
+  const session = uuid();
+  await db.query('INSERT INTO inrole.auth_sessions (id,"userId","tokenHash","authVersion","expiresAt") VALUES ($1,$2,$3,1,now()+interval \'1 day\')', [session, ids.a, hash()]);
+  await db.query("UPDATE inrole.app_users SET status='BANNED' WHERE id=$1", [ids.a]);
+  await db.query("UPDATE inrole.app_users SET status='ACTIVE' WHERE id=$1", [ids.a]);
+  const record = (await db.query('SELECT u."authVersion",s."revokedAt" FROM inrole.app_users u JOIN inrole.auth_sessions s ON s."userId"=u.id WHERE s.id=$1', [session])).rows[0];
+  assert.equal(record.authVersion, 2); assert.ok(record.revokedAt);
+  await rejects('UPDATE inrole.app_users SET "authVersion"=1 WHERE id=$1', [ids.a], "23514");
+});

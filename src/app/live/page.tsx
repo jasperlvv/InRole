@@ -1,2 +1,2 @@
-import { redirect } from "next/navigation";
-export default function LivePage() { redirect("/live/people"); }
+import { LiveFeed } from "@/components/live-community";
+export default function LivePage() { return <LiveFeed />; }

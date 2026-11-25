@@ -1,12 +1,277 @@
 {
   "interests": [
-    { "id": "literature", "name": "文学诗词" },
-    { "id": "mythology", "name": "神话传说" },
-    { "id": "science", "name": "科学脑洞" }
+    {
+      "id": "literature",
+      "name": "文学诗词"
+    },
+    {
+      "id": "mythology",
+      "name": "神话传说"
+    },
+    {
+      "id": "science",
+      "name": "科学脑洞"
+    },
+    {
+      "id": "history-cn",
+      "name": "中国历史"
+    },
+    {
+      "id": "history-world",
+      "name": "世界历史"
+    },
+    {
+      "id": "philosophy",
+      "name": "哲学思辨"
+    },
+    {
+      "id": "film",
+      "name": "影视人物"
+    },
+    {
+      "id": "games",
+      "name": "游戏世界"
+    },
+    {
+      "id": "humor",
+      "name": "轻松搞笑"
+    }
+  ],
+  "topics": [
+    {
+      "id": "today",
+      "name": "今天也入戏",
+      "description": "换个身份，分享今天的故事。",
+      "interestId": "humor"
+    },
+    {
+      "id": "poetry",
+      "name": "诗词接龙",
+      "description": "用一句诗接上你的故事。",
+      "interestId": "literature"
+    },
+    {
+      "id": "what-if",
+      "name": "如果当时",
+      "description": "让历史与想象相遇。",
+      "interestId": "history-cn"
+    },
+    {
+      "id": "history-work",
+      "name": "历史人物也要上班",
+      "description": "古今打工人，终于相遇。如果他们也要打卡、开会、写周报，会说些什么？",
+      "interestId": "history-cn"
+    },
+    {
+      "id": "gods-work",
+      "name": "神仙也打工",
+      "description": "神通广大，也有周一。天庭、奥林匹斯和花果山的同事们，来聊聊日常。",
+      "interestId": "mythology"
+    },
+    {
+      "id": "ancient-moments",
+      "name": "古人的朋友圈",
+      "description": "假如古人有了手机，他们会发怎样的动态？写下你想象中的开场白。",
+      "interestId": "history-cn"
+    },
+    {
+      "id": "daily-troubles",
+      "name": "大人物的小烦恼",
+      "description": "再响亮的名字，也有平凡的烦恼。那些让我们会心一笑的小事，都可以聊。",
+      "interestId": "humor"
+    },
+    {
+      "id": "philosophy-life",
+      "name": "思想家的日常",
+      "description": "把大问题放进小生活。认真思考，也可以轻松一点。",
+      "interestId": "philosophy"
+    }
   ],
   "people": [
-    { "id": "libai", "name": "李白", "aliases": ["李太白", "青莲居士"], "bio": "唐代诗人，以想象丰富、语言奔放的诗歌闻名。", "primaryInterestId": "literature", "legacyAvatarPath": "/people/libai.webp" },
-    { "id": "wukong", "name": "孙悟空", "aliases": ["齐天大圣", "美猴王"], "bio": "《西游记》中的人物，会七十二变，陪伴唐僧西行取经。", "primaryInterestId": "mythology", "legacyAvatarPath": "/people/wukong.webp" },
-    { "id": "newton", "name": "牛顿", "aliases": ["艾萨克·牛顿", "Isaac Newton"], "bio": "英国物理学家、数学家，经典力学的奠基者之一。", "primaryInterestId": "science", "legacyAvatarPath": "/people/newton.webp" }
+    {
+      "id": "libai",
+      "name": "李白",
+      "aliases": [
+        "李太白",
+        "青莲居士"
+      ],
+      "bio": "唐代诗人，以想象丰富、语言奔放的诗歌闻名。",
+      "primaryInterestId": "literature",
+      "legacyAvatarPath": "/people/libai.webp"
+    },
+    {
+      "id": "wukong",
+      "name": "孙悟空",
+      "aliases": [
+        "齐天大圣",
+        "美猴王"
+      ],
+      "bio": "《西游记》中的人物，会七十二变，陪伴唐僧西行取经。",
+      "primaryInterestId": "mythology",
+      "legacyAvatarPath": "/people/wukong.webp"
+    },
+    {
+      "id": "newton",
+      "name": "牛顿",
+      "aliases": [
+        "艾萨克·牛顿",
+        "Isaac Newton"
+      ],
+      "bio": "英国物理学家、数学家，经典力学的奠基者之一。",
+      "primaryInterestId": "science",
+      "legacyAvatarPath": "/people/newton.webp"
+    },
+    {
+      "id": "qin",
+      "name": "秦始皇",
+      "aliases": [],
+      "bio": "中国秦朝的建立者，完成六国统一。",
+      "primaryInterestId": "history-cn",
+      "legacyAvatarPath": "/people/qin.webp"
+    },
+    {
+      "id": "zeus",
+      "name": "宙斯",
+      "aliases": [],
+      "bio": "希腊神话中的奥林匹斯主神，与天空、雷电相关。",
+      "primaryInterestId": "mythology",
+      "legacyAvatarPath": "/people/zeus.webp"
+    },
+    {
+      "id": "athena",
+      "name": "雅典娜",
+      "aliases": [],
+      "bio": "希腊神话中的智慧与战争女神，雅典的守护神。",
+      "primaryInterestId": "mythology",
+      "legacyAvatarPath": "/people/athena.webp"
+    },
+    {
+      "id": "socrates",
+      "name": "苏格拉底",
+      "aliases": [],
+      "bio": "古希腊哲学家，以对话与提问的方式探讨伦理和知识。",
+      "primaryInterestId": "philosophy",
+      "legacyAvatarPath": "/people/socrates.webp"
+    },
+    {
+      "id": "confucius",
+      "name": "孔子",
+      "aliases": [],
+      "bio": "中国春秋时期思想家、教育家，儒家学说的重要代表。",
+      "primaryInterestId": "history-cn",
+      "legacyAvatarPath": "/people/confucius.webp"
+    },
+    {
+      "id": "dufu",
+      "name": "杜甫",
+      "aliases": [],
+      "bio": "唐代诗人，作品关注社会生活与个人命运。",
+      "primaryInterestId": "literature",
+      "legacyAvatarPath": "/people/dufu.webp"
+    },
+    {
+      "id": "cleopatra",
+      "name": "克娄巴特拉",
+      "aliases": [],
+      "bio": "古埃及托勒密王朝末代女王克娄巴特拉七世。",
+      "primaryInterestId": "history-world",
+      "legacyAvatarPath": "/people/cleopatra.webp"
+    },
+    {
+      "id": "einstein",
+      "name": "爱因斯坦",
+      "aliases": [],
+      "bio": "物理学家，相对论的创立者。",
+      "primaryInterestId": "science",
+      "legacyAvatarPath": "/people/einstein.webp"
+    },
+    {
+      "id": "nezha",
+      "name": "哪吒",
+      "aliases": [],
+      "bio": "中国神话传说中的人物，常见于《封神演义》等作品。",
+      "primaryInterestId": "mythology",
+      "legacyAvatarPath": "/people/nezha.webp"
+    },
+    {
+      "id": "sushi",
+      "name": "苏轼",
+      "aliases": [],
+      "bio": "北宋文学家、书画家，唐宋八大家之一。",
+      "primaryInterestId": "literature",
+      "legacyAvatarPath": "/people/sushi.webp"
+    },
+    {
+      "id": "caocao",
+      "name": "曹操",
+      "aliases": [],
+      "bio": "东汉末年政治家、军事家与诗人。",
+      "primaryInterestId": "history-cn",
+      "legacyAvatarPath": "/people/caocao.webp"
+    },
+    {
+      "id": "zhugeliang",
+      "name": "诸葛亮",
+      "aliases": [],
+      "bio": "三国时期蜀汉丞相，政治家与军事家。",
+      "primaryInterestId": "history-cn",
+      "legacyAvatarPath": "/people/zhugeliang.webp"
+    },
+    {
+      "id": "wuzetian",
+      "name": "武则天",
+      "aliases": [],
+      "bio": "唐代政治人物，武周的建立者。",
+      "primaryInterestId": "history-cn",
+      "legacyAvatarPath": "/people/wuzetian.webp"
+    },
+    {
+      "id": "liqingzhao",
+      "name": "李清照",
+      "aliases": [],
+      "bio": "宋代词人，婉约词的重要代表。",
+      "primaryInterestId": "literature",
+      "legacyAvatarPath": "/people/liqingzhao.webp"
+    },
+    {
+      "id": "davinci",
+      "name": "达·芬奇",
+      "aliases": [],
+      "bio": "意大利文艺复兴时期画家、发明家与研究者。",
+      "primaryInterestId": "history-world",
+      "legacyAvatarPath": "/people/davinci.webp"
+    },
+    {
+      "id": "shakespeare",
+      "name": "莎士比亚",
+      "aliases": [],
+      "bio": "英国剧作家、诗人，创作了多部戏剧作品。",
+      "primaryInterestId": "literature",
+      "legacyAvatarPath": "/people/shakespeare.webp"
+    },
+    {
+      "id": "beethoven",
+      "name": "贝多芬",
+      "aliases": [],
+      "bio": "德国作曲家、钢琴家，古典主义与浪漫主义音乐的重要人物。",
+      "primaryInterestId": "history-world",
+      "legacyAvatarPath": "/people/beethoven.webp"
+    },
+    {
+      "id": "darwin",
+      "name": "达尔文",
+      "aliases": [],
+      "bio": "英国博物学家，提出以自然选择为核心的进化理论。",
+      "primaryInterestId": "science",
+      "legacyAvatarPath": "/people/darwin.webp"
+    },
+    {
+      "id": "curie",
+      "name": "居里夫人",
+      "aliases": [],
+      "bio": "物理学家、化学家，在放射性研究领域作出重要贡献。",
+      "primaryInterestId": "science",
+      "legacyAvatarPath": "/people/curie.webp"
+    }
   ]
 }

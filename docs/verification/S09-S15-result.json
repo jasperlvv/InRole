@@ -1,0 +1,132 @@
+{
+  "date": "2026-11-25",
+  "runtime": "Next.js production / isolated PostgreSQL / two instances / restricted application role",
+  "scenarios": 31,
+  "results": [
+    {
+      "name": "guests and bad origins cannot write or read private resources",
+      "passed": true
+    },
+    {
+      "name": "onboarding gates interactions and supports partial save, resume and skip",
+      "passed": true
+    },
+    {
+      "name": "post idempotency, author isolation and historical character identity",
+      "passed": true
+    },
+    {
+      "name": "comments use independent characters and are idempotent and private to their author for deletion",
+      "passed": true
+    },
+    {
+      "name": "likes are account-unique, reversible and reject nonboolean state",
+      "passed": true
+    },
+    {
+      "name": "pagination is stable, filter-bound and search uses actual database content",
+      "passed": true
+    },
+    {
+      "name": "poll options seal on publish; one account has one vote and expiration is enforced",
+      "passed": true
+    },
+    {
+      "name": "rating edits do not add voters; deletion and 5-voter threshold are correct",
+      "passed": true
+    },
+    {
+      "name": "concurrent daily claims across instances grant exactly ten for Beijing date",
+      "passed": true
+    },
+    {
+      "name": "concurrent 8+8 spending from ten allows one success and preserves two",
+      "passed": true
+    },
+    {
+      "name": "post gifts atomically transfer to real author, prevent self gifts and deduplicate retries",
+      "passed": true
+    },
+    {
+      "name": "ledger insert failure rolls back balances, operation and idempotency record together",
+      "passed": true
+    },
+    {
+      "name": "hot rankings deduplicate commenters and exclude self interactions and old activity",
+      "passed": true
+    },
+    {
+      "name": "recommendation changes with interests, has guest fallback and version metadata",
+      "passed": true
+    },
+    {
+      "name": "image uploads decode safely, reject forgery and remain owner-only until published",
+      "passed": true
+    },
+    {
+      "name": "ordinary users cannot use management; requests and reports reach the review queue",
+      "passed": true
+    },
+    {
+      "name": "audit failure rolls back moderation and ordinary actors cannot forge a manager",
+      "passed": true
+    },
+    {
+      "name": "admin maintains public people/topics and audits application approvals",
+      "passed": true
+    },
+    {
+      "name": "admin avatar upload preserves attribution and ordinary users cannot replace public portraits",
+      "passed": true
+    },
+    {
+      "name": "valid MP4 is probed and served with ranges; forgery and mixed attachments are rejected",
+      "passed": true
+    },
+    {
+      "name": "recovery codes are hashed, single-use, work across instances and revoke old sessions",
+      "passed": true
+    },
+    {
+      "name": "hidden posts vanish from direct URLs, quotes, comments, media, hot lists and recommendations",
+      "passed": true
+    },
+    {
+      "name": "bans revoke existing credentials and unbanning never restores them",
+      "passed": true
+    },
+    {
+      "name": "public users and own activity expose no private wallet, role or credentials",
+      "passed": true
+    },
+    {
+      "name": "database disconnect rejects community reads and writes and recovers without losing sessions",
+      "passed": true
+    },
+    {
+      "name": "lost HTTP success response can be retried without duplicate debit or publication",
+      "passed": true
+    },
+    {
+      "name": "release root, isolated demo, public policies and health endpoints are available",
+      "passed": true
+    },
+    {
+      "name": "blocking is private, persists across instances and hides content, quotes and media",
+      "passed": true
+    },
+    {
+      "name": "blocked accounts cannot bypass interaction rules by changing figures or endpoints",
+      "passed": true
+    },
+    {
+      "name": "account deletion validates password and confirmation and rolls back on failure",
+      "passed": true
+    },
+    {
+      "name": "permanent erasure removes identity, credentials, content, polls and media without rewriting ledgers",
+      "passed": true
+    }
+  ],
+  "productionDeploymentVerified": false
+}

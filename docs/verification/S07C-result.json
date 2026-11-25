@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-24",
+  "date": "2026-11-25",
   "runtime": "Next.js production / Node.js / PostgreSQL",
   "scenarios": 13,
   "results": [
@@ -57,12 +57,12 @@
     }
   ],
   "developmentCounts": {
-    "app_users": 0,
-    "password_credentials": 0,
-    "wallets": 0,
-    "coin_operations": 0,
-    "coin_entries": 0
+    "app_users": 3,
+    "password_credentials": 3,
+    "wallets": 3,
+    "coin_operations": 4,
+    "coin_entries": 4
   },
   "browserDataImported": false,
-  "realRegistrationImplemented": false
+  "authenticationTestScope": "session reads; registration and password mutation covered separately by verify:s08"
 }

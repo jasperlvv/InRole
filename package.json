@@ -1,6 +1,6 @@
 {
   "name": "inrole",
-  "version": "0.1.0",
+  "version": "0.2.0-rc.1",
   "private": true,
   "type": "module",
   "engines": {
@@ -22,12 +22,19 @@
     "db:local:status": "node scripts/db/local.mjs status",
     "db:migrate": "node scripts/db/prisma.mjs deploy",
     "db:status": "node scripts/db/prisma.mjs status",
+    "db:auth:setup": "node scripts/db/setup-auth.mjs",
+    "verify:s08": "node --experimental-strip-types scripts/db/verify-auth.mjs",
     "db:seed:catalog": "node --experimental-strip-types scripts/db/seed-catalog.mjs",
     "verify:s07b": "node scripts/db/verify.mjs",
     "verify:s07c": "node --experimental-strip-types scripts/db/verify-api.mjs",
-    "verify:s07a": "prisma validate && prisma generate && node --experimental-strip-types scripts/s07a/verify-next.mjs"
+    "verify:s07a": "prisma validate && prisma generate && node --experimental-strip-types scripts/s07a/verify-next.mjs",
+    "preview:local": "node scripts/preview.mjs",
+    "verify:community": "node --experimental-strip-types scripts/db/verify-community.mjs",
+    "backup:verify": "node scripts/db/backup-verify.mjs",
+    "verify:s16:browser": "node scripts/db/s16-browser.mjs"
   },
   "dependencies": {
+    "@ffprobe-installer/ffprobe": "2.1.2",
     "@node-rs/argon2": "2.2.2",
     "@prisma/adapter-pg": "7.10.1",
     "@prisma/client": "7.10.1",
@@ -36,7 +43,8 @@
     "pg": "8.23.1",
     "react": "19.3.1",
     "react-dom": "19.3.1",
-    "server-only": "0.0.1"
+    "server-only": "0.0.1",
+    "sharp": "0.35.5"
   },
   "overrides": {
     "@prisma/config": {

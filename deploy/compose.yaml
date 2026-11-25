@@ -1,0 +1,98 @@
+name: inrole
+x-logging: &logging
+  driver: json-file
+  options: { max-size: "10m", max-file: "3" }
+services:
+  db:
+    image: postgres:17.12-bookworm
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: inrole_bootstrap
+      POSTGRES_DB: inrole
+      POSTGRES_PASSWORD: ${BOOTSTRAP_DB_PASSWORD:?required}
+      APP_DB_PASSWORD: ${APP_DB_PASSWORD:?required}
+      MIGRATOR_DB_PASSWORD: ${MIGRATOR_DB_PASSWORD:?required}
+    volumes:
+      - database:/var/lib/postgresql/data
+      - ./init-db.sh:/docker-entrypoint-initdb.d/10-inrole.sh:ro
+    healthcheck:
+      test: [CMD-SHELL, "pg_isready -U inrole_bootstrap -d inrole"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+    logging: *logging
+  migrate:
+    image: ${INROLE_IMAGE:?immutable release image required}
+    profiles: [tools]
+    command: [node, scripts/db/prisma.mjs, deploy]
+    environment:
+      DIRECT_URL: postgresql://inrole_migrator:${MIGRATOR_DB_PASSWORD}@db:5432/inrole?schema=inrole
+      DATABASE_ROLE: inrole_app
+    depends_on:
+      db: { condition: service_healthy }
+    logging: *logging
+  app:
+    image: ${INROLE_IMAGE:?required}
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: postgresql://inrole_app:${APP_DB_PASSWORD}@db:5432/inrole?schema=inrole
+      APP_ORIGIN: https://${DOMAIN:?required}
+      SESSION_PASSWORD: ${SESSION_PASSWORD:?required}
+      RATE_LIMIT_SECRET: ${RATE_LIMIT_SECRET:?required}
+      RECOVERY_CODE_PEPPER: ${RECOVERY_CODE_PEPPER:?required}
+      TRUSTED_CLIENT_IP_HEADER: x-real-ip
+      MEDIA_STORAGE_ROOT: /var/lib/inrole/media
+      ERASURE_RECEIPT_DIR: /var/lib/inrole/erasures
+      SITE_OPERATOR: Jasper Lv
+      SITE_CONTACT_EMAIL: jasperlvv@gmail.com
+    volumes: ["media:/var/lib/inrole/media", "erasures:/var/lib/inrole/erasures"]
+    depends_on:
+      db: { condition: service_healthy }
+    healthcheck:
+      test: [CMD, node, -e, "fetch('http://127.0.0.1:3000/api/ready').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 3
+    logging: *logging
+  caddy:
+    image: caddy:2.11.9-alpine
+    restart: unless-stopped
+    ports: ["80:80", "443:443", "443:443/udp"]
+    environment:
+      DOMAIN: ${DOMAIN:?required}
+      CONTACT_EMAIL: jasperlvv@gmail.com
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - tls:/data
+      - caddy_config:/config
+    depends_on: [app]
+    logging: *logging
+  ops:
+    build: { context: .., dockerfile: deploy/Ops.Dockerfile }
+    profiles: [tools]
+    environment:
+      PGHOST: db
+      PGDATABASE: inrole
+      PGUSER: inrole_bootstrap
+      PGPASSWORD: ${BOOTSTRAP_DB_PASSWORD}
+      APP_DB_ROLE: inrole_app
+      BACKUP_KEY_FILE: /run/secrets/backup_key
+    secrets: [backup_key]
+    volumes:
+      - ./backups:/backups
+      - media:/media:ro
+      - restored_media:/restore-media
+      - erasures:/erasures
+    logging: *logging
+volumes:
+  database:
+  media:
+  erasures:
+  restored_media:
+  tls:
+  caddy_config:
+secrets:
+  backup_key:
+    file: ./secrets/backup-key

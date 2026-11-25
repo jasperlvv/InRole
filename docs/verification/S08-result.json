@@ -1,0 +1,110 @@
+{
+  "date": "2026-11-25",
+  "runtime": "Next.js production / PostgreSQL / restricted application role",
+  "scenarios": 24,
+  "instancesSharingDatabase": 2,
+  "results": [
+    {
+      "name": "guest direct writes and simulated identities are rejected",
+      "passed": true
+    },
+    {
+      "name": "all auth writes reject missing, foreign and sibling origins",
+      "passed": true
+    },
+    {
+      "name": "only two signup fields are accepted and request bodies are bounded",
+      "passed": true
+    },
+    {
+      "name": "signup normalizes the ID and commits a hash, daily-grant wallet and controlled session",
+      "passed": true
+    },
+    {
+      "name": "concurrent case/space variants create exactly one account and wallet",
+      "passed": true
+    },
+    {
+      "name": "identical passwords receive distinct salts in real stored credentials",
+      "passed": true
+    },
+    {
+      "name": "wrong passwords and missing accounts have the same generic rejection",
+      "passed": true
+    },
+    {
+      "name": "Unicode and surrounding password spaces are preserved",
+      "passed": true
+    },
+    {
+      "name": "sessions work across instances and login rotates the current browser session",
+      "passed": true
+    },
+    {
+      "name": "logout revokes the server record and old cookies cannot read or write",
+      "passed": true
+    },
+    {
+      "name": "profile writes derive their owner from the session and reject forged authors",
+      "passed": true
+    },
+    {
+      "name": "wrong old passwords and forged password owners leave credentials intact",
+      "passed": true
+    },
+    {
+      "name": "password changes atomically replace the hash and revoke all devices",
+      "passed": true
+    },
+    {
+      "name": "concurrent password changes using one old session have exactly one winner",
+      "passed": true
+    },
+    {
+      "name": "a login verified before a password change cannot mint a session afterward",
+      "passed": true
+    },
+    {
+      "name": "bans invalidate sessions permanently and unbanning does not revive old cookies",
+      "passed": true
+    },
+    {
+      "name": "a queued protected write rechecks revocation under the account lock",
+      "passed": true
+    },
+    {
+      "name": "a queued protected write rechecks a concurrent ban",
+      "passed": true
+    },
+    {
+      "name": "two instances share atomic login limits and spoofed forwarding headers cannot bypass them",
+      "passed": true
+    },
+    {
+      "name": "registration rolls back all account records if wallet creation fails",
+      "passed": true
+    },
+    {
+      "name": "trusted-proxy and missing-key misconfiguration fail closed",
+      "passed": true
+    },
+    {
+      "name": "database outages do not claim signup, password or logout success",
+      "passed": true
+    },
+    {
+      "name": "the real registration form contains exactly ID and password inputs",
+      "passed": true
+    },
+    {
+      "name": "client assets and server logs contain no passwords or auth secrets",
+      "passed": true
+    }
+  ],
+  "actualHttpAuth": true,
+  "productionCookieAttributesChecked": true,
+  "browserHttpsDeploymentVerified": false,
+  "emailRegistrationAdded": false,
+  "demoAccountsImported": false,
+  "databaseScope": "new isolated temporary database, removed after verification"
+}

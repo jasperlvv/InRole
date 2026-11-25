@@ -12,6 +12,6 @@ export function database() {
     const parsed = new URL(value);
     if (!["postgres:", "postgresql:"].includes(parsed.protocol) || !parsed.hostname || !parsed.username || ["inrole_migrator", "inrole_bootstrap"].includes(parsed.username)) throw new Error("Invalid runtime connection");
   } catch { throw new ApiProblem(503, "SERVICE_UNAVAILABLE", "数据服务配置不可用。"); }
-  globalDatabase.inroleDatabase = new PrismaClient({ adapter: new PrismaPg({ connectionString: value, max: 5, connectionTimeoutMillis: 2000, idleTimeoutMillis: 10000, statement_timeout: 5000 }) });
+  globalDatabase.inroleDatabase = new PrismaClient({ adapter: new PrismaPg({ connectionString: value, application_name: "inrole-web", max: 5, connectionTimeoutMillis: 2000, idleTimeoutMillis: 10000, statement_timeout: 5000 }) });
   return globalDatabase.inroleDatabase;
 }

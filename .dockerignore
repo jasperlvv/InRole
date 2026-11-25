@@ -1,0 +1,15 @@
+node_modules
+.next
+.git
+.env*
+.tmp
+coverage
+docs/verification/screenshots
+src/generated/prisma
+*.dump
+*.pem
+*.key
+deploy/backups
+deploy/secrets
+deploy/.env
+*.enc

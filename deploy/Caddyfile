@@ -1,0 +1,24 @@
+{
+  email {$CONTACT_EMAIL}
+}
+{$DOMAIN} {
+  encode zstd gzip
+  request_body {
+    max_size 32MB
+  }
+  header {
+    X-Content-Type-Options nosniff
+    Referrer-Policy strict-origin-when-cross-origin
+    Permissions-Policy "camera=(), microphone=(), geolocation=()"
+    -Server
+  }
+  reverse_proxy app:3000 {
+    # Strip supplied values; the application trusts only this immediate ingress.
+    header_up X-Real-IP {remote_host}
+    header_up -CF-Connecting-IP
+    header_up -X-Vercel-Forwarded-For
+    transport http {
+      response_header_timeout 60s
+    }
+  }
+}

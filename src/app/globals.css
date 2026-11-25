@@ -5,3 +5,5 @@
   --color-foreground: var(--foreground);
   --font-sans: Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
 }
+
+.site-footer{max-width:1120px;margin:24px auto;padding:24px 20px 100px;color:var(--text-muted,#687080);font-size:.85rem;line-height:1.8}.site-footer nav{display:flex;flex-wrap:wrap;gap:12px}.site-footer a{text-decoration:underline}.policy-page{max-width:800px;margin:40px auto;padding:24px;line-height:1.9;overflow-wrap:anywhere}.policy-page h1{font-size:2rem;margin:20px 0}.policy-page h2{font-size:1.2rem;margin:24px 0 8px}.policy-page a{text-decoration:underline}.account-erasure{display:grid;gap:12px}.account-erasure input{width:100%;min-height:44px;padding:10px;border:1px solid var(--border,#888);border-radius:10px;background:transparent;color:inherit}.account-erasure button{justify-self:start}

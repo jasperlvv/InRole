@@ -7,7 +7,11 @@ import { useI18n } from "@/lib/use-i18n";
 import { Icon } from "./icon";
 
 export function AccountMenu({ compact = false }: { compact?: boolean }) {
-  const { user } = useDemoSession(); const { preferences } = useUIPreferences(); const { t } = useI18n();
+  const { user } = useDemoSession();
+  return <AccountMenuView compact={compact} user={user} onSignOut={logoutDemoProfile} />;
+}
+export function AccountMenuView({ compact = false, user, onSignOut, real = false }: { compact?: boolean; user: { handle: string; displayName?: string } | null; onSignOut: () => void; real?: boolean }) {
+  const { preferences } = useUIPreferences(); const { t } = useI18n();
   const [open, setOpen] = useState(false); const root = useRef<HTMLDivElement>(null); const trigger = useRef<HTMLButtonElement>(null); const panel = useRef<HTMLDivElement>(null); const id = useId();
   const systemDark = useSystemDark(); const dark = preferences.theme === "dark" || (preferences.theme === "system" && systemDark);
   useEffect(() => {
@@ -29,10 +33,10 @@ export function AccountMenu({ compact = false }: { compact?: boolean }) {
     </button>
     {open && <div className="account-menu-panel" id={id} ref={panel} role="menu" aria-label={t("账号菜单")} onKeyDown={key}>
       <div className="account-menu-heading"><strong>{user?.displayName || user?.handle || t("访客")}</strong><small>{user ? `@${user.handle}` : "InRole"}</small></div>
-      {user && <><Link role="menuitem" href="/me" onClick={() => close()}><Icon name="user" size={17} />{t("个人中心")}</Link><Link role="menuitem" href={`/users/${user.handle}`} onClick={() => close()}><Icon name="people" size={17} />{t("我的公开主页")}</Link><Link role="menuitem" href="/me/wallet" onClick={() => close()}><Icon name="wallet" size={17} />{t("钱包与流水")}</Link><Link role="menuitem" href="/me/preferences" onClick={() => close()}><Icon name="heart" size={17} />{t("我的喜好")}</Link><div role="separator" className="menu-separator" /></>}
-      <Link role="menuitem" href="/settings" onClick={() => close()}><Icon name="settings" size={17} />{t("设置")}</Link>
+      {user && <><Link role="menuitem" href={real ? "/live/activity" : "/me"} onClick={() => close()}><Icon name="user" size={17} />{t("个人中心")}</Link><Link role="menuitem" href={`${real ? "/live" : ""}/users/${user.handle}`} onClick={() => close()}><Icon name="people" size={17} />{t("我的公开主页")}</Link><Link role="menuitem" href={real ? "/live/wallet" : "/me/wallet"} onClick={() => close()}><Icon name="wallet" size={17} />{t("钱包与流水")}</Link><Link role="menuitem" href={real ? "/live/preferences" : "/me/preferences"} onClick={() => close()}><Icon name="heart" size={17} />{t("我的喜好")}</Link>{real && <Link role="menuitem" href="/live/me" onClick={() => close()}><Icon name="settings" size={17} />{t("账号设置")}</Link>}<div role="separator" className="menu-separator" /></>}
+      <Link role="menuitem" href={real ? "/live/settings" : "/settings"} onClick={() => close()}><Icon name="settings" size={17} />{t("设置")}</Link>
       <button role="menuitem" onClick={() => { updateUIPreferences({ theme: dark ? "light" : "dark" }); close(true); }}><Icon name={dark ? "sun" : "moon"} size={17} />{t(dark ? "切换到浅色模式" : "切换到深色模式")}</button>
-      {user && <><div role="separator" className="menu-separator" /><button role="menuitem" className="menu-signout" onClick={() => { close(); logoutDemoProfile(); }}><Icon name="logout" size={17} />{t("退出登录")}</button></>}
+      {user && <><div role="separator" className="menu-separator" /><button role="menuitem" className="menu-signout" onClick={() => { close(); onSignOut(); }}><Icon name="logout" size={17} />{t("退出登录")}</button></>}
     </div>}
   </div>;
 }

@@ -2,6 +2,8 @@
 
 日期：2026-11-24。数据库基础已接通，页面账号注册仍待 S08。
 
+2026-11-25更新：S08已完成真实认证，追加第三份auth_security迁移；当前33项CHECK、8个触发器。运行账号不再拥有凭据/会话DELETE权限。下面保留S07B初始配置说明，认证变量及新入口见[S08认证方案](S08-authentication.md)。
+
 ## 运行与目录
 
 - PostgreSQL 17.12，使用 PostgreSQL 官方 Windows 下载页推荐的 EDB 二进制包。固定 SHA-256：`a2cd8a774389347b70be7748ac4a37ef43cb6ee539c5fc3e85ae264b15e4a04c`，解压前实际校验。

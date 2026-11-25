@@ -1,0 +1,10 @@
+import { apiRoute, optionsFor } from "@/server/http";
+import { login } from "@/server/authentication";
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
+export const POST = apiRoute(["POST"], async request => ({ data: await login(request) }));
+export const GET = POST;
+export const PUT = POST;
+export const PATCH = POST;
+export const DELETE = POST;
+export const OPTIONS = optionsFor(["POST"]);

@@ -1,0 +1,26 @@
+{
+  "date": "2026-11-25",
+  "isolatedDatabase": true,
+  "browserGiftAmount": 3,
+  "balanceAfterGift": "7",
+  "browserPersonTipAmount": 1,
+  "balanceAfterTip": "6",
+  "walletTotalsAndLedger": true,
+  "ordinaryAdminPageDenied": true,
+  "adminTopicSaveWithReason": true,
+  "auditRecordVisible": true,
+  "responsiveViewports": [
+    {
+      "width": 1440,
+      "height": 1000
+    },
+    {
+      "width": 390,
+      "height": 844
+    }
+  ],
+  "horizontalOverflow": false,
+  "originalLayoutReused": true,
+  "production": false,
+  "disposableDatabaseRemoved": true
+}

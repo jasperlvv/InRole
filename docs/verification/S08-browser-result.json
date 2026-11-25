@@ -1,0 +1,17 @@
+{
+  "date": "2026-11-25",
+  "origin": "http://localhost:3000",
+  "registrationAndAutoLogin": true,
+  "idNormalization": true,
+  "realProfileSavedAndReloaded": true,
+  "wrongPasswordRejected": true,
+  "correctPasswordLogin": true,
+  "logoutAndPrivatePageRejection": true,
+  "registrationInputCount": 2,
+  "mobileViewport": 390,
+  "mobileScrollWidth": 390,
+  "browserPasswordChangeSubmitted": false,
+  "passwordChangeEvidence": "Real HTTP/PostgreSQL integration in S08-result.json",
+  "demoAccountsImported": false,
+  "temporaryBrowserAccountRemoved": true
+}

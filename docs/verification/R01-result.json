@@ -1,0 +1,26 @@
+{
+  "date": "2026-11-25",
+  "version": "0.2.0-rc.1",
+  "branch": "release/website-rc1",
+  "checks": {
+    "lint": true,
+    "typecheck": true,
+    "unitTests": 47,
+    "productionBuild": true,
+    "databaseTests": 16,
+    "readScenarios": 13,
+    "authScenarios": 24,
+    "communityScenarios": 31,
+    "knownProductionAuditVulnerabilities": 0,
+    "localDatabaseRestoreTables": 33
+  },
+  "dataPreserved": true,
+  "preview": "http://localhost:3110/",
+  "manualDeviceVerified": false,
+  "containerRuntimeVerified": false,
+  "caddyConfigValidated": false,
+  "publicDeploymentVerified": false,
+  "crossBorderNetworkVerified": false,
+  "operator": "Jasper Lv",
+  "contact": "jasperlvv@gmail.com"
+}

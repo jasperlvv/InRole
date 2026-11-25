@@ -13,7 +13,7 @@ export function OnboardingForm({ next }: { next: string }) {
   const { ready, user } = useDemoSession();
   const [selected, setSelected] = useState<string[]>([]);
   const [pending, setPending] = useState(false);
-  useEffect(() => { if (!ready) return; if (!user) router.replace(authHref("/login", next)); else if (user.onboardingComplete) router.replace(next); }, [ready, user, router, next]);
+  useEffect(() => { if (!ready) return; if (!user) router.replace(authHref("/login", next)); else if (user.onboardingComplete) router.replace(next === "/" ? "/demo" : next); }, [ready, user, router, next]);
   function finish(skip = false) { if (!user || pending) return; completeDemoOnboarding(skip ? [] : selected); setPending(true); }
   if (!ready || !user || user.onboardingComplete) return <div className="auth-loading" role="status">{t("正在准备你的舞台…")}</div>;
   return <section className="auth-form-card onboarding-card" aria-labelledby="onboarding-title"><div className="demo-pill"><span /> {t(" 前端演示体验")}</div><p className="auth-step">{t("02 / 挑选你的灵感")}</p><h1 id="onboarding-title">{t("哪一种故事，")}<br />{t("让你想接下一句？")}</h1><p className="auth-subtitle">{t("你好，@")}{user.handle}{t("。选 1～5 个喜好，为以后的推荐留点线索。")}</p>

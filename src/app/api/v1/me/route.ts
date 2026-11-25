@@ -1,6 +1,7 @@
-import { readOptions, readRoute } from "@/server/http";
+import { apiRoute, optionsFor, readRoute } from "@/server/http";
 import { database } from "@/server/database";
 import { invalid } from "@/server/errors";
+import { updateOwnProfile } from "@/server/authentication";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -9,8 +10,9 @@ export const GET = readRoute("user", async (request, actor) => {
   const user = await database().user.findUniqueOrThrow({ where: { id: actor!.userId }, select: { handle: true, displayName: true, bio: true, onboardingCompletedAt: true } });
   return { data: { handle: user.handle, displayName: user.displayName, bio: user.bio, onboardingComplete: user.onboardingCompletedAt !== null } };
 });
-export const POST = GET;
-export const PUT = GET;
-export const PATCH = GET;
-export const DELETE = GET;
-export const OPTIONS = readOptions;
+const unsupported = apiRoute(["GET", "HEAD", "PATCH"], async () => ({ data: null }));
+export const POST = unsupported;
+export const PUT = unsupported;
+export const PATCH = apiRoute(["PATCH"], async request => ({ data: await updateOwnProfile(request) }));
+export const DELETE = unsupported;
+export const OPTIONS = optionsFor(["GET", "HEAD", "PATCH"]);

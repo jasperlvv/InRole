@@ -1,0 +1,22 @@
+{
+  "date": "2026-11-25",
+  "localOrigin": "http://localhost:3100",
+  "registrationTwoFields": true,
+  "onboardingPersisted": true,
+  "postAsLibai": true,
+  "commentAsWukong": true,
+  "immutableFigureAfterReload": true,
+  "ratingSaved": true,
+  "walletDailyGrantDisplayed": true,
+  "widths": [
+    390,
+    1440
+  ],
+  "horizontalOverflow": false,
+  "browserCoinConfirmationCompleted": false,
+  "coinEvidence": "S09-S15-result.json real HTTP/PostgreSQL",
+  "qaPublicContentSoftDeleted": true,
+  "qaAccountClosedAndSessionsRevoked": true,
+  "immutableLedgerPreserved": true,
+  "actualMobileKeyboardVerified": false
+}

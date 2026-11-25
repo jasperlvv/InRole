@@ -1,0 +1,11 @@
+{
+  "date": "2026-11-25",
+  "scope": "local development database only",
+  "customDumpCreated": true,
+  "sha256Verified": true,
+  "restoredIntoFreshTemporaryDatabase": true,
+  "allTableDigestsMatched": true,
+  "tablesCompared": 33,
+  "productionBackupVerified": false,
+  "mediaBackupVerified": false
+}

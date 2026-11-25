@@ -38,8 +38,9 @@ try {
       (SELECT count(*)::int FROM pg_trigger WHERE tgrelid IN (SELECT oid FROM pg_class WHERE relnamespace='inrole'::regnamespace) AND NOT tgisinternal) AS triggers,
       (SELECT count(*)::int FROM inrole._prisma_migrations WHERE finished_at IS NOT NULL AND rolled_back_at IS NULL) AS migrations`);
     catalog = result.rows[0];
-    assert.equal(catalog.tables, 31);
-    assert.equal(catalog.migrations, 2);
+    assert.equal(catalog.tables, 32);
+    const migrationDirectories = (await fs.readdir(path.join(root, "prisma/migrations"), { withFileTypes: true })).filter(item => item.isDirectory());
+    assert.equal(catalog.migrations, migrationDirectories.length);
     for (const { tablename } of (await client.query("SELECT tablename FROM pg_tables WHERE schemaname='inrole' AND tablename <> '_prisma_migrations'")).rows) {
       assert.equal((await client.query(`SELECT count(*)::int AS count FROM inrole.${pg.escapeIdentifier(tablename)}`)).rows[0].count, 0, `Expected empty ${tablename}`);
     }
@@ -49,7 +50,7 @@ try {
   }));
   const drift = await run(process.execPath, ["node_modules/prisma/build/index.js", "migrate", "diff", "--from-config-datasource", "--to-schema", "prisma/schema.prisma", "--exit-code"], { env: { ...process.env, DIRECT_URL: direct } });
   console.log(drift.trim());
-  const report = { date: "2026-11-24", postgres: config.version, schema: "inrole", emptyDatabaseRebuilt: true, repeatedDeployPassed: true, catalog, constraintsAndPrivilegesPassed: true, prismaSchemaDrift: false, browserDataImported: false };
+  const report = { date: new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Shanghai", year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date()), postgres: config.version, schema: "inrole", emptyDatabaseRebuilt: true, repeatedDeployPassed: true, catalog, constraintsAndPrivilegesPassed: true, prismaSchemaDrift: false, browserDataImported: false };
   await fs.writeFile(path.join(root, "docs/verification/S07B-result.json"), JSON.stringify(report, null, 2) + "\n");
   console.log(JSON.stringify(report, null, 2));
 } catch (error) { fail(error); }

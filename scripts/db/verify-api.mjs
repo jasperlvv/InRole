@@ -175,8 +175,10 @@ try {
   await scenario("a database role without schema privileges fails closed", async () => { await request(denied, "/api/v1/people", 503, "SERVICE_UNAVAILABLE"); });
   await scenario("real and demo page entries remain separate", async () => {
     const live = await (await fetch(origin + "/live/people")).text();
-    assert.match(live, /真实数据预览/); assert.doesNotMatch(live, /非真实账号 · 不保存密码/);
-    const demo = await (await fetch(origin + "/")).text();
+    assert.match(live, /入戏社区/); assert.doesNotMatch(live, /非真实账号 · 不保存密码/);
+    const root = await (await fetch(origin + "/")).text();
+    assert.match(root, /入戏社区/);
+    const demo = await (await fetch(origin + "/demo")).text();
     assert.match(demo, /前端演示/);
   });
   await scenario("client bundles contain no local database or session secrets", async () => {
@@ -190,7 +192,7 @@ try {
   try {
     for (const table of ["app_users", "password_credentials", "wallets", "coin_operations", "coin_entries"]) counts[table] = (await dev.query(`SELECT count(*)::int AS count FROM inrole.${table}`)).rows[0].count;
   } finally { await dev.end(); }
-  const report = { date: "2026-11-24", runtime: "Next.js production / Node.js / PostgreSQL", scenarios: results.length, results, developmentCounts: counts, browserDataImported: false, realRegistrationImplemented: false };
+  const report = { date: new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Shanghai", year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date()), runtime: "Next.js production / Node.js / PostgreSQL", scenarios: results.length, results, developmentCounts: counts, browserDataImported: false, authenticationTestScope: "session reads; registration and password mutation covered separately by verify:s08" };
   await fs.writeFile(path.join(root, "docs/verification/S07C-result.json"), JSON.stringify(report, null, 2) + "\n");
   console.log(`S07C passed: ${results.length} integration scenarios.`);
 } catch (error) { fail(error); }

@@ -89,6 +89,7 @@ model User {
   role                  UserRole            @default(USER)
   status                UserStatus          @default(ACTIVE)
   authVersion           Int                 @default(1)
+  retiredHandleHash     String?             @unique @db.Char(64)
   onboardingCompletedAt DateTime?           @db.Timestamptz(3)
   createdAt             DateTime            @default(now()) @db.Timestamptz(3)
   updatedAt             DateTime            @updatedAt @db.Timestamptz(3)
@@ -112,8 +113,23 @@ model User {
   coinOperations        CoinOperation[]     @relation("CoinActor")
   receivedOperations    CoinOperation[]     @relation("CoinRecipient")
   feedEvents            FeedEvent[]
+  blockedUsers          UserBlock[]         @relation("BlockOwner")
+  blockedBy             UserBlock[]         @relation("BlockTarget")
 
   @@map("app_users")
+  @@schema("inrole")
+}
+
+model UserBlock {
+  userId    String   @db.Uuid
+  blockedId String   @db.Uuid
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  user      User     @relation("BlockOwner", fields: [userId], references: [id], onDelete: Restrict)
+  blocked   User     @relation("BlockTarget", fields: [blockedId], references: [id], onDelete: Restrict)
+
+  @@id([userId, blockedId])
+  @@index([blockedId, userId])
+  @@map("user_blocks")
   @@schema("inrole")
 }
 
@@ -429,6 +445,7 @@ model PostMedia {
 model Poll {
   postId    String       @id @db.Uuid
   question  String       @db.Text
+  sealed    Boolean      @default(false)
   endsAt    DateTime     @db.Timestamptz(3)
   createdAt DateTime     @default(now()) @db.Timestamptz(3)
   post      Post         @relation(fields: [postId], references: [id], onDelete: Restrict)

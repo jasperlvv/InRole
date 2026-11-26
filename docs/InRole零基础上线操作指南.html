@@ -1,0 +1,1104 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>InRole 零基础上线操作指南</title><style>:root{color-scheme:light;--ink:#18283c;--muted:#5b6d80;--line:#dce4ed;--accent:#1e5686}*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:24px}body{margin:0;color:var(--ink);background:#eef2f6;font:16px/1.85 system-ui,-apple-system,"Microsoft YaHei",sans-serif}a{color:var(--accent);text-underline-offset:3px}aside{position:fixed;inset:0 auto 0 0;width:286px;padding:26px 20px;background:#14283e;color:#eef5ff;overflow:auto}aside strong{display:block;font-size:22px;margin-bottom:4px}aside p{color:#b8cadc;font-size:13px}aside nav a{display:block;color:#dae6f4;text-decoration:none;padding:7px 8px;border-radius:5px;font-size:13px;line-height:1.6}aside nav a:hover{background:#2b425a}.actions{display:flex;gap:10px;flex-wrap:wrap;margin:15px 0}button{font:inherit;cursor:pointer}.actions button{background:#fff;border:1px solid #bfcddd;border-radius:6px;padding:6px 10px;color:var(--ink);font-size:13px}main{max-width:1160px;margin-left:286px;padding:36px 52px 80px;background:#fff;min-height:100vh}h1{font-size:32px;line-height:1.4;margin:0 0 24px}h2{margin-top:46px;padding-top:22px;border-top:2px solid var(--line);font-size:24px;line-height:1.5}h3{margin-top:26px;font-size:19px}p{margin:13px 0}li{margin:6px 0}strong{font-weight:700}code{font-family:Consolas,"Microsoft YaHei",monospace;font-size:.9em;background:#eef3f8;padding:2px 4px;border-radius:3px;overflow-wrap:anywhere}.code-wrap{margin:18px 0;border:1px solid #ccd7e2;border-radius:8px;overflow:hidden}.code-tools{display:flex;justify-content:space-between;align-items:center;background:#eaf0f6;padding:7px 12px;font-size:12px;color:#4d6277}.copy{font-size:12px;background:#fff;color:#254f76;border:1px solid #bfcedd;border-radius:4px;padding:3px 12px;min-height:30px}pre{margin:0;background:#14283e;color:#edf4fc;padding:18px;overflow:auto;line-height:1.65;tab-size:2}pre code{color:inherit;background:none;padding:0;border-radius:0;font-size:13px;white-space:pre;overflow-wrap:normal}.table-wrap{overflow-x:auto;margin:18px 0}table{width:100%;border-collapse:collapse;font-size:14px}th,td{border:1px solid var(--line);padding:10px 12px;text-align:left;vertical-align:top;min-width:90px}th{background:#edf3f8}tr:nth-child(even) td{background:#fafcfe}input[type=checkbox]{width:18px;height:18px;vertical-align:middle;accent-color:var(--accent)}blockquote{margin:18px 0;padding:12px 18px;border-left:4px solid #477da7;background:#f1f6fa}hr{border:0;border-top:1px solid var(--line);margin:30px 0}.stamp{font-size:12px;color:var(--muted);margin-bottom:24px}footer{margin-top:40px;color:var(--muted);font-size:13px}@media(max-width:1000px){aside{position:static;width:auto;max-height:300px}aside nav{columns:2}main{margin:0;padding:28px 24px}}@media(max-width:600px){body{font-size:15px}aside nav{columns:1}main{padding:24px 16px}h1{font-size:27px}h2{font-size:21px}th,td{padding:8px}pre{padding:13px}}@media print{aside,.actions,.copy{display:none}body,main{background:white}main{margin:0;padding:0;max-width:none}h2{break-after:avoid}h3{break-after:avoid}.code-wrap{break-inside:avoid}pre{white-space:pre-wrap;background:#f4f6f8;color:#111}pre code{white-space:pre-wrap;overflow-wrap:anywhere}table{font-size:10px}a{color:inherit;text-decoration:none}a[href^=https]::after{content:' (' attr(href) ')';font-size:9px;overflow-wrap:anywhere}h1{font-size:24px}h2{font-size:19px}body{font-size:11px;line-height:1.6}}</style></head><body><aside><strong>InRole 上线手册</strong><p>零基础 · 32步 · inrole.net<br>2026年11月26日</p><div class="actions"><button id="print" type="button">打印 / 保存PDF</button></div><nav aria-label="章节目录"><a href="#section-0">阅读方法与目录</a><a href="#section-1">第0步：先看清当前项目还差什么</a><a href="#section-2">第1步：认识你要买的东西</a><a href="#section-3">第2步：完成域名购买</a><a href="#section-4">第3步：建立一张部署记录表</a><a href="#section-5">第4步：选择一台服务器</a><a href="#section-6">第5步：配置云防火墙</a><a href="#section-7">第6步：准备Windows上的SSH密钥</a><a href="#section-8">第7步：连接服务器，确认自己在哪台电脑</a><a href="#section-9">第8步：安装基础软件与Docker</a><a href="#section-10">第9步：确认并获取正式发布代码</a><a href="#section-11">第10步：生成正式配置与备份密钥</a><a href="#section-12">第11步：构建网站运行镜像</a><a href="#section-13">第12步：启动正式数据库与执行迁移</a><a href="#section-14">第13步：给正式空库建立兴趣分类</a><a href="#section-15">第14步：配置域名解析</a><a href="#section-16">第15步：设置发布检查用的临时访问口令</a><a href="#section-17">第16步：启动网站与HTTPS入口</a><a href="#section-18">第17步：创建你的站长账号</a><a href="#section-19">第18步：先添加一位人物，确认整条流程</a><a href="#section-20">第19步：给人物上传头像</a><a href="#section-21">第20步：完成270位人物和话题</a><a href="#section-22">第21步：发布开场帖子</a><a href="#section-23">第22步：按清单完成发布验收</a><a href="#section-24">第23步：制作第一份备份</a><a href="#section-25">第24步：把备份保存到自己的电脑</a><a href="#section-26">第25步：设置每日备份与定期清理任务</a><a href="#section-27">第26步：完成一次恢复演练</a><a href="#section-28">第27步：正式开放inrole.net</a><a href="#section-29">第28步：以后如何增加内容</a><a href="#section-30">第29步：以后如何更新代码</a><a href="#section-31">第30步：每天与每月检查什么</a><a href="#section-32">第31步：更新失败如何处理</a><a href="#section-33">常见错误速查</a><a href="#section-34">私有GitHub仓库附录</a><a href="#section-35">收尾记录模板</a></nav></aside><main><p class="stamp">离线阅读版 · 操作前请区分本机与服务器终端 · 按步骤执行</p><h1>InRole 零基础上线操作指南</h1>
+<p>适用对象：第一次购买域名、第一次使用云服务器的学生。目标网址：<strong><a href="https://inrole.net" target="_blank" rel="noopener noreferrer">https://inrole.net</a></strong>。</p>
+<p>编写日期：2026年11月26日，北京时间。本文按当前 InRole 仓库编写，示范环境为 <strong>Namecheap 域名 + Ubuntu 24.04 LTS、x86_64 Linux 云服务器 + Docker Compose</strong>。云服务器购买界面以阿里云轻量应用服务器为例；腾讯云等平台的同类 Linux 主机也可使用后面的部署步骤，但控制台按钮和登录用户名可能不同。</p>
+<p><strong>这是一份执行手册，不代表已经购买、上传或上线。</strong> 域名是否购买成功、服务器是否创建，均以你的账户实际记录为准。本文未在你的正式 Linux 服务器执行；每一步都要以实际成功标志判断，不能一次粘贴整份手册。</p>
+<h2 id="section-0">阅读方法与目录</h2>
+<ul>
+<li>写着 <strong>【网页】</strong>：在浏览器里点击。</li>
+<li>写着 <strong>【本机 PowerShell】</strong>：在你现在这台 Windows 电脑输入。</li>
+<li>写着 <strong>【服务器终端】</strong>：连接云服务器后输入。本文服务器部署命令统一在 <code>sudo -i</code> 后的 root 会话运行。</li>
+<li>写着 <strong>【网站】</strong>：打开 InRole 的网页操作。</li>
+<li>命令框里面才是需要复制的命令；不要复制标题、命令输出或终端前面的 <code>$</code>、<code>#</code> 提示符。</li>
+<li>出现“你的服务器IP”“你的SSH用户名”“已确认的提交号”时，先替换成自己的实际值。<strong><code>203.0.113.10</code> 是文档示例IP，不能用来连接。</strong></li>
+<li>一步报错，先停在这一步。提供步骤编号、错误文字即可；不要发送密码、私钥、恢复码、<code>.env</code> 全文或完整数据库连接串。</li>
+</ul>
+<p>目录：</p>
+<ol>
+<li>上线前现状与分工</li>
+<li>买域名和准备账户</li>
+<li>选购服务器</li>
+<li>防火墙与连接服务器</li>
+<li>安装服务器软件</li>
+<li>同步发布代码</li>
+<li>生成正式配置与构建</li>
+<li>初始化数据库与兴趣分类</li>
+<li>域名解析、临时访问口令、启动HTTPS</li>
+<li>创建站长账号与进入后台</li>
+<li>添加人物、头像、话题和开场帖子</li>
+<li>验收、备份与正式开放</li>
+<li>后期更新、日常维护、恢复与排错</li>
+</ol>
+<hr>
+<h2 id="section-1">第0步：先看清当前项目还差什么</h2>
+<p>当前已经具备：真实账号、发帖评论、人物、评分、通宝、管理后台、屏蔽注销，以及 Docker、数据库迁移、Caddy 和备份材料。</p>
+<p>当前需要在发布前处理：</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>事项</th>
+<th>当前状态</th>
+<th>怎么处理</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>最新人物选择界面、搜索与热搜说明修改</td>
+<td>已完成并检查，纳入本次GitHub同步</td>
+<td>第9步按完整提交号核对发布版本</td>
+</tr>
+<tr>
+<td>270位人物</td>
+<td>已有V2候选清单</td>
+<td>仍需确认名单、制作简介/头像及来源；名单文件不是可直接导入的数据包</td>
+</tr>
+<tr>
+<td>正式批量导入270位人物</td>
+<td>尚无已验收的生产导入流程</td>
+<td>可以按第11部分用后台逐个添加；批量导入需另做并验证工具</td>
+</tr>
+<tr>
+<td>本机目录导入脚本</td>
+<td>限定本机开发库</td>
+<td>不在正式服务器上运行 <code>db:seed:catalog</code>，也不修改它的限制来强行执行</td>
+</tr>
+<tr>
+<td>Linux镜像、HTTPS、生产备份恢复</td>
+<td>尚未实测</td>
+<td>按本文逐项运行并记录结果</td>
+</tr>
+<tr>
+<td>手机、慢网、大陆/海外访问</td>
+<td>未完成最终验收</td>
+<td>第12部分实测，不能用“首页能打开”替代</td>
+</tr>
+<tr>
+<td>生产隐私信息与公开运营条件</td>
+<td>需要结合实际托管方案确认</td>
+<td>正式开放前处理，见下一段</td>
+</tr>
+</tbody></table></div>
+<p><strong>关于公开社区的一项实际发布条件：</strong> InRole允许用户公开发帖评论。面向中国大陆提供这类服务时，应核对适用的真实身份认证、内容管理、隐私与主体要求；目前项目是ID+密码注册，不能直接宣布已经满足全部要求。《互联网用户账号信息管理规定》第九条对信息发布等账号的真实身份认证作了要求，是否以及如何适用于具体运营方案，应向云厂商及相关主管部门核实。使用香港服务器不等于自动解决这些事项。本指南不会擅自改动你的注册规则；发布方案确认前可以完成带访问口令的部署验收。原文：<a href="https://www.cac.gov.cn/2022-06/26/c_1657868775042841.htm" target="_blank" rel="noopener noreferrer">网信办规定</a>。</p>
+<p>中国大陆服务器通常需要先完成相应ICP备案后再对外提供网站服务；香港等境外节点不走同一项接入备案流程，但仍要核对实际运营要求。相关说明：<a href="https://www.alibabacloud.com/help/en/icp-filing/basic-icp-service/product-overview/what-is-an-icp-filing" target="_blank" rel="noopener noreferrer">云厂商ICP备案文档</a>。</p>
+<p><strong>本指南安排的私密验收是你自己的发布检查，不是重新招募内测。</strong></p>
+<h2 id="section-2">第1步：认识你要买的东西</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>名词</th>
+<th>用普通话解释</th>
+<th>InRole怎么用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>域名</td>
+<td>网站的名字</td>
+<td><code>inrole.net</code></td>
+</tr>
+<tr>
+<td>云服务器</td>
+<td>一台放在机房里、持续开机的电脑</td>
+<td>运行网站、数据库和上传文件存储</td>
+</tr>
+<tr>
+<td>公网IP</td>
+<td>服务器在互联网上的地址</td>
+<td>买服务器后取得，填写到域名解析里</td>
+</tr>
+<tr>
+<td>DNS解析</td>
+<td>把名字指向服务器地址</td>
+<td>让浏览器找到服务器</td>
+</tr>
+<tr>
+<td>HTTPS</td>
+<td>浏览器到网站的加密连接</td>
+<td>Caddy申请并维护证书</td>
+</tr>
+<tr>
+<td>数据库</td>
+<td>保存结构化业务数据</td>
+<td>用户、人物、帖子、评论、余额与流水</td>
+</tr>
+<tr>
+<td>媒体存储</td>
+<td>保存图片和视频文件</td>
+<td>人物头像与帖子附件</td>
+</tr>
+<tr>
+<td>GitHub</td>
+<td>保存代码版本的仓库</td>
+<td>服务器从这里获取已确认的源码</td>
+</tr>
+<tr>
+<td>Docker</td>
+<td>按固定配置运行软件的工具</td>
+<td>运行InRole、PostgreSQL和Caddy</td>
+</tr>
+<tr>
+<td>SSH</td>
+<td>从你的电脑连接服务器的方法</td>
+<td>管理部署、维护和下载备份</td>
+</tr>
+</tbody></table></div>
+<p>部署完成后：访问者 → <code>inrole.net</code> → 云服务器的HTTPS入口 → InRole → 数据库/媒体。</p>
+<p>你的Windows电脑关闭后，云服务器上的网站仍可运行。服务器和域名需要持续续费；它们是两笔独立费用。</p>
+<h2 id="section-3">第2步：完成域名购买</h2>
+<p><strong>位置：【网页 / Namecheap】</strong></p>
+<ol>
+<li>登录你自己的Namecheap账户。</li>
+<li>确认购物车里的拼写是 <code>inrole.net</code>，期限先选1年。</li>
+<li>保留免费的 Domain Privacy。</li>
+<li>不添加 PremiumDNS、SSL、邮箱、WordPress、SEO等暂时用不到的服务。</li>
+<li>从购物车移除Stellar共享主机试用；本文后面单独配置Linux服务器。</li>
+<li>确认首年金额、续费金额、自动续费与最终结算币种，再由你付款。</li>
+<li>等待购买成功，进入 <code>Domain List</code>，确认列表中出现 <code>inrole.net</code>。</li>
+<li>查看注册邮箱，按注册商实际邮件完成联系人邮箱验证。</li>
+<li>开启Namecheap账户的两步验证，保存恢复方式。</li>
+</ol>
+<p><strong>成功标志：</strong> 域名在你自己的账户中，状态正常，能进入 <code>Manage</code> 管理页面。仅收到订单邮件、域名仍处于处理状态时，先等状态确认。</p>
+<p>域名隐私并不免除填写真实注册联系资料的要求。官方说明：<a href="https://www.namecheap.com/security/domain-privacy-service/" target="_blank" rel="noopener noreferrer">Domain Privacy</a>。</p>
+<h2 id="section-4">第3步：建立一张部署记录表</h2>
+<p>在你自己的密码管理器或私人笔记里记录；不要发到公开仓库。</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>项目</th>
+<th>你填写的内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>域名</td>
+<td>inrole.net</td>
+</tr>
+<tr>
+<td>域名注册邮箱、到期时间</td>
+<td>待填写</td>
+</tr>
+<tr>
+<td>云厂商、账户</td>
+<td>待填写</td>
+</tr>
+<tr>
+<td>服务器地域、系统、规格</td>
+<td>待填写</td>
+</tr>
+<tr>
+<td>服务器实例名称/ID</td>
+<td>待填写</td>
+</tr>
+<tr>
+<td>服务器公网IPv4</td>
+<td>待填写</td>
+</tr>
+<tr>
+<td>SSH登录用户名</td>
+<td>以云控制台为准，如 <code>ubuntu</code> 或 <code>root</code></td>
+</tr>
+<tr>
+<td>服务器月费、流量额度、超额计费、续费价</td>
+<td>待填写</td>
+</tr>
+<tr>
+<td>正式发布Git提交号</td>
+<td>第6步填写</td>
+</tr>
+<tr>
+<td>当前应用镜像标签</td>
+<td>第7步填写</td>
+</tr>
+<tr>
+<td>站长ID</td>
+<td>第10部分填写</td>
+</tr>
+<tr>
+<td>备份位置、备份密钥保管位置</td>
+<td>第12部分填写</td>
+</tr>
+</tbody></table></div>
+<p>密码、私钥与数据库密钥单独保存在安全位置，不放进普通共享表格。域名和服务器账户都使用你能够长期控制的邮箱。</p>
+<h2 id="section-5">第4步：选择一台服务器</h2>
+<p><strong>位置：【网页 / 云厂商控制台】</strong></p>
+<p>本文以阿里云“轻量应用服务器”为例，购买页面可能随时间变化；找不到同名按钮时，以官方文档与当前界面为准。</p>
+<ol>
+<li>注册云账户，完成平台要求的账户验证。</li>
+<li>在产品中搜索“轻量应用服务器”。</li>
+<li>点击“创建服务器”。</li>
+<li><strong>地域：</strong> 香港可作为候选，先评估目标用户的访问线路；如果使用大陆节点，先安排备案及相应接入条件。不要仅因为写着“香港”就认为国内外一定都快。</li>
+<li><strong>镜像类型：</strong> 选择“系统镜像”，选 <strong>Ubuntu 24.04 LTS</strong>。</li>
+<li><strong>架构：</strong> 选 <strong>x86_64 / AMD64</strong>。不要选择Windows、WordPress、宝塔预装环境或ARM版本来直接照抄本文。</li>
+<li><strong>规格评估起点：</strong> 2核CPU、4GB内存、约80GB磁盘；内存更大构建会更有余量。这只是单节点初始评估，不是并发容量保证。视频会持续占用磁盘与流量。</li>
+<li>确认包含公网IPv4、每月流量额度、带宽限制、流量用完后的行为、超额费用和续费价。</li>
+<li>先按短周期评估，服务器先买1个月；不要为了促销一次买多年。</li>
+<li>在你确认费用后创建一台，取名 <code>inrole-prod</code>。</li>
+<li>等待状态为“运行中”，记录公网IP和控制台显示的登录用户名。</li>
+</ol>
+<p>阿里云说明，香港等境外节点使用国际带宽，从大陆访问可能出现较高延迟；地域创建后也不能直接改成另一地域。选择前需要认真核对。<a href="https://help.aliyun.com/zh/simple-application-server/user-guide/create-a-server/" target="_blank" rel="noopener noreferrer">创建服务器官方步骤</a></p>
+<p><strong>成功标志：</strong> 你能看到一台运行中的Ubuntu服务器、明确的公网IPv4和费用记录。</p>
+<h2 id="section-6">第5步：配置云防火墙</h2>
+<p><strong>位置：【网页 / 服务器详情 → 防火墙或安全组】</strong></p>
+<p>添加或核对入站规则：</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>端口</th>
+<th>协议</th>
+<th>来源</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>22</td>
+<td>TCP</td>
+<td>你的当前公网IP，优先单IP <code>/32</code></td>
+<td>SSH管理</td>
+</tr>
+<tr>
+<td>80</td>
+<td>TCP</td>
+<td>所有IPv4，即 <code>0.0.0.0/0</code></td>
+<td>HTTP跳转与证书验证</td>
+</tr>
+<tr>
+<td>443</td>
+<td>TCP</td>
+<td>所有IPv4，即 <code>0.0.0.0/0</code></td>
+<td>HTTPS网页</td>
+</tr>
+</tbody></table></div>
+<p>本文使用IPv4 TCP即可；暂不额外配置IPv6、HTTP/3或CDN。不要开放数据库5432端口和应用3000端口。</p>
+<p>你在宿舍、家庭Wi-Fi或手机热点之间切换时，公网IP可能变化。SSH连接超时，先核对22端口的来源IP；不必因此把所有端口全部开放。云控制台提供的远程连接可以作为备用入口。</p>
+<p><strong>成功标志：</strong> 规则只包含实际需要的入口。此时还没启动网站，80/443不能打开网页是正常的。</p>
+<h2 id="section-7">第6步：准备Windows上的SSH密钥</h2>
+<p><strong>位置：【本机 PowerShell】</strong></p>
+<ol>
+<li>右键Windows开始按钮，打开“终端”或“PowerShell”。</li>
+<li>输入：</li>
+</ol>
+<div class="code-wrap"><div class="code-tools"><span>本机 PowerShell</span><button type="button" class="copy">复制</button></div><pre><code class="language-powershell">ssh -V
+</code></pre></div>
+<p>如果提示找不到命令，在Windows“设置 → 应用 → 可选功能”中检查安装 <strong>OpenSSH客户端</strong>，安装后重新打开终端。</p>
+<ol start="3">
+<li>创建密钥目录：</li>
+</ol>
+<div class="code-wrap"><div class="code-tools"><span>本机 PowerShell</span><button type="button" class="copy">复制</button></div><pre><code class="language-powershell">New-Item -ItemType Directory -Force -Path &quot;$env:USERPROFILE\.ssh&quot;
+</code></pre></div>
+<ol start="4">
+<li>检查是否已经存在这套密钥：</li>
+</ol>
+<div class="code-wrap"><div class="code-tools"><span>本机 PowerShell</span><button type="button" class="copy">复制</button></div><pre><code class="language-powershell">Test-Path &quot;$env:USERPROFILE\.ssh\inrole_server&quot;
+</code></pre></div>
+<p>输出 <code>False</code> 才生成；输出 <code>True</code> 时保留原文件，确认它的用途，不覆盖。</p>
+<div class="code-wrap"><div class="code-tools"><span>本机 PowerShell</span><button type="button" class="copy">复制</button></div><pre><code class="language-powershell">ssh-keygen -t ed25519 -f &quot;$env:USERPROFILE\.ssh\inrole_server&quot; -C &quot;inrole-server&quot;
+</code></pre></div>
+<p>提示 <code>Enter passphrase</code> 时设置一个你能保存好的密钥口令。输入时可能不显示字符，正常。</p>
+<ol start="5">
+<li>显示公钥：</li>
+</ol>
+<div class="code-wrap"><div class="code-tools"><span>本机 PowerShell</span><button type="button" class="copy">复制</button></div><pre><code class="language-powershell">Get-Content &quot;$env:USERPROFILE\.ssh\inrole_server.pub&quot;
+</code></pre></div>
+<p>复制完整的 <code>ssh-ed25519 ...</code> 一行。</p>
+<ol start="6">
+<li>到云控制台的SSH密钥管理中，找“导入密钥/导入公钥”，粘贴这一行，给密钥取名 <code>inrole-student</code>，绑定到目标服务器。按云平台提示完成必要的生效操作；不要对已有网站运行中的服务器随意重装系统。</li>
+</ol>
+<p><strong>两个文件的区别：</strong> <code>.pub</code> 是可提交到云平台的公钥；没有 <code>.pub</code> 的文件是私钥，留在本机，不粘贴到聊天、网页教程或GitHub。</p>
+<p>如果平台没有公钥导入入口，先用它的浏览器远程连接按官方方法绑定；不要根据别的系统教程覆盖整个SSH配置。</p>
+<h2 id="section-8">第7步：连接服务器，确认自己在哪台电脑</h2>
+<p><strong>位置：【本机 PowerShell】</strong></p>
+<p>将下列的用户名和IP替换成控制台记录的实际值：</p>
+<div class="code-wrap"><div class="code-tools"><span>本机 PowerShell</span><button type="button" class="copy">复制</button></div><pre><code class="language-powershell">ssh -i &quot;$env:USERPROFILE\.ssh\inrole_server&quot; 你的SSH用户名@你的服务器IP
+</code></pre></div>
+<p>第一次出现服务器指纹确认时，先与云控制台显示的主机指纹核对；能核对一致后再输入 <code>yes</code>。输入的是刚才设置的私钥口令，不是InRole密码。</p>
+<p>如果平台提供浏览器“远程连接 / Workbench”，也可以在控制台打开终端，作为备用管理方式。</p>
+<p><strong>位置：【服务器终端】</strong></p>
+<div class="code-wrap"><div class="code-tools"><span>服务器 Bash</span><button type="button" class="copy">复制</button></div><pre><code class="language-bash">whoami
+hostname
+cat /etc/os-release
+uname -m
+</code></pre></div>
+<p>确认：系统为Ubuntu 24.04，架构为 <code>x86_64</code>。然后：</p>
+<div class="code-wrap"><div class="code-tools"><span>服务器 Bash</span><button type="button" class="copy">复制</button></div><pre><code class="language-bash">sudo -i
+whoami
+</code></pre></div>
+<p>应显示 <code>root</code>。从这里开始，本文服务器命令都在这个root会话执行。你的实际SSH登录用户名仍记录原来的值，后面下载文件时要用。</p>
+<p>终端提示符常见区别：<code>PS C:\...&gt;</code> 是本机；<code>root@...:~#</code> 是服务器。SSH断开后会回到本机，需要重新连接并再次 <code>sudo -i</code>。</p>
+<h2 id="section-9">第8步：安装基础软件与Docker</h2>
+<p><strong>位置：【服务器终端 / root】</strong></p>
+<p>先安装工具，并把服务器时间设为北京时间，方便后面按03:30运行备份：</p>
+<div class="code-wrap"><div class="code-tools"><span>服务器 Bash</span><button type="button" class="copy">复制</button></div><pre><code class="language-bash">apt-get update
+apt-get install -y ca-certificates curl git openssl nano python3 util-linux
+timedatectl set-timezone Asia/Shanghai
+</code></pre></div>
+<p><strong>以下Docker安装方式只适用于全新的Ubuntu 24.04 AMD64主机。</strong> 如果服务器已有Docker、其他业务或不是这个系统，先检查现状，不重复覆盖软件源。</p>
+<div class="code-wrap"><div class="code-tools"><span>服务器 Bash</span><button type="button" class="copy">复制</button></div><pre><code class="language-bash">install -d -m 0755 /etc/apt/keyrings
+curl --fail --silent --show-error --location https://download.docker.com/linux/ubuntu/gpg --output /etc/apt/keyrings/docker.asc
+chmod 0644 /etc/apt/keyrings/docker.asc
+printf &#39;%s\n&#39; &#39;deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu noble stable&#39; &gt; /etc/apt/sources.list.d/docker.list
+apt-get update
+apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+systemctl enable --now docker
+</code></pre></div>
+<p>按顺序运行，每一行结束并且没有错误后再继续。安装过程卡在网络下载时，先检查网络，不反复执行来源不明的一键脚本。</p>
+<p>检查：</p>
+<div class="code-wrap"><div class="code-tools"><span>服务器 Bash</span><button type="button" class="copy">复制</button></div><pre><code class="language-bash">docker --version
+docker compose version
+docker run --rm hello-world
+</code></pre></div>
+<p><strong>成功标志：</strong> 前两条输出版本，最后一条输出Docker测试成功的信息。这里使用 <code>docker compose</code>，中间有空格。</p>
+<p>以上软件源命令按固定示例环境整理；官方完整安装与支持系统说明：<a href="https://docs.docker.com/engine/install/ubuntu/" target="_blank" rel="noopener noreferrer">Docker Ubuntu安装文档</a>。</p>
+<h2 id="section-10">第9步：确认并获取正式发布代码</h2>
+<h3>9.1 先把本地最新版整理成发布提交</h3>
+<p><strong>位置：【当前Codex聊天 / 本机项目】</strong></p>
+<p>当前本机项目目录：<code>C:\Users\27251\Desktop\666\inrole</code>。</p>
+<p>本指南和最新界面修改随2026-11-26本次更新一并同步；首次部署时仍应核对GitHub实际提交号。以后改版，先让Codex检查本地改动、运行必要检查、整理提交并同步到 <code>jasperlvv/InRole</code>，记下最终完整Git提交号。可以使用这段指令：</p>
+<blockquote>
+<p>整理InRole正式发布版本，保留现有工作，将已完成的人物选择界面等修改和上线文档提交并同步到GitHub。先检查差异、秘密文件和必要测试，再推送，不强推、不部署；告诉我最终完整提交号，以及尚未完成的人物内容和发布条件。</p>
+</blockquote>
+<p>这里的复制提示词是你后续可发出的操作指令；<strong>本文档的生成本身没有执行提交或推送。</strong></p>
+<p>如果270位人物、头像与初始内容尚未完成，它们不会因为提交代码而自动出现。准备好后同样需要独立的可审查数据包或后台录入。</p>
+<h3>9.2 在服务器拉取代码</h3>
+<p><strong>位置：【服务器终端 / root】</strong></p>
+<p>先确认目标目录没有旧项目：</p>
+<div class="code-wrap"><div class="code-tools"><span>服务器 Bash</span><button type="button" class="copy">复制</button></div><pre><code class="language-bash">ls -ld /opt/inrole
+</code></pre></div>
+<p>第一次部署提示不存在是正常的。如果已存在，先检查是不是之前部署过，不删除重来。</p>
+<p>如果GitHub仓库是公开仓库：</p>
+<div class="code-wrap"><div class="code-tools"><span>服务器 Bash</span><button type="button" class="copy">复制</button></div><pre><code class="language-bash">git clone https://github.com/jasperlvv/InRole.git /opt/inrole
+cd /opt/inrole
+git log -1 --oneline
+</code></pre></div>
+<p>如果是私有仓库，不要把仓库改公开来绕过认证；使用本指南最后的“私有仓库附录”。</p>
+<p>核对发布提交。将完整提交号替换后运行：</p>
+<div class="code-wrap"><div class="code-tools"><span>服务器 Bash</span><button type="button" class="copy">复制</button></div><pre><code class="language-bash">git checkout --detach 已确认的完整Git提交号
+git rev-parse HEAD
+git status --short
+</code></pre></div>
+<p><strong>成功标志：</strong> 输出的完整提交号与你确认的一致；工作区没有意外代码修改。若找不到提交，先确认本机是否已推送和服务器是否已获取，不随便换成旧版本。</p>
+<h2 id="section-11">第10步：生成正式配置与备份密钥</h2>
+<p><strong>位置：【服务器终端 / root】</strong></p>
+<div class="code-wrap"><div class="code-tools"><span>服务器 Bash</span><button type="button" class="copy">复制</button></div><pre><code class="language-bash">cd /opt/inrole/deploy
+pwd
+</code></pre></div>
+<p>输出必须是 <code>/opt/inrole/deploy</code>。</p>
+<p>下面的Python代码会直接把随机密码写入文件，不需要你手动编造数据库密码，也不会把真实值打印出来。<strong>仅用于第一次初始化；文件已经存在时会拒绝覆盖。</strong></p>
+<div class="code-wrap"><div class="code-tools"><span>服务器 Bash</span><button type="button" class="copy">复制</button></div><pre><code class="language-bash">umask 077
+python3 - &lt;&lt;&#39;PY&#39;
+from pathlib import Path
+import os
+import secrets
+import subprocess
+
+env_file = Path(&#39;.env&#39;)
+key_file = Path(&#39;secrets/backup-key&#39;)
+if env_file.exists() or key_file.exists():
+    raise SystemExit(&#39;配置或备份密钥已存在：保留原文件，不重新生成。&#39;)
+
+commit = subprocess.check_output([&#39;git&#39;, &#39;rev-parse&#39;, &#39;HEAD&#39;], text=True).strip()
+values = {
+    &#39;DOMAIN&#39;: &#39;inrole.net&#39;,
+    &#39;INROLE_IMAGE&#39;: &#39;inrole:&#39; + commit,
+    &#39;BOOTSTRAP_DB_PASSWORD&#39;: secrets.token_hex(32),
+    &#39;MIGRATOR_DB_PASSWORD&#39;: secrets.token_hex(32),
+    &#39;APP_DB_PASSWORD&#39;: secrets.token_hex(32),
+    &#39;SESSION_PASSWORD&#39;: secrets.token_hex(32),
+    &#39;RATE_LIMIT_SECRET&#39;: secrets.token_hex(32),
+    &#39;RECOVERY_CODE_PEPPER&#39;: secrets.token_hex(32),
+}
+Path(&#39;secrets&#39;).mkdir(mode=0o700, exist_ok=True)
+Path(&#39;secrets&#39;).chmod(0o700)
+Path(&#39;backups&#39;).mkdir(mode=0o700, exist_ok=True)
+Path(&#39;backups&#39;).chmod(0o700)
+fd = os.open(env_file, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
+with os.fdopen(fd, &#39;w&#39;) as f:
+    f.write(&#39;&#39;.join(f&#39;{name}={value}\n&#39; for name, value in values.items()))
+fd = os.open(key_file, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
+with os.fdopen(fd, &#39;w&#39;) as f:
+    f.write(secrets.token_hex(48) + &#39;\n&#39;)
+print(&#39;已生成正式环境配置与备份密钥；请分别保管。&#39;)
+print(&#39;应用镜像标签：&#39; + values[&#39;INROLE_IMAGE&#39;])
+PY
+</code></pre></div>
+<p>如果中途失败，检查两个文件状态；不要为了重跑而删除已生成的密钥。后面如果已经有用户数据，重建密码会影响数据库连接、会话或恢复码。</p>
+<p>检查权限和Compose格式，命令不会展开秘密值：</p>
+<div class="code-wrap"><div class="code-tools"><span>服务器 Bash</span><button type="button" class="copy">复制</button></div><pre><code class="language-bash">ls -l .env secrets/backup-key
+docker compose config --quiet
+</code></pre></div>
+<p><strong>成功标志：</strong> 两个文件只有root可读写；Compose检查无错误。不要运行不带 <code>--quiet</code> 的完整配置输出并截图。</p>
+<p><code>.env</code> 与 <code>secrets/backup-key</code> 都需要保存异机副本，具体传输见备份部分。不要把它们传到GitHub。</p>
+<h2 id="section-12">第11步：构建网站运行镜像</h2>
+<p><strong>位置：【服务器终端 / root】</strong></p>
+<div class="code-wrap"><div class="code-tools"><span>服务器 Bash</span><button type="button" class="copy">复制</button></div><pre><code class="language-bash">cd /opt/inrole
+INROLE_RELEASE_COMMIT=$(git rev-parse HEAD)
+docker build --tag &quot;inrole:${INROLE_RELEASE_COMMIT}&quot; .
+</code></pre></div>
+<p>等待构建结束；第一次需要下载依赖，通常比后续慢。本文不承诺固定分钟数。</p>
+<div class="code-wrap"><div class="code-tools"><span>服务器 Bash</span><button type="button" class="copy">复制</button></div><pre><code class="language-bash">docker image inspect &quot;inrole:${INROLE_RELEASE_COMMIT}&quot; --format &#39;{{.Id}}&#39;
+</code></pre></div>
+<p><strong>成功标志：</strong> 构建退出成功，检查命令输出镜像ID。把提交号、镜像标签和ID记到部署记录表。</p>
+<p>常见异常：</p>
+<ul>
+<li><code>Killed</code>、退出137、内存不足：检查内存和构建日志，考虑更大内存或在另一构建机制作镜像；不要直接重置数据库。</li>
+<li>镜像版本不存在：核对项目固定版本和官方镜像，不能随意改成 <code>latest</code>。</li>
+<li>下载超时：检查服务器到软件仓库的网络，不向陌生镜像站发送密钥。</li>
+</ul>
+<h2 id="section-13">第12步：启动正式数据库与执行迁移</h2>
+<p><strong>位置：【服务器终端 / root】</strong></p>
+<div class="code-wrap"><div class="code-tools"><span>服务器 Bash</span><button type="button" class="copy">复制</button></div><pre><code class="language-bash">cd /opt/inrole/deploy
+docker compose up -d db
+docker compose ps
+</code></pre></div>
+<p>重复查看 <code>docker compose ps</code>，直到db显示 <code>healthy</code>。如果一直 <code>unhealthy</code>：</p>
+<div class="code-wrap"><div class="code-tools"><span>服务器 Bash</span><button type="button" class="copy">复制</button></div><pre><code class="language-bash">docker compose logs --tail=80 db
+</code></pre></div>
+<p>先检查错误，不删除数据库卷。首次初始化需要一点时间。</p>
+<p>然后执行迁移：</p>
+<div class="code-wrap"><div class="code-tools"><span>服务器 Bash</span><button type="button" class="copy">复制</button></div><pre><code class="language-bash">docker compose run --rm migrate
+</code></pre></div>
+<p><strong>成功标志：</strong> 迁移成功，输出应用权限已应用，没有数据库错误。这个步骤创建真实业务表与受限账号权限。</p>
+<p><strong>不要在正式服务器运行 <code>npm run db:local:setup</code>。</strong> 那是为本机Windows开发环境准备的流程。</p>
+<h2 id="section-14">第13步：给正式空库建立兴趣分类</h2>
+<p><strong>位置：【服务器终端 / root】</strong></p>
+<p>当前后台可以维护人物和话题，但没有兴趣分类编辑页。第一次建库需要先准备分类，否则后台人物表单没有可选的“主要兴趣”。</p>
+<p>下面只添加7个公共分类；已有同ID不会覆盖，且不会插入账号、帖子或钱包。</p>
+<div class="code-wrap"><div class="code-tools"><span>服务器 Bash</span><button type="button" class="copy">复制</button></div><pre><code class="language-bash">cd /opt/inrole/deploy
+docker compose exec -T db psql -U inrole_bootstrap -d inrole -v ON_ERROR_STOP=1 &lt;&lt;&#39;SQL&#39;
+BEGIN;
+INSERT INTO inrole.interest_tags (id, name) VALUES
+  (&#39;history-cn&#39;, &#39;中国历史&#39;),
+  (&#39;history-world&#39;, &#39;世界历史&#39;),
+  (&#39;games&#39;, &#39;游戏人物&#39;),
+  (&#39;film&#39;, &#39;影视人物&#39;),
+  (&#39;literature&#39;, &#39;文学人物&#39;),
+  (&#39;anime&#39;, &#39;动漫人物&#39;),
+  (&#39;sports&#39;, &#39;体育人物&#39;)
+ON CONFLICT (id) DO NOTHING;
+COMMIT;
+SELECT id, name FROM inrole.interest_tags WHERE active = true ORDER BY id;
+SQL
+</code></pre></div>
+<p><strong>成功标志：</strong> 显示7个分类；如果正式库之前已有更多分类，会一并显示。这个管理连接只在容器内部使用，不开放公网数据库端口。</p>
+<h2 id="section-15">第14步：配置域名解析</h2>
+<p><strong>位置：【网页 / Namecheap】</strong></p>
+<ol>
+<li>登录Namecheap。</li>
+<li>左侧点 <code>Domain List</code>。</li>
+<li>找到 <code>inrole.net</code>，点右侧 <code>Manage</code>。</li>
+<li>在 <code>Domain</code> 页确认Nameservers使用 <strong>Namecheap BasicDNS</strong>。如果已经使用其他DNS服务，记录现状并在实际权威DNS服务商配置，不把两个后台混着改。</li>
+<li>点顶部 <code>Advanced DNS</code>。</li>
+<li>找到 <code>Host Records</code>。</li>
+<li>若这是新域名，检查是否有指向停放页的 <code>@</code> URL Redirect、<code>www</code> CNAME等冲突记录。先记录旧值，再移除同一主机名的冲突项；已有邮箱的MX/TXT不动。</li>
+<li>点 <code>Add New Record</code>，添加：</li>
+</ol>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Host</th>
+<th>Value</th>
+<th>TTL</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>A Record</td>
+<td>@</td>
+<td>你的服务器公网IPv4</td>
+<td>Automatic</td>
+</tr>
+</tbody></table></div>
+<ol start="9">
+<li>点击保存图标。</li>
+</ol>
+<p><strong>第一版先只启用 <code>inrole.net</code>。</strong> <code>www.inrole.net</code>需要额外DNS、HTTPS和跳转配置，不能只加一个记录就假定网站已经处理好。未配置IPv6时不要添加AAAA记录。</p>
+<p>官方点击路径：<a href="https://www.namecheap.com/support/knowledgebase/article.aspx/319/2237/how-can-i-set-up-an-a-address-record-for-my-domain/" target="_blank" rel="noopener noreferrer">Namecheap A记录设置</a>。DNS生效需要缓存更新时间，不保证每个网络同时变化。</p>
+<p><strong>位置：【本机 PowerShell】</strong></p>
+<div class="code-wrap"><div class="code-tools"><span>本机 PowerShell</span><button type="button" class="copy">复制</button></div><pre><code class="language-powershell">Resolve-DnsName inrole.net -Type A
+</code></pre></div>
+<p><strong>成功标志：</strong> 查询返回你填写的公网IPv4。域名解析成功但页面打不开，说明还需要继续启动服务；不是重新买域名。</p>
+<h2 id="section-16">第15步：设置发布检查用的临时访问口令</h2>
+<p><strong>位置：【服务器终端 / root】</strong></p>
+<p>这一层口令保护尚未完成发布验收的网站，独立于InRole站内ID密码。后面通过验收后再移除。</p>
+<p>生成一个你自己保管的强口令，并使用Caddy把它变成哈希：</p>
+<div class="code-wrap"><div class="code-tools"><span>服务器 Bash</span><button type="button" class="copy">复制</button></div><pre><code class="language-bash">docker run --rm -it caddy:2.11.9-alpine caddy hash-password
+</code></pre></div>
+<p>按提示输入口令，保存输出的一整行哈希。随后：</p>
+<div class="code-wrap"><div class="code-tools"><span>服务器 Bash</span><button type="button" class="copy">复制</button></div><pre><code class="language-bash">cd /opt/inrole/deploy
+cp -p Caddyfile secrets/Caddyfile.before-preview
+nano Caddyfile
+</code></pre></div>
+<p>在 <code>{$DOMAIN} {</code> 这一行后面加上下面3行，把示例哈希替换成刚才生成的完整哈希：</p>
+<div class="code-wrap"><div class="code-tools"><span>Caddy 配置</span><button type="button" class="copy">复制</button></div><pre><code class="language-caddyfile">  basic_auth {
+    preview 这里替换成完整的密码哈希
+  }
+</code></pre></div>
+<p>保存方法：按 <code>Ctrl+O</code>，按Enter确认文件名，再按 <code>Ctrl+X</code>退出。<code>preview</code> 是临时访问用户名；密码是你刚才输入的原始口令，不是哈希。</p>
+<p>如果 <code>secrets/Caddyfile.before-preview</code> 已存在，先核对是不是已设置过，不覆盖原始备份。这个临时改动仅留在服务器上，后面恢复原文件，不提交哈希到GitHub。</p>
+<p>语法参考：<a href="https://caddyserver.com/docs/caddyfile/directives/basic_auth" target="_blank" rel="noopener noreferrer">Caddy basic_auth</a>。</p>
+<h2 id="section-17">第16步：启动网站与HTTPS入口</h2>
+<p><strong>位置：【服务器终端 / root】</strong></p>
+<div class="code-wrap"><div class="code-tools"><span>服务器 Bash</span><button type="button" class="copy">复制</button></div><pre><code class="language-bash">cd /opt/inrole/deploy
+docker compose up -d app
+docker compose ps
+</code></pre></div>
+<p>等待app为 <code>healthy</code>，再检查应用内部就绪状态：</p>
+<div class="code-wrap"><div class="code-tools"><span>服务器 Bash</span><button type="button" class="copy">复制</button></div><pre><code class="language-bash">docker compose exec -T app node -e &quot;fetch(&#39;http://127.0.0.1:3000/api/ready&#39;).then(async r=&gt;{console.log(r.status);console.log(await r.text());if(!r.ok)process.exitCode=1}).catch(()=&gt;{console.error(&#39;就绪检查连接失败&#39;);process.exitCode=1})&quot;
+</code></pre></div>
+<p>应返回200；不是200就先检查app和db，不启动公开入口来掩盖错误。</p>
+<div class="code-wrap"><div class="code-tools"><span>服务器 Bash</span><button type="button" class="copy">复制</button></div><pre><code class="language-bash">docker compose up -d caddy
+docker compose logs --tail=80 caddy
+</code></pre></div>
+<p>域名解析正确、80/443可达时，Caddy会申请并维护HTTPS证书。<a href="https://caddyserver.com/docs/automatic-https" target="_blank" rel="noopener noreferrer">自动HTTPS说明</a></p>
+<p><strong>位置：【网页】</strong> 打开 <code>https://inrole.net</code>。</p>
+<p>浏览器应先弹出访问口令框。输入用户名 <code>preview</code> 和第15步保存的口令，之后看到InRole页面，地址栏没有证书错误。</p>
+<p>不输入口令应得到401或口令提示，而不是直接浏览社区。若临时口令层没有生效，先检查Caddy配置，再进行后续建站操作。</p>
+<p>空人物、空帖子是新数据库的正常状态，不表示已经自动导入了本机演示内容。</p>
+<h2 id="section-18">第17步：创建你的站长账号</h2>
+<p><strong>位置：【网站】</strong></p>
+<ol>
+<li>通过临时访问口令进入网站。</li>
+<li>打开 <code>https://inrole.net/live/register</code>。</li>
+<li>自己选一个个人ID，例如 <code>jasper_admin</code>，并设置站内密码。</li>
+<li>保存这个实际ID；不是显示昵称。</li>
+<li>完成喜好引导，也可以按界面提供的跳过操作完成引导。</li>
+</ol>
+<p><strong>位置：【服务器终端 / root】</strong></p>
+<p>把示例ID替换为你刚注册的真实ID，仅执行一次：</p>
+<div class="code-wrap"><div class="code-tools"><span>服务器 Bash</span><button type="button" class="copy">复制</button></div><pre><code class="language-bash">cd /opt/inrole/deploy
+docker compose run --rm migrate node scripts/db/bootstrap-admin.mjs jasper_admin
+</code></pre></div>
+<p><strong>成功标志：</strong> 显示管理员已设置、旧会话已撤销的成功信息。</p>
+<p><strong>位置：【网站】</strong></p>
+<ol>
+<li>重新登录站内账号。</li>
+<li>打开 <code>https://inrole.net/live/admin</code>。</li>
+<li>应看到“社区管理”、人物与头像、话题、申请审核、举报处理、账号状态、操作审计。</li>
+<li>打开 <code>https://inrole.net/live/recovery-codes</code>，按界面生成、保存恢复码，存放在安全位置。</li>
+</ol>
+<p>普通用户打开管理页时，管理数据/操作必须被拒绝。管理员能力不要通过把数据库超级用户连接放进网页来实现。</p>
+<h2 id="section-19">第18步：先添加一位人物，确认整条流程</h2>
+<p><strong>位置：【网站 → 社区管理 → 人物与头像】</strong></p>
+<p>先用一位你已经确认的历史人物验证，例如：</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>字段</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>人物ID</td>
+<td><code>li-shimin</code></td>
+</tr>
+<tr>
+<td>名称</td>
+<td>李世民</td>
+</tr>
+<tr>
+<td>简介</td>
+<td>唐太宗，唐朝皇帝。此处为用户角色扮演，发言不代表历史人物真实言论。</td>
+</tr>
+<tr>
+<td>主要兴趣</td>
+<td>中国历史</td>
+</tr>
+<tr>
+<td>启用人物</td>
+<td>勾选</td>
+</tr>
+</tbody></table></div>
+<ol>
+<li>填写后点击“保存人物”。</li>
+<li>弹出确认框时，填写管理原因，例如“首版公共人物目录初始化”。</li>
+<li>点“确认并记录”。</li>
+<li>确认出现保存成功信息，并能在操作审计里看到记录。</li>
+<li>打开 <code>https://inrole.net/live/people</code>，搜索并找到李世民。</li>
+</ol>
+<p><strong>人物ID一旦用于正式内容就作为稳定标识保存。</strong> 改显示名字时使用同一ID，不另建一条冒充修改，避免历史帖子和评分分裂。</p>
+<h2 id="section-20">第19步：给人物上传头像</h2>
+<p><strong>位置：【网站 → 社区管理 → 人物与头像 → 上传人物头像】</strong></p>
+<ol>
+<li>准备已核对使用依据的图片；建议裁成清楚的正方形，先用较小的JPEG/PNG/WebP文件验证。</li>
+<li>人物ID填 <code>li-shimin</code>。</li>
+<li>选择本机头像文件。</li>
+<li>填写实际来源网页、原作者和许可说明。</li>
+<li>点击“上传并设置头像”。</li>
+<li>在确认框填写原因并确认。</li>
+<li>返回人物页、发帖选择面板，确认头像显示。</li>
+<li>刷新页面再次确认。</li>
+</ol>
+<p>填写来源不等于取得授权。历史人物的古代形象、现代摄影、影视截图和游戏立绘的使用依据不同，要分别审核。人物扮演说明与实际 <code>@账号</code> 保留，不把扮演账户标成真人认证。</p>
+<p><strong>成功标志：</strong> 头像来自正式网站存储，刷新后仍能读取，人物搜索可以找到。</p>
+<h2 id="section-21">第20步：完成270位人物和话题</h2>
+<p>当前名单在 <code>docs/release/人物扩充候选清单V2.md</code>，总计270位候选，按最新版配额分组。</p>
+<h3>方式A：后台逐个录入</h3>
+<p>重复第18、19步。适合少量补充和验证，但270位全部手工录入会较费时间。</p>
+<h3>方式B：制作正式批量发布包</h3>
+<p>适合这次规模。需要先完成：</p>
+<ol>
+<li>最终人物ID、显示名、别名、分类、简介。</li>
+<li>每张头像的文件与来源/使用依据。</li>
+<li>关系与作品版本标记，避免历史人物和小说设定混淆。</li>
+<li>对已有正式人物去重，重跑时不生成重复记录。</li>
+<li>在隔离数据库和媒体目录先验证导入、失败回滚与图片读取。</li>
+<li>备份目标正式库，再按明确的目标域名/数据库执行导入。</li>
+</ol>
+<p><strong>这套270位人物生产导入包目前尚未制作。</strong> 不要把名单Markdown重命名成JSON后运行，也不要把本机开发数据库整库覆盖到正式库。可以在本聊天让Codex按上面的要求完成数据包和导入工具，再执行已验证的具体命令；本文不编造一个不存在的“一键导入”命令。</p>
+<h3>创建话题</h3>
+<p>在后台“话题”表单先添加少量明确主题，例如：</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>话题ID</th>
+<th>名称</th>
+<th>介绍示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>first-line</code></td>
+<td>第一条开场白</td>
+<td>换个身份，介绍一下自己。</td>
+</tr>
+<tr>
+<td><code>history-office</code></td>
+<td>历史人物也上班</td>
+<td>如果古人也要开会、写周报，会怎么说？</td>
+</tr>
+<tr>
+<td><code>rdr2-camp</code></td>
+<td>范德林德营地</td>
+<td>角色扮演讨论，区分剧情与玩家观点。</td>
+</tr>
+<tr>
+<td><code>f1-paddock</code></td>
+<td>围场茶话会</td>
+<td>从车手视角聊竞赛、车队与选择。</td>
+</tr>
+</tbody></table></div>
+<p>每次保存都填写真实管理原因，确认前台能读到。话题兴趣关联等批量配置如需细化，放进经过验证的公共目录发布包。</p>
+<h2 id="section-22">第21步：发布开场帖子</h2>
+<p><strong>位置：【网站】</strong></p>
+<ol>
+<li>使用你管理的明确“官方/运营”身份账号。</li>
+<li>打开 <code>https://inrole.net/live/compose</code>。</li>
+<li>搜索并选择人物。</li>
+<li>输入正文，选择合适话题，再发布。</li>
+<li>打开详情页，确认显示“人物 + 实际@账号”。</li>
+<li>用另一个你自己控制的发布检查账号，验证评论时可以独立选择人物。</li>
+</ol>
+<p>开场内容可用关系圈做引子，例如“李世民发一条关于开会的帖子，魏征接一句”；实际发布账号如实展示。不要用多个伪装的普通用户制造虚假的真人活跃、评分或通宝交易。</p>
+<p>建议先在文稿里准备几十篇短帖与接话，确认质量后再发布。<strong>本指南没有自动生成、导入或发布这些帖子。</strong> 发布检查用的临时内容与正式开场内容分清，操作后保留正确的通宝账目与审计记录。</p>
+<h2 id="section-23">第22步：按清单完成发布验收</h2>
+<p>仍保留第15步访问口令，先由你完成检查。</p>
+<h3>22.1 电脑浏览器</h3>
+<ul>
+<li><input  type="checkbox"> 首页、人物、热搜、个人中心能打开。</li>
+<li><input  type="checkbox"> 注册、登录、退出、恢复码流程可用。</li>
+<li><input  type="checkbox"> 发帖/评论人物有头像，搜索有结果，无匹配时提示正确。</li>
+<li><input  type="checkbox"> 人物搜索框按Enter不会误发帖。</li>
+<li><input  type="checkbox"> “找不到？现在申请”进入真实申请页，后台能处理申请。</li>
+<li><input  type="checkbox"> 点赞、取消点赞、评论、评分、投币、赠送与流水符合规则。</li>
+<li><input  type="checkbox"> 图片刷新后存在，视频可以播放和拖动。</li>
+<li><input  type="checkbox"> 管理员能维护人物和处理举报，普通账号不能越权操作。</li>
+<li><input  type="checkbox"> 屏蔽与注销按实际账号工作；注销后旧会话失效。</li>
+<li><input  type="checkbox"> 隐私、协议、联系方式中的运营者、邮箱、托管地区和保存期限准确。</li>
+</ul>
+<h3>22.2 手机与真实网络</h3>
+<ul>
+<li><input  type="checkbox"> 手机Wi-Fi打开，检查软键盘、发帖、评论和人物搜索。</li>
+<li><input  type="checkbox"> 关闭Wi-Fi，用蜂窝流量再检查。</li>
+<li><input  type="checkbox"> 检查窄屏没有横向溢出，按钮能点击，头像能加载。</li>
+<li><input  type="checkbox"> 弱网/断连时明确提示失败或重试，正文不无故消失，不自动重复发布/扣币。</li>
+<li><input  type="checkbox"> 大陆与海外各有实际访问证据：记录日期、地区、网络、首页/登录/API/媒体结果。没有海外测试条件就记未验证，不捏造。</li>
+</ul>
+<h3>22.3 重启与持久化</h3>
+<p><strong>位置：【服务器终端 / root】</strong></p>
+<div class="code-wrap"><div class="code-tools"><span>服务器 Bash</span><button type="button" class="copy">复制</button></div><pre><code class="language-bash">cd /opt/inrole/deploy
+docker compose restart app
+docker compose ps
+</code></pre></div>
+<p>app重新健康后，检查刚才的帖子、头像、附件仍可读取，钱包流水不变。后续在有云控制台备用入口、已做好备份时安排服务器重启验证；先不用新手直接重装或重建系统。</p>
+<p><strong>成功标志：</strong> 保存实际检查结果。构建通过、容器healthy、HTTP200和用户交互检查是不同证据，不能互相替代。</p>
+<h2 id="section-24">第23步：制作第一份备份</h2>
+<p><strong>位置：【服务器终端 / root】</strong></p>
+<p>备份会短暂停止应用写入，页面期间可能暂时不可用。选你自己不操作网站的时间，避免同时发布代码、导入数据或修改数据库。</p>
+<div class="code-wrap"><div class="code-tools"><span>服务器 Bash</span><button type="button" class="copy">复制</button></div><pre><code class="language-bash">cd /opt/inrole/deploy
+docker compose build ops
+sh backup.sh
+ls -lh backups
+docker compose ps
+</code></pre></div>
+<p><strong>成功标志：</strong> 出现 <code>inrole-日期时间.enc</code> 加密文件，命令成功，应用恢复为healthy。</p>
+<p>这份备份包含数据库、私人媒体和核对摘要；源码和公共静态图片来自对应的Git版本。<code>secrets/backup-key</code> 是解密所需密钥，不会自动装进同一加密备份；<code>.env</code> 里的持久认证配置也要单独保存。</p>
+<p>仅在同一台服务器上有备份，还不能防止整台服务器或账户丢失。下一步必须保存主机外副本。</p>
+<h2 id="section-25">第24步：把备份保存到自己的电脑</h2>
+<p>先使用第7步相同的SSH账户。以下方式通过服务器为该账户准备一份受保护的导出目录；若目标不是你的实际账户，停止并改成正确值。</p>
+<p><strong>位置：【服务器终端 / root】</strong></p>
+<div class="code-wrap"><div class="code-tools"><span>服务器 Bash</span><button type="button" class="copy">复制</button></div><pre><code class="language-bash">INROLE_EXPORT_USER=&#39;这里替换成实际SSH登录用户名&#39;
+id &quot;$INROLE_EXPORT_USER&quot;
+INROLE_EXPORT_HOME=$(getent passwd &quot;$INROLE_EXPORT_USER&quot; | cut -d: -f6)
+printf &#39;%s\n&#39; &quot;$INROLE_EXPORT_HOME&quot;
+</code></pre></div>
+<p>确认显示正确的账户与它自己的家目录，如 <code>/home/ubuntu</code> 或 <code>/root</code>。如果空白、找不到用户，或者目录不符合预期，先不执行下面命令。</p>
+<p>准备备份导出目录，不创建密码明文副本：</p>
+<div class="code-wrap"><div class="code-tools"><span>服务器 Bash</span><button type="button" class="copy">复制</button></div><pre><code class="language-bash">install -d -m 0700 -o &quot;$INROLE_EXPORT_USER&quot; -g &quot;$(id -gn &quot;$INROLE_EXPORT_USER&quot;)&quot; &quot;$INROLE_EXPORT_HOME/inrole-exports&quot;
+cp -n /opt/inrole/deploy/backups/inrole-这里替换成实际文件名.enc &quot;$INROLE_EXPORT_HOME/inrole-exports/&quot;
+chown &quot;$INROLE_EXPORT_USER:$(id -gn &quot;$INROLE_EXPORT_USER&quot;)&quot; &quot;$INROLE_EXPORT_HOME/inrole-exports/&quot;*.enc
+chmod 0600 &quot;$INROLE_EXPORT_HOME/inrole-exports/&quot;*.enc
+</code></pre></div>
+<p>文件名从第23步 <code>ls -lh backups</code> 输出中复制，不把示例文字当成真实文件名。保存多个文件时分别复制，不改变数据库卷权限。</p>
+<p><strong>位置：【本机 PowerShell】</strong></p>
+<p>新开一个本机终端窗口，先创建私人保存目录：</p>
+<div class="code-wrap"><div class="code-tools"><span>本机 PowerShell</span><button type="button" class="copy">复制</button></div><pre><code class="language-powershell">New-Item -ItemType Directory -Force -Path &quot;$env:USERPROFILE\Documents\InRole私有备份&quot;
+</code></pre></div>
+<p>把服务器目录替换为上面真实显示的家目录：</p>
+<div class="code-wrap"><div class="code-tools"><span>本机 PowerShell</span><button type="button" class="copy">复制</button></div><pre><code class="language-powershell">scp -i &quot;$env:USERPROFILE\.ssh\inrole_server&quot; 你的SSH用户名@你的服务器IP:/实际家目录/inrole-exports/inrole-实际文件名.enc &quot;$env:USERPROFILE\Documents\InRole私有备份\&quot;
+</code></pre></div>
+<p><strong>成功标志：</strong> 本机文件大小与服务器一致。可以分别计算SHA256核对：</p>
+<div class="code-wrap"><div class="code-tools"><span>本机 PowerShell</span><button type="button" class="copy">复制</button></div><pre><code class="language-powershell">Get-FileHash -Algorithm SHA256 -LiteralPath &quot;$env:USERPROFILE\Documents\InRole私有备份\inrole-实际文件名.enc&quot;
+</code></pre></div>
+<p>服务器对原文件运行 <code>sha256sum /opt/inrole/deploy/backups/inrole-实际文件名.enc</code>，两端摘要应一致。</p>
+<h3>单独保存密钥与环境配置</h3>
+<p>将 <code>.env</code> 与 <code>secrets/backup-key</code> 通过同一SSH连接下载到你控制的受保护存储。沿用上面已核对的 <code>INROLE_EXPORT_USER</code> 和 <code>INROLE_EXPORT_HOME</code>；如果重开了服务器终端，先重新执行账户与家目录核对，不使用空变量。</p>
+<p><strong>位置：【服务器终端 / root】</strong></p>
+<div class="code-wrap"><div class="code-tools"><span>服务器 Bash</span><button type="button" class="copy">复制</button></div><pre><code class="language-bash">install -m 0600 -o &quot;$INROLE_EXPORT_USER&quot; -g &quot;$(id -gn &quot;$INROLE_EXPORT_USER&quot;)&quot; /opt/inrole/deploy/.env &quot;$INROLE_EXPORT_HOME/inrole-exports/production.env&quot;
+install -m 0600 -o &quot;$INROLE_EXPORT_USER&quot; -g &quot;$(id -gn &quot;$INROLE_EXPORT_USER&quot;)&quot; /opt/inrole/deploy/secrets/backup-key &quot;$INROLE_EXPORT_HOME/inrole-exports/backup-key&quot;
+</code></pre></div>
+<p><strong>位置：【本机 PowerShell】</strong> 先准备你自己的加密磁盘或密码管理器附件保存流程。下面下载路径要替换成受保护的实际目录，不能原样使用“你的加密存储目录”：</p>
+<div class="code-wrap"><div class="code-tools"><span>本机 PowerShell</span><button type="button" class="copy">复制</button></div><pre><code class="language-powershell">scp -i &quot;$env:USERPROFILE\.ssh\inrole_server&quot; 你的SSH用户名@你的服务器IP:/实际家目录/inrole-exports/production.env &quot;你的加密存储目录\production.env&quot;
+scp -i &quot;$env:USERPROFILE\.ssh\inrole_server&quot; 你的SSH用户名@你的服务器IP:/实际家目录/inrole-exports/backup-key &quot;你的加密存储目录\backup-key&quot;
+</code></pre></div>
+<p>确认下载完整并安全保存后，<strong>位置：【服务器终端 / root】</strong>，仅清理两个临时导出文件：</p>
+<div class="code-wrap"><div class="code-tools"><span>服务器 Bash</span><button type="button" class="copy">复制</button></div><pre><code class="language-bash">rm -- &quot;$INROLE_EXPORT_HOME/inrole-exports/production.env&quot; &quot;$INROLE_EXPORT_HOME/inrole-exports/backup-key&quot;
+</code></pre></div>
+<p>这里不删除 <code>/opt/inrole/deploy/.env</code> 或 <code>/opt/inrole/deploy/secrets/backup-key</code> 原文件。两个下载文件是敏感配置；<strong>不要与可公开分享的备份文件一起上传，不发到聊天，不使用777权限。</strong> 若暂时不会创建加密存储，先让维护者协助完成保管，不把明文配置长期留在下载文件夹。</p>
+<p>注销回执保存在独立 <code>erasures</code> 卷，还应配置及时的异机副本；恢复旧备份时需要最新回执，不能仅凭较旧备份恢复已注销内容。其同步目标与周期需要在正式开放前落实。当前材料没有自动上传到外部存储的已部署任务。</p>
+<h2 id="section-26">第25步：设置每日备份与定期清理任务</h2>
+<p><strong>位置：【服务器终端 / root】</strong></p>
+<p>先确认服务器时区是 <code>Asia/Shanghai</code>：</p>
+<div class="code-wrap"><div class="code-tools"><span>服务器 Bash</span><button type="button" class="copy">复制</button></div><pre><code class="language-bash">timedatectl
+</code></pre></div>
+<p>创建每日备份服务：</p>
+<div class="code-wrap"><div class="code-tools"><span>服务器 Bash</span><button type="button" class="copy">复制</button></div><pre><code class="language-bash">cat &gt; /etc/systemd/system/inrole-backup.service &lt;&lt;&#39;EOF&#39;
+[Unit]
+Description=InRole encrypted database and media backup
+After=docker.service
+Requires=docker.service
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/inrole/deploy
+ExecStart=/bin/sh /opt/inrole/deploy/backup.sh
+EOF
+</code></pre></div>
+<p>创建北京时间每日03:30定时器：</p>
+<div class="code-wrap"><div class="code-tools"><span>服务器 Bash</span><button type="button" class="copy">复制</button></div><pre><code class="language-bash">cat &gt; /etc/systemd/system/inrole-backup.timer &lt;&lt;&#39;EOF&#39;
+[Unit]
+Description=Daily InRole backup
+
+[Timer]
+OnCalendar=*-*-* 03:30:00
+Persistent=true
+Unit=inrole-backup.service
+
+[Install]
+WantedBy=timers.target
+EOF
+systemctl daemon-reload
+systemctl enable --now inrole-backup.timer
+systemctl list-timers inrole-backup.timer
+</code></pre></div>
+<p>这只安排本机备份，<strong>不会自动把文件传到你电脑或其他云存储</strong>。异机上传、注销回执同步、失败告警、备份保留周期要按选定存储另行配置并测试。初期先每天检查结果，避免把“有定时器”等同于“每天备份都成功”。</p>
+<p>注销媒体的物理删除重试命令已经存在：</p>
+<div class="code-wrap"><div class="code-tools"><span>服务器 Bash</span><button type="button" class="copy">复制</button></div><pre><code class="language-bash">cd /opt/inrole/deploy
+docker compose exec -T app node scripts/ops/purge-media.mjs
+</code></pre></div>
+<p>可以建立单独的每小时重试任务：</p>
+<div class="code-wrap"><div class="code-tools"><span>服务器 Bash</span><button type="button" class="copy">复制</button></div><pre><code class="language-bash">cat &gt; /etc/systemd/system/inrole-purge-media.service &lt;&lt;&#39;EOF&#39;
+[Unit]
+Description=Retry InRole deleted media removal
+After=docker.service
+Requires=docker.service
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/inrole/deploy
+ExecStart=/usr/bin/docker compose exec -T app node scripts/ops/purge-media.mjs
+EOF
+cat &gt; /etc/systemd/system/inrole-purge-media.timer &lt;&lt;&#39;EOF&#39;
+[Unit]
+Description=Hourly InRole deleted media cleanup retry
+
+[Timer]
+OnCalendar=hourly
+Persistent=true
+Unit=inrole-purge-media.service
+
+[Install]
+WantedBy=timers.target
+EOF
+systemctl daemon-reload
+systemctl enable --now inrole-purge-media.timer
+systemctl start inrole-purge-media.service
+systemctl status inrole-purge-media.service --no-pager
+</code></pre></div>
+<p>首次手动执行成功后再保留定时器。已完成的oneshot服务可能显示 <code>inactive (dead)</code>，重点看退出状态是否为成功；如果app当时正在停机维护，记录失败并在恢复后重新检查。该任务只重试已注销私人媒体的清理，不删除整个媒体目录。</p>
+<p>检查定时器语义可参考 <a href="https://www.freedesktop.org/software/systemd/man/latest/systemd.timer.html" target="_blank" rel="noopener noreferrer">systemd.timer官方说明</a>。需要实际监测的项目包括网站就绪、磁盘、流量、备份失败和注销回执异常；这些告警不会因为创建上述两个定时器而自动配置完成。</p>
+<h2 id="section-27">第26步：完成一次恢复演练</h2>
+<p><strong>发布前必须知道备份能否恢复，而不只是看到一个文件。</strong></p>
+<p>当前恢复工具的行为是：创建新的恢复数据库，写入独立的 <code>restored_media</code> 卷，核对表和媒体摘要，并结合最新注销回执处理后续注销。它不会直接覆盖现有业务库，也不会自动切换网站。</p>
+<p>执行前先核对：</p>
+<ol>
+<li>已有成功的备份与对应密钥。</li>
+<li>独立注销回执是最新的，备份之后的注销也包含在内。</li>
+<li>当前没有发布、导入或备份任务；安排维护窗口。</li>
+<li>恢复目标媒体卷是新建且空的。若以前恢复过且非空，保留旧目标，另建隔离环境；不删除现有卷来重跑。</li>
+</ol>
+<p>条件已实际确认后，以下是工具入口：</p>
+<div class="code-wrap"><div class="code-tools"><span>服务器 Bash</span><button type="button" class="copy">复制</button></div><pre><code class="language-bash">cd /opt/inrole/deploy
+docker compose run --rm -e ERASURE_JOURNAL_CONFIRMED=yes ops restore inrole-实际备份文件名.enc
+</code></pre></div>
+<p><code>ERASURE_JOURNAL_CONFIRMED=yes</code> 是操作者的事实确认，不会自己证明回执最新。未确认时不运行。</p>
+<p><strong>成功标志：</strong> 工具返回恢复库名称、摘要核对成功和独立媒体卷信息。接下来还要用恢复目标运行隔离应用，检查账号、内容、媒体、余额、权限与已注销内容不可见，才算恢复演练完成。</p>
+<p><strong>恢复库推广为正式库、重新映射媒体卷、调整后续迁移/备份目标需要一份针对实际恢复结果的切换方案。</strong> 这一步由维护者协助执行；当前并没有已验收的“一键恢复并上线”命令。不要直接改正式库名、重建全站或把旧备份覆盖到在线业务库。</p>
+<h2 id="section-28">第27步：正式开放inrole.net</h2>
+<p>开放前确认：</p>
+<ul>
+<li>最新代码已发布，正式提交与镜像有记录。</li>
+<li>你确认的人物、头像与开场内容已完成；270位名单不是空白占位。</li>
+<li>电脑、手机、媒体、权限和资金规则检查通过。</li>
+<li>主机外备份、密钥保管、注销回执同步和恢复演练有实际结果。</li>
+<li>域名、服务器到期与费用可控，故障有监测与处理方式。</li>
+<li>托管信息、隐私保存期限、联系方式和适用公开运营要求已落实。</li>
+<li>大陆/海外访问目标有实际证据；未完成的不能写成已经完成。</li>
+</ul>
+<p><strong>位置：【服务器终端 / root】</strong></p>
+<p>恢复第15步保存的原Caddy配置，移除临时访问口令：</p>
+<div class="code-wrap"><div class="code-tools"><span>服务器 Bash</span><button type="button" class="copy">复制</button></div><pre><code class="language-bash">cd /opt/inrole/deploy
+cp -p secrets/Caddyfile.before-preview Caddyfile
+docker compose exec -T caddy caddy validate --config /etc/caddy/Caddyfile --adapter caddyfile
+docker compose exec -T caddy caddy reload --config /etc/caddy/Caddyfile --adapter caddyfile
+</code></pre></div>
+<p>如果后续曾有意调整Caddy其他配置，应先比较并仅移除口令段，不用旧备份覆盖新的必要设置。</p>
+<p><strong>位置：【网页 / 无痕窗口】</strong></p>
+<ol>
+<li>打开 <code>https://inrole.net</code>，确认不再要求临时访问口令。</li>
+<li>再检查一次登录、发帖、头像和图片。</li>
+<li>用手机流量检查。</li>
+<li>记录开放日期、Git提交号、镜像ID和验收结果。</li>
+</ol>
+<p>这时再把正式网址发给用户。网页可以打开与正式发布验收完成，是两个不同里程碑。</p>
+<h2 id="section-29">第28步：以后如何增加内容</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>你想做的事</th>
+<th>日常操作</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>新增/修改人物和头像</td>
+<td>管理后台，沿用稳定人物ID</td>
+</tr>
+<tr>
+<td>新增话题</td>
+<td>后台“话题”</td>
+</tr>
+<tr>
+<td>审核人物申请</td>
+<td>先维护公共人物，再在申请审核中关联并批准</td>
+</tr>
+<tr>
+<td>发布运营内容</td>
+<td>官方/运营账号使用正常发帖入口</td>
+</tr>
+<tr>
+<td>处理举报、隐藏内容、封禁</td>
+<td>管理后台，填写原因并查看审计</td>
+</tr>
+<tr>
+<td>改页面、改功能、改业务规则</td>
+<td>先在本机开发与验证，再发布新代码</td>
+</tr>
+</tbody></table></div>
+<p>后台当前并不是一个能修改所有代码、兴趣分类和任意数据的万能面板。没有界面的配置，用经过核对的管理工具处理。</p>
+<h2 id="section-30">第29步：以后如何更新代码</h2>
+<p>正常更新采用“本地开发与验证 → GitHub发布提交 → 服务器构建新镜像 → 备份 → 必要迁移 → 更换应用版本 → 检查”的流程，保留生产数据库和媒体卷。</p>
+<h3>29.1 本地完成改动</h3>
+<p>在当前聊天提出明确修改要求。完成后检查预览、运行适当测试，再明确提交并同步GitHub。记录新的完整提交号。自动发布尚未配置，不要以为点了GitHub提交就会自动改线上网站。</p>
+<h3>29.2 服务器先检查工作区与当前版本</h3>
+<p><strong>位置：【服务器终端 / root】</strong></p>
+<div class="code-wrap"><div class="code-tools"><span>服务器 Bash</span><button type="button" class="copy">复制</button></div><pre><code class="language-bash">cd /opt/inrole
+git status --short
+git rev-parse HEAD
+cd /opt/inrole/deploy
+grep &#39;^INROLE_IMAGE=&#39; .env
+</code></pre></div>
+<p>记录旧提交、旧镜像。如果服务器源码存在意外改动，先检查，不使用 <code>git reset --hard</code> 覆盖。第15步临时Caddy修改正常情况下已在正式开放时恢复。</p>
+<h3>29.3 获取并构建新版本</h3>
+<div class="code-wrap"><div class="code-tools"><span>服务器 Bash</span><button type="button" class="copy">复制</button></div><pre><code class="language-bash">cd /opt/inrole
+git fetch origin
+git checkout --detach 新的完整Git提交号
+INROLE_NEXT_COMMIT=$(git rev-parse HEAD)
+docker build --tag &quot;inrole:${INROLE_NEXT_COMMIT}&quot; .
+</code></pre></div>
+<p>构建成功前，旧网站仍应运行。构建失败不继续切换。</p>
+<h3>29.4 先备份，再改镜像标签</h3>
+<div class="code-wrap"><div class="code-tools"><span>服务器 Bash</span><button type="button" class="copy">复制</button></div><pre><code class="language-bash">cd /opt/inrole/deploy
+sh backup.sh
+cp -p .env &quot;secrets/env-before-update-$(date +%Y%m%d%H%M%S)&quot;
+nano .env
+</code></pre></div>
+<p>只把 <code>INROLE_IMAGE=</code> 后面的值改成 <code>inrole:新的完整Git提交号</code>，其他密码和密钥不改。保存退出后：</p>
+<div class="code-wrap"><div class="code-tools"><span>服务器 Bash</span><button type="button" class="copy">复制</button></div><pre><code class="language-bash">docker compose config --quiet
+</code></pre></div>
+<h3>29.5 在维护窗口切换</h3>
+<p>下面命令取得维护锁，停止写入应用，执行迁移，再启动新应用。切换期间网页可能短暂不可用。迁移失败时不强行启动新版本。</p>
+<div class="code-wrap"><div class="code-tools"><span>服务器 Bash</span><button type="button" class="copy">复制</button></div><pre><code class="language-bash">flock -n .maintenance.lock bash -c &#39;
+set -e
+docker compose stop --timeout 45 app
+docker compose run --rm migrate
+docker compose up -d app
+&#39;
+docker compose ps
+</code></pre></div>
+<p>随后检查 <code>/api/ready</code>、登录、帖子、媒体和关键业务。观察新版本错误后再记发布完成。需要不同架构或复杂数据库变更时，先做专项发布方案，不机械套用上面的普通升级步骤。</p>
+<p>更新<strong>不需要重新购买域名，不需要整库覆盖，也不应清空数据库或上传目录</strong>。</p>
+<h2 id="section-31">第30步：每天与每月检查什么</h2>
+<h3>每天或发布后</h3>
+<div class="code-wrap"><div class="code-tools"><span>服务器 Bash</span><button type="button" class="copy">复制</button></div><pre><code class="language-bash">cd /opt/inrole/deploy
+docker compose ps
+df -h
+systemctl status inrole-backup.service --no-pager
+</code></pre></div>
+<ul>
+<li>打开网站，查看就绪状态与主要页面。</li>
+<li>查看备份是否成功，异机副本是否更新。</li>
+<li>处理举报和人物申请。</li>
+<li>检查磁盘与流量；视频增长时及时调整存储方案。</li>
+<li>需要日志时用 <code>docker compose logs --tail=100 app</code>，先本地检查并去除敏感信息再反馈。</li>
+</ul>
+<h3>每月</h3>
+<ul>
+<li>核对域名、服务器、备份存储账单与续费。</li>
+<li>检查系统和依赖更新，先验证兼容性再应用。</li>
+<li>安排恢复演练，检查密钥与恢复码仍能找到。</li>
+<li>按已确定的保留策略处理旧备份；本指南不安排自动删除，避免新手误删唯一有效副本。</li>
+</ul>
+<p>单节点发布更新、故障和备份可能有短暂停机。今后访问量上来后，再根据实际瓶颈评估托管数据库、对象存储与多实例，不一次购买复杂架构。</p>
+<h2 id="section-32">第31步：更新失败如何处理</h2>
+<ol>
+<li>先记录错误、当前镜像、迁移执行到哪一步。</li>
+<li>判断新迁移是否与上一版应用兼容；不能只凭“旧版以前能跑”就回退。</li>
+<li>确认兼容后，把 <code>.env</code> 中的 <code>INROLE_IMAGE</code> 改回已记录的旧标签，然后 <code>docker compose up -d app</code>。</li>
+<li>再检查就绪、账号、内容与媒体。</li>
+<li>数据问题按第26步走新目标恢复与切换方案；回退应用镜像不会自动回退数据库。</li>
+</ol>
+<p>尤其当前版本包含注销与原ID预留规则，旧版如果不识别这些规则，不能直接回退。任何恢复都要保持已注销账号和内容不可重新公开。</p>
+<h2 id="section-33">常见错误速查</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>现象</th>
+<th>先检查</th>
+<th>不要这样处理</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>域名还是停放页</td>
+<td>权威DNS、@记录、缓存、冲突重定向</td>
+<td>不重新买同一域名</td>
+</tr>
+<tr>
+<td>HTTPS证书错误</td>
+<td>DNS是否正确、80/443、Caddy日志、服务器时间</td>
+<td>不让用户长期忽略证书警告</td>
+</tr>
+<tr>
+<td>SSH超时</td>
+<td>22端口来源IP、服务器公网IP、云控制台备用连接</td>
+<td>不开放所有端口</td>
+</tr>
+<tr>
+<td>SSH Permission denied</td>
+<td>实际用户名、公钥绑定、使用的私钥文件</td>
+<td>不把私钥粘贴到网上</td>
+</tr>
+<tr>
+<td>502或页面暂不可用</td>
+<td>app是否healthy，是否正在备份/升级</td>
+<td>不删除数据库重装</td>
+</tr>
+<tr>
+<td>登录后发帖被拒绝</td>
+<td>正式地址是否精确为<a href="https://inrole.net%E3%80%81Cookie%E3%80%81%E5%BC%95%E5%AF%BC%E7%8A%B6%E6%80%81%E3%80%81%E9%94%99%E8%AF%AF%E7%BC%96%E5%8F%B7" target="_blank" rel="noopener noreferrer">https://inrole.net、Cookie、引导状态、错误编号</a></td>
+<td>不关闭Origin校验来绕过</td>
+</tr>
+<tr>
+<td>人物列表为空</td>
+<td>正式目录是否导入、人物和兴趣是否启用</td>
+<td>不以演示数据假装真实请求成功</td>
+</tr>
+<tr>
+<td>图片失效</td>
+<td>媒体卷、文件权限、数据库关联、删除状态</td>
+<td>不把私人媒体目录整个设为公网静态目录</td>
+</tr>
+<tr>
+<td>重启后数据少了</td>
+<td>是否误连了新库/新卷、部署目录和Compose项目名是否改变</td>
+<td>不继续初始化覆盖</td>
+</tr>
+<tr>
+<td>备份显示成功但不能恢复</td>
+<td>密钥是否对应、完整性、媒体与最新注销回执、恢复目标</td>
+<td>不覆盖在线业务库试错</td>
+</tr>
+<tr>
+<td>手机能开电脑不能，或反之</td>
+<td>DNS缓存、网络、证书、访问口令缓存</td>
+<td>不直接认定全部地区已通过</td>
+</tr>
+</tbody></table></div>
+<h2 id="section-34">私有GitHub仓库附录</h2>
+<p>如果 <code>git clone https://github.com/jasperlvv/InRole.git</code> 提示认证，不把Token写进命令URL。</p>
+<p><strong>位置：【服务器终端 / root】</strong></p>
+<div class="code-wrap"><div class="code-tools"><span>服务器 Bash</span><button type="button" class="copy">复制</button></div><pre><code class="language-bash">install -d -m 0700 /root/.ssh
+ssh-keygen -t ed25519 -f /root/.ssh/inrole_github -C inrole-readonly-deploy
+cat /root/.ssh/inrole_github.pub
+</code></pre></div>
+<p>如文件已经存在，保留原密钥；不要覆盖。为方便无人值守拉取，这把只读部署密钥可不设口令，但必须限制到单个仓库，不授予写权限。</p>
+<p><strong>位置：【网页 / GitHub → jasperlvv/InRole → Settings → Deploy keys】</strong></p>
+<ol>
+<li>点击 <code>Add deploy key</code>。</li>
+<li>Title填 <code>inrole-server-readonly</code>。</li>
+<li>Key粘贴刚显示的公钥一行。</li>
+<li>不勾选 <code>Allow write access</code>。</li>
+<li>保存。</li>
+</ol>
+<p><strong>位置：【服务器终端 / root】</strong></p>
+<p>首次连接GitHub时，核对GitHub官方主机指纹，不使用关闭主机校验的参数：</p>
+<div class="code-wrap"><div class="code-tools"><span>服务器 Bash</span><button type="button" class="copy">复制</button></div><pre><code class="language-bash">ssh -i /root/.ssh/inrole_github -o IdentitiesOnly=yes -T git@github.com
+</code></pre></div>
+<p>成功提示身份已认证但不提供shell是正常的。然后：</p>
+<div class="code-wrap"><div class="code-tools"><span>服务器 Bash</span><button type="button" class="copy">复制</button></div><pre><code class="language-bash">git -c core.sshCommand=&#39;ssh -i /root/.ssh/inrole_github -o IdentitiesOnly=yes&#39; clone git@github.com:jasperlvv/InRole.git /opt/inrole
+cd /opt/inrole
+git config core.sshCommand &#39;ssh -i /root/.ssh/inrole_github -o IdentitiesOnly=yes&#39;
+</code></pre></div>
+<p>回到第9步核对并固定发布提交。部署密钥与Windows连接服务器的密钥是不同用途，不能混用公钥文件。官方说明：<a href="https://docs.github.com/en/authentication/connecting-to-github-with-ssh/managing-deploy-keys" target="_blank" rel="noopener noreferrer">Deploy keys</a>、<a href="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/githubs-ssh-key-fingerprints" target="_blank" rel="noopener noreferrer">GitHub SSH指纹</a>。</p>
+<h2 id="section-35">收尾记录模板</h2>
+<div class="code-wrap"><div class="code-tools"><span>记录模板</span><button type="button" class="copy">复制</button></div><pre><code class="language-text">域名：inrole.net
+服务器地域/系统/规格：
+部署日期（北京时间）：
+Git完整提交号：
+镜像标签和ID：
+数据库迁移结果：
+正式人物数量、头像检查结果：
+开场内容数量、发布账号：
+管理员ID（不写密码）：
+电脑/手机/大陆/海外检查记录：
+备份日期与异机位置：
+恢复演练结果：
+注销回执同步与告警结果：
+公开运营与隐私信息确认：
+未完成项：
+</code></pre></div>
+<p><strong>指南制作与GitHub同步本身不表示已经购买资源、修改DNS、连接服务器或执行正式部署。</strong></p>
+<footer>验收勾选尝试保存在本机浏览器；它仅是个人阅读记录，不代表操作已经执行或通过。网页无外部脚本与字体依赖。</footer></main><script>document.querySelectorAll('.copy').forEach(button=>button.addEventListener('click',async()=>{const value=button.closest('.code-wrap').querySelector('code').textContent;try{if(navigator.clipboard&&window.isSecureContext){await navigator.clipboard.writeText(value)}else{const input=document.createElement('textarea');input.value=value;input.style.position='fixed';input.style.left='-9999px';document.body.append(input);input.select();const ok=document.execCommand('copy');input.remove();if(!ok)throw Error('copy')}button.textContent='已复制'}catch{button.textContent='请手动选中复制'}setTimeout(()=>button.textContent='复制',1800)}));const boxes=Array.from(document.querySelectorAll('input[type=checkbox]'));let saved={};try{saved=JSON.parse(localStorage.getItem('inrole-launch-guide-20261126')||'{}')}catch{}boxes.forEach((box,index)=>{box.checked=Boolean(saved[index]);box.addEventListener('change',()=>{saved[index]=box.checked;try{localStorage.setItem('inrole-launch-guide-20261126',JSON.stringify(saved))}catch{}})});document.querySelector('#print').addEventListener('click',()=>window.print());</script></body></html>

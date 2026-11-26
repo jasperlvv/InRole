@@ -1,5 +1,7 @@
 # 入戏 InRole
 
+2026-11-26最新同步：发帖/评论头像人物选择与真实搜索、人物申请入口、热搜界面收尾，以及[270位人物候选清单V2](docs/release/人物扩充候选清单V2.md)、[零基础上线指南](docs/InRole零基础上线操作指南.md)和[离线阅读版](docs/InRole零基础上线操作指南.html)。目标域名为inrole.net，尚未部署公网；人物扩充仍为候选名单，未导入正式库。详见[本次同步记录](docs/verification/2026-11-26-latest-sync.md)。
+
 2026-11-26 GitHub同步：当前网站候选版及验收材料提交至仓库默认分支 `main`；本轮lint、类型检查、47项测试和生产构建通过。见[同步验证记录](docs/verification/2026-11-26-github-sync.md)。代码托管与正式网站部署分别推进，以下早期阶段描述保留为历史。
 
 网站发布候选`0.2.0-rc.1`已完成本轮代码与HTTP/数据库验收，根路径为真实社区，演示为`/demo`。新增屏蔽、注销、联系/政策与部署材料；本机候选[http://localhost:3110/](http://localhost:3110/)。见[本轮验收](docs/verification/R01-release-candidate.md)、[人工检查清单](docs/release/手机电脑人工检查清单.md)和[部署/备份/回滚](deploy/README.md)。真实设备、Linux容器及正式公网未验收，旧记录以下保留。

@@ -1,0 +1,18 @@
+{
+  "date": "2026-11-26",
+  "preview": "http://localhost:3110",
+  "readyStatus": 200,
+  "people": 22,
+  "avatarsVerified": 22,
+  "searchByName": true,
+  "emptySearch": true,
+  "selectedPersonDetail": true,
+  "pagination": true,
+  "routes": [
+    "/live/compose",
+    "/live/request",
+    "/live/trending"
+  ],
+  "rankingExplanationAbsent": true,
+  "browserAndRealDevice": "not run"
+}

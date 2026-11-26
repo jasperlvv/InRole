@@ -25,6 +25,8 @@
     "db:auth:setup": "node scripts/db/setup-auth.mjs",
     "verify:s08": "node --experimental-strip-types scripts/db/verify-auth.mjs",
     "db:seed:catalog": "node --experimental-strip-types scripts/db/seed-catalog.mjs",
+    "db:import:catalog": "node --experimental-strip-types scripts/db/import-catalog.mjs",
+    "verify:catalog": "node --experimental-strip-types scripts/db/verify-catalog-import.mjs",
     "verify:s07b": "node scripts/db/verify.mjs",
     "verify:s07c": "node --experimental-strip-types scripts/db/verify-api.mjs",
     "verify:s07a": "prisma validate && prisma generate && node --experimental-strip-types scripts/s07a/verify-next.mjs",

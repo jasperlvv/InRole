@@ -281,6 +281,33 @@ try {
     assert.ok((await call(first, "admin", { cookie: moderator.cookie })).data.audit.length >= 7);
     await assert.rejects(application.query("UPDATE inrole.app_users SET role='ADMIN' WHERE id=$1", [a.id]), error => error.code === "42501");
   });
+  await scenario("banned authors' posts disappear from quotes, media and interactions and return after unban", async () => {
+    const signup = await request(first, "/api/v1/auth/register", { method: "POST", data: { handle: "ban_target", password }, status: 201 });
+    const target = (await owner.query("SELECT id FROM inrole.app_users WHERE handle='ban_target'")).rows[0];
+    const who = { ...target, handle: "ban_target", cookie: signup.cookie };
+    await call(first, "preferences", { method: "PUT", cookie: who.cookie, data: { interestIds: [], finishOnboarding: true } });
+    const form = new FormData(); form.append("file", new Blob([await sharp({ create: { width: 6, height: 6, channels: 3, background: "green" } }).png().toBuffer()], { type: "image/png" }), "ban.png");
+    const media = (await call(first, "media", { method: "POST", cookie: who.cookie, raw: form, status: 201 })).data;
+    const own = (await create(who, { body: "封禁前的帖子", mediaIds: [media.id] })).data;
+    const quoting = (await create(e, { quotePostId: own.id, body: "引用仍在" })).data;
+    assert.equal((await call(first, `posts/${quoting.id}`)).data.quote.unavailable, false);
+    assert.equal((await fetch(first + media.url)).status, 200);
+    await admin("user.status", who.id, { status: "BANNED" });
+    await call(first, `posts/${own.id}`, { status: 404 });
+    assert.equal((await call(first, `posts/${quoting.id}`)).data.quote.unavailable, true);
+    assert.equal((await fetch(first + media.url)).status, 404);
+    await call(first, `posts/${own.id}/comments`, { status: 404 });
+    await call(first, `posts/${own.id}/like`, { method: "PUT", cookie: e.cookie, data: { liked: true }, status: 404 });
+    await call(first, `posts/${own.id}/comments`, { method: "POST", cookie: e.cookie, data: { personId: "wukong", body: "封禁后评论" }, key: randomUUID(), status: 404 });
+    await call(first, `posts/${own.id}/gift`, { method: "POST", cookie: e.cookie, key: randomUUID(), data: { amount: 1 }, status: 404 });
+    await call(first, "posts", { method: "POST", cookie: e.cookie, key: randomUUID(), data: { personId: "libai", body: "封禁后引用", quotePostId: own.id }, status: 404 });
+    assert.ok(!(await call(first, "posts?limit=50")).data.some(row => row.id === own.id));
+    assert.ok(!(await call(first, "feed", { cookie: e.cookie })).data.posts.some(row => row.id === own.id));
+    await admin("user.status", who.id, { status: "ACTIVE" });
+    assert.equal((await call(first, `posts/${own.id}`)).data.id, own.id);
+    assert.equal((await call(first, `posts/${quoting.id}`)).data.quote.unavailable, false);
+    assert.equal((await fetch(first + media.url)).status, 200);
+  });
   await scenario("public users and own activity expose no private wallet, role or credentials", async () => {
     const user = (await call(first, `users/${a.handle}`)).data; assert.deepEqual(Object.keys(user).sort(), ["bio", "displayName", "handle"]);
     const data = (await call(first, "activity", { cookie: a.cookie })).data;
@@ -396,7 +423,7 @@ try {
     await assert.rejects(owner.query('UPDATE inrole.app_users SET status=\'ACTIVE\' WHERE id=$1',[pa.id]));
     await application.query('BEGIN');try{await application.query("SELECT set_config('inrole.erasing_account',$1,true)",[pb.id]);await assert.rejects(application.query('UPDATE inrole.app_users SET handle=\'forged\' WHERE id=$1',[pb.id]));}finally{await application.query('ROLLBACK');}
   });
-  await fs.writeFile(path.join(root, "docs/verification/S09-S15-result.json"), JSON.stringify({ date: "2026-11-25", runtime: "Next.js production / isolated PostgreSQL / two instances / restricted application role", scenarios: results.length, results, productionDeploymentVerified: false }, null, 2) + "\n");
+  await fs.writeFile(path.join(root, "docs/verification/S09-S15-result.json"), JSON.stringify({ date: new Date().toISOString().slice(0, 10), runtime: "Next.js production / isolated PostgreSQL / two instances / restricted application role", scenarios: results.length, results, productionDeploymentVerified: false }, null, 2) + "\n");
   console.log(`Community verification passed: ${results.length} scenarios`);
 } catch (error) { fail(error); }
 finally {

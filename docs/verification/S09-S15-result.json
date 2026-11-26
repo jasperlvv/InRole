@@ -1,7 +1,7 @@
 {
-  "date": "2026-11-25",
+  "date": "2026-11-26",
   "runtime": "Next.js production / isolated PostgreSQL / two instances / restricted application role",
-  "scenarios": 31,
+  "scenarios": 32,
   "results": [
     {
       "name": "guests and bad origins cannot write or read private resources",
@@ -93,6 +93,10 @@
     },
     {
       "name": "bans revoke existing credentials and unbanning never restores them",
+      "passed": true
+    },
+    {
+      "name": "banned authors' posts disappear from quotes, media and interactions and return after unban",
       "passed": true
     },
     {

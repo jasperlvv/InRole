@@ -64,12 +64,14 @@ export async function upload(request: Request): Promise<ImageDTO> {
   } finally { jobs--; if (saved) await fs.rm(saved, { force: true }); }
 }
 export async function readMedia(request: Request, id: string) {
-  const row = await database().mediaAsset.findUnique({ where: { id }, select: { status: true, purpose: true, mime: true, bucket: true, storageKey: true, ownerId: true, personAvatars: { where: { active: true, primaryInterest: { active: true } }, select: { id: true }, take: 1 }, postMedia: { select: { post: { select: { visibility: true } } } } } });
+  const row = await database().mediaAsset.findUnique({ where: { id }, select: { status: true, purpose: true, mime: true, bucket: true, storageKey: true, ownerId: true, personAvatars: { where: { active: true, primaryInterest: { active: true } }, select: { id: true }, take: 1 }, postMedia: { select: { post: { select: { visibility: true, author: { select: { status: true } } } } } } } });
   if (!row || row.status !== "READY" || row.bucket !== "local-private") throw new ApiProblem(404, "NOT_FOUND", "媒体不存在或不可用。");
   const viewer = await optionalActor();
   if (row.purpose !== "PERSON_AVATAR" && row.ownerId && viewer?.blockedUserIds?.includes(row.ownerId)) throw new ApiProblem(404, "NOT_FOUND", "媒体不存在或不可用。");
   const publicAvatar = row.purpose === "PERSON_AVATAR" && row.personAvatars.length > 0;
-  if (!publicAvatar && (row.postMedia ? row.postMedia.post.visibility !== "VISIBLE" : (await optionalActor())?.userId !== row.ownerId)) throw new ApiProblem(404, "NOT_FOUND", "图片不存在或不可用。");
+  // 与帖子详情保持一致：帖子可见且作者 ACTIVE 才公开，避免封禁后附件仍可直取。
+  const post = row.postMedia?.post;
+  if (!publicAvatar && (post ? post.visibility !== "VISIBLE" || post.author.status !== "ACTIVE" : viewer?.userId !== row.ownerId)) throw new ApiProblem(404, "NOT_FOUND", "图片不存在或不可用。");
   let bytes: Buffer;
   try { bytes = await fs.readFile(mediaPath(row.storageKey)); }
   catch { throw new ApiProblem(503, "SERVICE_UNAVAILABLE", "图片暂时无法读取，请稍后重试。"); }

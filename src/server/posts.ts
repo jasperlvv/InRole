@@ -25,17 +25,23 @@ export function postSelect(viewer: Actor | null) {
     likes: { where: { userId: viewer?.userId || zero }, select: { userId: true } },
     _count: { select: { likes: { where: { user: { status: "ACTIVE" as const } } }, comments: { where: { visibility: "VISIBLE" as const } } } },
     poll: { select: { question: true, endsAt: true, sealed: true, options: { orderBy: { position: "asc" as const }, select: { id: true, text: true, _count: { select: { votes: { where: { user: { status: "ACTIVE" as const } } } } } } }, votes: { where: { userId: viewer?.userId || zero }, select: { optionId: true } } } },
-    quotePost: { select: { authorId: true, id: true, body: true, visibility: true, author: { select: authorSelect }, person: { select: figureSelect } } },
+    quotePost: { select: { authorId: true, id: true, body: true, visibility: true, author: { select: { ...authorSelect, status: true } }, person: { select: figureSelect } } },
   } satisfies Prisma.PostSelect;
 }
 type PostRow = Prisma.PostGetPayload<{ select: ReturnType<typeof postSelect> }>;
+// 引用、原帖详情与媒体必须使用同一套可见性规则：帖子可见、作者处于 ACTIVE、未被查看者屏蔽。
+function quoteDTO(quote: PostRow["quotePost"], viewer: Actor | null): PostDTO["quote"] {
+  if (!quote) return null;
+  if (quote.visibility !== "VISIBLE" || quote.author.status !== "ACTIVE" || Boolean(viewer?.blockedUserIds?.includes(quote.authorId))) return { id: quote.id, unavailable: true };
+  return { id: quote.id, unavailable: false, body: quote.body, author: { handle: quote.author.handle, displayName: quote.author.displayName }, person: figureDTO(quote.person) };
+}
 export function postDTO(row: PostRow, viewer: Actor | null): PostDTO {
   const poll = row.poll;
   return {
     id: row.id, body: row.body, createdAt: row.createdAt.toISOString(), author: row.author, person: figureDTO(row.person),
     topics: row.topics.map(item => item.topic), images: row.media.map(({ media }) => ({ id: media.id, width: media.width, height: media.height, kind: media.purpose === "POST_VIDEO" ? "video" : "image", url: `/api/v1/community/media/${media.id}` })),
     likes: row._count.likes, comments: row._count.comments, liked: Boolean(viewer && row.likes.length), mine: viewer?.userId === row.authorId, receivedCoins: "0",
-    quote: row.quotePost ? (row.quotePost.visibility !== "VISIBLE" || viewer?.blockedUserIds?.includes(row.quotePost.authorId)) ? { id: row.quotePost.id, unavailable: true } : { id: row.quotePost.id, unavailable: false, body: row.quotePost.body, author: row.quotePost.author, person: figureDTO(row.quotePost.person) } : null,
+    quote: quoteDTO(row.quotePost, viewer),
     poll: poll?.sealed ? { question: poll.question, endsAt: poll.endsAt.toISOString(), closed: poll.endsAt.getTime() <= Date.now(), options: poll.options.map(item => ({ id: item.id, text: item.text, votes: item._count.votes })), totalVotes: poll.options.reduce((sum, item) => sum + item._count.votes, 0), myOptionId: viewer ? poll.votes[0]?.optionId || null : null } : null,
   };
 }

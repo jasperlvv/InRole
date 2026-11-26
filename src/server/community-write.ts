@@ -40,9 +40,10 @@ export async function availablePerson(tx: Prisma.TransactionClient, personId: st
   if (!rows.length) throw new ApiProblem(409, "CONFLICT", "人物当前不可用于新的互动。");
 }
 export async function visiblePost(tx: Prisma.TransactionClient, postId: string, exclusive = false, actorId?: string) {
+  // 与 posts.ts 的详情查询一致：作者非 ACTIVE（封禁/注销）时帖子不再可读，也不再接受新的互动。
   const rows = exclusive
-    ? await tx.$queryRaw<{ id: string; authorId: string }[]>`SELECT id,"authorId" FROM inrole.posts WHERE id=${postId}::uuid AND visibility='VISIBLE' FOR UPDATE`
-    : await tx.$queryRaw<{ id: string; authorId: string }[]>`SELECT id,"authorId" FROM inrole.posts WHERE id=${postId}::uuid AND visibility='VISIBLE' FOR SHARE`;
+    ? await tx.$queryRaw<{ id: string; authorId: string }[]>`SELECT p.id,p."authorId" FROM inrole.posts p JOIN inrole.app_users u ON u.id=p."authorId" AND u.status='ACTIVE' WHERE p.id=${postId}::uuid AND p.visibility='VISIBLE' FOR UPDATE OF p`
+    : await tx.$queryRaw<{ id: string; authorId: string }[]>`SELECT p.id,p."authorId" FROM inrole.posts p JOIN inrole.app_users u ON u.id=p."authorId" AND u.status='ACTIVE' WHERE p.id=${postId}::uuid AND p.visibility='VISIBLE' FOR SHARE OF p`;
   if (!rows.length) throw new ApiProblem(404, "NOT_FOUND", "帖子不存在或不可见。");
   if (actorId) await assertInteraction(tx, actorId, rows[0].authorId);
   return rows[0];
